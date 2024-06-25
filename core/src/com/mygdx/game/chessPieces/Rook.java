@@ -2,7 +2,7 @@ package com.mygdx.game.chessPieces;
 
 import com.mygdx.game.chessBoard.ChessBoard;
 
-public class Rook extends Piece{
+public class Rook extends Piece {
     public Rook(int x, int y) {
         super(x, y);
     }
@@ -16,6 +16,47 @@ public class Rook extends Piece{
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {
-        return false;
+        if (x != this.getPosX() && y != this.getPosY()) {
+            return false;
+        }
+
+        if (x > this.getPosX()) {
+            for (int i = this.getPosX() + 1; i < x; i++) {
+                if (board.getAt(i, y) != null) {
+                    return false;
+                }
+            }
+        }
+
+        if (y > this.getPosY()) {
+            for (int i = this.getPosY() + 1; i < y; i++) {
+                if (board.getAt(x, i) != null) {
+                    return false;
+                }
+            }
+        }
+
+        if (x < this.getPosX()) {
+            for (int i = this.getPosX() - 1; i > x; i--) {
+                if (board.getAt(i, y) != null) {
+                    return false;
+                }
+            }
+        }
+
+        if (y < this.getPosY()) {
+            for (int i = this.getPosY() - 1; i > y; i--) {
+                if (board.getAt(x, i) != null) {
+                    return false;
+                }
+            }
+        }
+
+//        if (board.getAt(x, y) != null) {
+//            return !(this.getColor().equals(board.getAt(x, y).getColor()));
+//        }
+//
+//
+        return board.validate(x, y);
     }
 }
