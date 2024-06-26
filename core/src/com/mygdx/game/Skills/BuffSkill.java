@@ -1,4 +1,20 @@
 package com.mygdx.game.Skills;
 
+import com.mygdx.game.chessPieces.*;
+
+import java.util.ArrayList;
+
 public class BuffSkill extends Skill{
+    @Override
+    public boolean inRange(ArrayList<Piece> pieces) {
+        return false;
+    }
+
+    public void buffBaseAttach(ArrayList<Piece> pieces) {
+
+    }
+
+    public void buffDefend(ArrayList<Piece> pieces) {
+
+    }
 }

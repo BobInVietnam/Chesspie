@@ -28,6 +28,27 @@ public class Knight extends  Piece {
         else return x == x_pos + 2 && y == y_pos + 1 && board.getAt(x, y) == null;
     }
 
+    @Override
+    public boolean canKill(ChessBoard board, int x, int y) {
+        int x_pos = this.getPosX();
+        int y_pos = this.getPosY();
+        Piece enemy = board.getAt(x, y);
+        if(enemy == null)  return false;
+
+        if(!enemy.getColor().equals(this.getColor()) && enemy.getHp() < this.getBaseAttack()) {
+            if (x == x_pos-1 && y == y_pos-2) return true;
+            else if (x == x_pos+1 && y== y_pos-2) return true;
+            else if (x == x_pos-1 && y== y_pos+2) return true;
+            else if (x == x_pos+1 && y== y_pos+2) return true;
+            else if (x == x_pos-2 && y== y_pos-1) return true;
+            else if (x == x_pos-2 && y== y_pos+1) return true;
+            else if (x == x_pos+2 && y== y_pos-1) return true;
+            else return x == x_pos + 2 && y == y_pos + 1;
+        }
+
+        return false;
+    }
+
     public void attack(Piece piece) {
 
     }

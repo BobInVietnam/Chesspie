@@ -28,6 +28,11 @@ public class Pawn extends Piece{
         return false;
     }
 
+    @Override
+    public boolean canKill(ChessBoard board, int x, int y) {
+        return false;
+    }
+
     public void attack(Piece piece) {
 
     }

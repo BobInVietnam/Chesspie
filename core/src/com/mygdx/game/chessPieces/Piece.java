@@ -10,6 +10,7 @@ public abstract class Piece {
     private String color;
     private int hp;
     private int baseAttack;
+    private int defendShield = 0;
     private boolean status; // true means alive, false means dead
 
     public int getPosX() {
@@ -27,6 +28,10 @@ public abstract class Piece {
     public int getHp() {return hp;}
 
     public int getBaseAttack() {return baseAttack;}
+
+    public int getDefendShield() {
+        return defendShield;
+    }
 
     public boolean isStatus() {
         return status;
@@ -52,6 +57,10 @@ public abstract class Piece {
         this.baseAttack = baseAttack;
     }
 
+    public void setDefendShield(int defendShield) {
+        this.defendShield = defendShield;
+    }
+
     public void setStatus(boolean status) {
         this.status = status;
     }
@@ -68,17 +77,17 @@ public abstract class Piece {
         }
     }
 
-//    public boolean checkPosition(Piece p) {
-//        if ((p.getPosX() >= 1 && p.getPosX() <= 8)
-//                && (p.getPosY() >= 1 && p.getPosY() <= 8)) {
-//            return true;
-//        }
-//        return false;
-//    }
+    public boolean checkPosition(Piece p) {
+        if ((p.getPosX() >= 1 && p.getPosX() <= 8)
+                && (p.getPosY() >= 1 && p.getPosY() <= 8)) {
+            return true;
+        }
+        return false;
+    }
 
     public abstract String getSymbol();
     public abstract boolean canMove(ChessBoard board, int x, int y);
-//    public abstract boolean canKill(ChessBoard board, int x, int y);
+    public abstract boolean canKill(ChessBoard board, int x, int y);
     public abstract void attack(Piece piece); //attack piece
     public abstract void getAttacked(Piece piece); //get attacked from piece
 }

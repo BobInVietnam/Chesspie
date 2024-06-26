@@ -57,6 +57,11 @@ public class Bishop extends  Piece{
         return board.validate(x, y);
     }
 
+    @Override
+    public boolean canKill(ChessBoard board, int x, int y) {
+        return false;
+    }
+
     public void attack(Piece piece) {
 
     }

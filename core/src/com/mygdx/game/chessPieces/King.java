@@ -29,6 +29,11 @@ public class King extends Piece{
         else return x == x_pos-1 && y == y_pos+1 && board.getAt(x, y) == null;
     }
 
+    @Override
+    public boolean canKill(ChessBoard board, int x, int y) {
+        return false;
+    }
+
     public void attack(Piece piece) {
 
     }
