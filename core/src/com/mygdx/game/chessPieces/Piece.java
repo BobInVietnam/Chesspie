@@ -1,6 +1,7 @@
 package com.mygdx.game.chessPieces;
 
 import com.mygdx.game.chessBoard.ChessBoard;
+import com.mygdx.game.Skills.*;
 
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ public abstract class Piece {
     private int baseAttack;
     private int defendShield = 0;
     private boolean status; // true means alive, false means dead
+    Skill chessSkill;
 
     public int getPosX() {
         return posX;
@@ -37,6 +39,10 @@ public abstract class Piece {
         return status;
     }
 
+    public Skill getChessSkill() {
+        return chessSkill;
+    }
+
     public void setPosX(int posX) {
         this.posX = posX;
     }
@@ -59,6 +65,10 @@ public abstract class Piece {
 
     public void setDefendShield(int defendShield) {
         this.defendShield = defendShield;
+    }
+
+    public void setChessSkill(Skill chessSkill) {
+        this.chessSkill = chessSkill;
     }
 
     public void setStatus(boolean status) {
@@ -89,5 +99,7 @@ public abstract class Piece {
     public abstract boolean canMove(ChessBoard board, int x, int y);
     public abstract boolean canKill(ChessBoard board, int x, int y);
     public abstract void attack(Piece piece); //attack piece
+    public abstract void activateSKill();
     public abstract void getAttacked(Piece piece); //get attacked from piece
+    public abstract void getSkillAttacked(Piece piece);
 }

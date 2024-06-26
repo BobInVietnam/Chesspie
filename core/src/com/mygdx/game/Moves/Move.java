@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.Moves;
 
 import com.mygdx.game.chessPieces.Piece;
 

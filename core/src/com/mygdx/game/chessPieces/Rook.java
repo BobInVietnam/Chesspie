@@ -1,6 +1,7 @@
 package com.mygdx.game.chessPieces;
 
 import com.mygdx.game.chessBoard.ChessBoard;
+import com.mygdx.game.Skills.*;
 
 public class Rook extends Piece {
     public Rook(int x, int y) {
@@ -56,7 +57,6 @@ public class Rook extends Piece {
             return !(this.getColor().equals(board.getAt(x, y).getColor()));
         }
 
-
         return board.validate(x, y);
     }
 
@@ -69,7 +69,16 @@ public class Rook extends Piece {
 
     }
 
+    @Override
+    public void activateSKill() {
+
+    }
+
     public void getAttacked(Piece piece) {
         this.setHp(this.getHp() - piece.getBaseAttack());
+    }
+
+    public void getSkillAttacked(Piece piece) {
+        this.setHp(this.getHp() - piece.getChessSkill().getSkillDmg());
     }
 }
