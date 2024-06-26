@@ -12,10 +12,27 @@ public class Knight extends  Piece {
     }
 
     public String getSymbol() {
-        return "K";
+        return "Kn";
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {
-        return false;
+        int x_pos = this.getPosX();
+        int y_pos = this.getPosY();
+        if (x == x_pos-1 && y== y_pos-2 && board.getAt(x, y) == null) return true;
+        else if (x == x_pos+1 && y== y_pos-2 && board.getAt(x, y) == null) return true;
+        else if (x == x_pos-1 && y== y_pos+2 && board.getAt(x, y) == null) return true;
+        else if (x == x_pos+1 && y== y_pos+2 && board.getAt(x, y) == null) return true;
+        else if (x == x_pos-2 && y== y_pos-1 && board.getAt(x, y) == null) return true;
+        else if (x == x_pos-2 && y== y_pos+1 && board.getAt(x, y) == null) return true;
+        else if (x == x_pos+2 && y== y_pos-1 && board.getAt(x, y) == null) return true;
+        else return x == x_pos + 2 && y == y_pos + 1 && board.getAt(x, y) == null;
+    }
+
+    public void attack(Piece piece) {
+
+    }
+
+    public void getAttacked(Piece piece) {
+        this.setHp(this.getHp() - piece.getBaseAttack());
     }
 }

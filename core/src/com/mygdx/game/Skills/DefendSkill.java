@@ -1,4 +1,4 @@
 package com.mygdx.game.Skills;
 
-public class DefendSkill {
+public class DefendSkill extends Skill{
 }

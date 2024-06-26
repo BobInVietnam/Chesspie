@@ -16,6 +16,52 @@ public class Bishop extends  Piece{
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {
-        return false;
+        int diffValue = Integer.min(Math.abs(this.getPosX() - x), Math.abs(this.getPosY() - y));
+
+        if (x > this.getPosX() && y > this.getPosY()) {
+            for (int i = 1; i < diffValue; i++) {
+                if (board.getAt(this.getPosX() + i, this.getPosY() + i) != null) {
+                    return false;
+                }
+            }
+        }
+
+        if (x < this.getPosX() && y < this.getPosY()) {
+            for (int i = 1; i < diffValue; i++) {
+                if (board.getAt(this.getPosX() - i, this.getPosY() - i) != null) {
+                    return false;
+                }
+            }
+        }
+
+        if (x > this.getPosX() && y < this.getPosY()) {
+            for (int i = 1; i < diffValue; i++) {
+                if (board.getAt(this.getPosX() + i, this.getPosY() - i) != null) {
+                    return false;
+                }
+            }
+        }
+
+        if (x < this.getPosX() && y > this.getPosY()) {
+            for (int i = 1; i < diffValue; i++) {
+                if (board.getAt(this.getPosX() - i, this.getPosY() + i) != null) {
+                    return false;
+                }
+            }
+        }
+
+        if (board.getAt(x, y) != null) {
+            return !(this.getColor().equals(board.getAt(x, y).getColor()));
+        }
+
+        return board.validate(x, y);
+    }
+
+    public void attack(Piece piece) {
+
+    }
+
+    public void getAttacked(Piece piece) {
+        this.setHp(this.getHp() - piece.getBaseAttack());
     }
 }

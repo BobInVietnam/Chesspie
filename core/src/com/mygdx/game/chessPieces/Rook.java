@@ -52,11 +52,19 @@ public class Rook extends Piece {
             }
         }
 
-//        if (board.getAt(x, y) != null) {
-//            return !(this.getColor().equals(board.getAt(x, y).getColor()));
-//        }
-//
-//
+        if (board.getAt(x, y) != null) {
+            return !(this.getColor().equals(board.getAt(x, y).getColor()));
+        }
+
+
         return board.validate(x, y);
+    }
+
+    public void attack(Piece piece) {
+
+    }
+
+    public void getAttacked(Piece piece) {
+        this.setHp(this.getHp() - piece.getBaseAttack());
     }
 }

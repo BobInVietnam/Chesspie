@@ -5,8 +5,8 @@ import com.mygdx.game.chessPieces.Piece;
 import java.util.ArrayList;
 
 public class ChessBoard {
-    public static final int WIDTH = 8;
-    public static final int HEIGHT = 8;
+//    public static final int WIDTH = 8;
+//    public static final int HEIGHT = 8;
     private ArrayList<Piece> pieces = new ArrayList<>();
 
     public ChessBoard(){}
