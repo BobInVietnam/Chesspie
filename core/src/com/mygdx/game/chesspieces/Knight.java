@@ -1,6 +1,6 @@
-package com.mygdx.game.chessPieces;
+package com.mygdx.game.chesspieces;
 
-import com.mygdx.game.chessBoard.ChessBoard;
+import com.mygdx.game.chessboard.ChessBoard;
 
 public class Knight extends  Piece {
     public Knight(int x, int y) {
@@ -12,7 +12,7 @@ public class Knight extends  Piece {
     }
 
     public String getSymbol() {
-        return "Kn";
+        return "N";
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {
