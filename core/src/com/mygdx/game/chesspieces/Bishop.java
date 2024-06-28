@@ -1,53 +1,50 @@
-package com.mygdx.game.chessPieces;
+package com.mygdx.game.chesspieces;
 
-import com.mygdx.game.chessBoard.ChessBoard;
-import com.mygdx.game.Skills.*;
+import com.mygdx.game.chessboard.ChessBoard;
 
-public class Rook extends Piece {
-    public Rook(int x, int y) {
+public class Bishop extends  Piece{
+    public Bishop(int x, int y) {
         super(x, y);
     }
 
-    public Rook(int x, int y, String color) {
+    public Bishop(int x, int y, String color) {
         super(x, y, color);
     }
 
     public String getSymbol() {
-        return "R";
+        return "B";
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {
-        if (x != this.getPosX() && y != this.getPosY()) {
-            return false;
-        }
+        int diffValue = Integer.min(Math.abs(this.getPosX() - x), Math.abs(this.getPosY() - y));
 
-        if (x > this.getPosX()) {
-            for (int i = this.getPosX() + 1; i < x; i++) {
-                if (board.getAt(i, y) != null) {
+        if (x > this.getPosX() && y > this.getPosY()) {
+            for (int i = 1; i < diffValue; i++) {
+                if (board.getAt(this.getPosX() + i, this.getPosY() + i) != null) {
                     return false;
                 }
             }
         }
 
-        if (y > this.getPosY()) {
-            for (int i = this.getPosY() + 1; i < y; i++) {
-                if (board.getAt(x, i) != null) {
+        if (x < this.getPosX() && y < this.getPosY()) {
+            for (int i = 1; i < diffValue; i++) {
+                if (board.getAt(this.getPosX() - i, this.getPosY() - i) != null) {
                     return false;
                 }
             }
         }
 
-        if (x < this.getPosX()) {
-            for (int i = this.getPosX() - 1; i > x; i--) {
-                if (board.getAt(i, y) != null) {
+        if (x > this.getPosX() && y < this.getPosY()) {
+            for (int i = 1; i < diffValue; i++) {
+                if (board.getAt(this.getPosX() + i, this.getPosY() - i) != null) {
                     return false;
                 }
             }
         }
 
-        if (y < this.getPosY()) {
-            for (int i = this.getPosY() - 1; i > y; i--) {
-                if (board.getAt(x, i) != null) {
+        if (x < this.getPosX() && y > this.getPosY()) {
+            for (int i = 1; i < diffValue; i++) {
+                if (board.getAt(this.getPosX() - i, this.getPosY() + i) != null) {
                     return false;
                 }
             }
