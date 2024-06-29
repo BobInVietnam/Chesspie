@@ -11,8 +11,8 @@ public class Rook extends Piece {
         super(x, y, color);
     }
 
-    public String getSymbol() {
-        return "R";
+    public Character getSymbol() {
+        return 'R';
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {

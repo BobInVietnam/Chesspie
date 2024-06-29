@@ -11,8 +11,8 @@ public class King extends Piece{
         super(x, y, color);
     }
 
-    public String getSymbol() {
-        return "K";
+    public Character getSymbol() {
+        return 'K';
     }
 
     @Override

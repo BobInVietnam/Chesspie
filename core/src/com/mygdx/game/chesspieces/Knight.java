@@ -11,8 +11,8 @@ public class Knight extends  Piece {
         super(x, y, color);
     }
 
-    public String getSymbol() {
-        return "Kn";
+    public Character getSymbol() {
+        return 'N';
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {

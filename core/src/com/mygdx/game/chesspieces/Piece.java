@@ -84,7 +84,7 @@ public abstract class Piece {
         return false;
     }
 
-    public abstract String getSymbol();
+    public abstract Character getSymbol();
     public abstract boolean canMove(ChessBoard board, int x, int y);
     public abstract boolean canKill(ChessBoard board, int x, int y);
     public abstract void attack(Piece piece); //attack piece

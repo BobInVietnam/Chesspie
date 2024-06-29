@@ -11,8 +11,8 @@ public class Bishop extends  Piece{
         super(x, y, color);
     }
 
-    public String getSymbol() {
-        return "B";
+    public Character getSymbol() {
+        return 'B';
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {

@@ -11,8 +11,8 @@ public class Pawn extends Piece{
         super(x, y, color);
     }
 
-    public String getSymbol() {
-        return "P";
+    public Character getSymbol() {
+        return 'P';
     }
 
     @Override

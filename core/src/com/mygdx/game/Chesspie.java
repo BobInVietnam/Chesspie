@@ -9,7 +9,7 @@ import com.mygdx.game.screens.GameplayScreen;
 import com.mygdx.game.screens.TitleScreen;
 
 public class Chesspie extends Game {
-	SpriteBatch batch;
+	public SpriteBatch batch;
 	
 	@Override
 	public void create () {
@@ -19,11 +19,11 @@ public class Chesspie extends Game {
 
 	@Override
 	public void render () {
+		super.render();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-
 	}
 }
