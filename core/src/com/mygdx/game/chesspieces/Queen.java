@@ -29,7 +29,16 @@ public class Queen extends Piece{
 
     }
 
+    @Override
+    public void activateSKill() {
+
+    }
+
     public void getAttacked(Piece piece) {
         this.setHp(this.getHp() - piece.getBaseAttack());
+    }
+
+    public void getSkillAttacked(Piece piece) {
+        this.setHp(this.getHp() - piece.getChessSkill().getSkillDmg());
     }
 }

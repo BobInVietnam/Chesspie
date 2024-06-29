@@ -2,7 +2,7 @@ package com.mygdx.game.chesspieces;
 
 import com.mygdx.game.chessboard.ChessBoard;
 
-public class Knight extends  Piece {
+public class Knight extends Piece {
     public Knight(int x, int y) {
         super(x, y);
     }
@@ -53,7 +53,17 @@ public class Knight extends  Piece {
 
     }
 
+    @Override
+    public void activateSKill() {
+
+    }
+
     public void getAttacked(Piece piece) {
         this.setHp(this.getHp() - piece.getBaseAttack());
+    }
+
+    @Override
+    public void getSkillAttacked(Piece piece) {
+
     }
 }
