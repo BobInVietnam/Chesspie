@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.King;
 import com.mygdx.game.chesspieces.Piece;
+import com.mygdx.game.screens.GameplayScreen;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -20,10 +21,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class GameRenderer {
-  public SpriteBatch batch;
-  public ChessBoard board;
+  private SpriteBatch batch;
+  private ChessBoard board;
   public Array<Piece> piecesList;
-  public HashMap<Character, Integer> pieceToValue;
+  private HashMap<Character, Integer> pieceToValue;
   private OrthographicCamera camera;
   private Viewport vp;
 
@@ -32,12 +33,11 @@ public class GameRenderer {
   private TextureRegion boardRegion;
   private final Array<TextureRegion> whitePieces;
   private final Array<TextureRegion> blackPieces;
-  private final float cornerX;
-  private final float cornerY;
 
-  public GameRenderer(SpriteBatch batch, ChessBoard board) {
+  public GameRenderer(SpriteBatch batch, ChessBoard board, OrthographicCamera camera) {
     this.batch = batch;
     this.board = board;
+    this.camera = camera;
     boardTexture = new Texture("Images/board_0.png");
     boardRegion = new TextureRegion(boardTexture, 0, 0, 2000, 2000);
     pieces = new Texture("Images/pieces.png");
@@ -52,13 +52,8 @@ public class GameRenderer {
     whitePieces.add(new TextureRegion(pieces, 0, 1200, 400, 600));
     blackPieces.add(new TextureRegion(pieces,400, 1200, 400, 600));
 
-    // Viewport & Camera
-    camera = new OrthographicCamera();
-    float ratio = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
-    camera.setToOrtho(false, 12 / ratio, 12);
+    // Viewport stuffs
 
-    cornerX = camera.viewportWidth/2 - 5;
-    cornerY = 1;
 
     // Piece-to-value map
     pieceToValue = new HashMap<>();
@@ -93,8 +88,8 @@ public class GameRenderer {
 
   private void drawPieces() {
     for (Piece piece: piecesList) {
-      float posX = cornerX + piece.getPosX();
-      float posY = cornerY + piece.getPosY();
+      float posX = GameplayScreen.cornerX + piece.getPosX();
+      float posY = GameplayScreen.cornerY + piece.getPosY();
       int type = pieceToValue.get(piece.getSymbol());
       if (Objects.equals(piece.getColor(), "black"))
         batch.draw(blackPieces.get(type), posX, posY, 1, 1.5f);
