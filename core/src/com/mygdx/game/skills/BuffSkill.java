@@ -1,6 +1,6 @@
 package com.mygdx.game.skills;
 
-import com.mygdx.game.chesspieces.*;
+import com.mygdx.game.chessPieces.*;
 
 import java.util.ArrayList;
 

@@ -1,12 +1,11 @@
 package com.mygdx.game.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.mygdx.game.Chesspie;
 import com.mygdx.game.GameRenderer;
-import com.mygdx.game.chessboard.ChessBoard;
+import com.mygdx.game.chessBoard.ChessBoard;
 
 public class GameplayScreen implements Screen {
   final Chesspie game;

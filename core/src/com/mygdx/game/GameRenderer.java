@@ -1,23 +1,18 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.chessboard.ChessBoard;
-import com.mygdx.game.chesspieces.King;
-import com.mygdx.game.chesspieces.Piece;
+import com.mygdx.game.chessBoard.ChessBoard;
+import com.mygdx.game.chessPieces.King;
+import com.mygdx.game.chessPieces.Piece;
 import com.mygdx.game.screens.GameplayScreen;
 
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.Objects;
 
 public class GameRenderer {

@@ -1,6 +1,6 @@
-package com.mygdx.game.chesspieces;
+package com.mygdx.game.chessPieces;
 
-import com.mygdx.game.chessboard.ChessBoard;
+import com.mygdx.game.chessBoard.ChessBoard;
 
 public class Pawn extends Piece{
     public Pawn(int x, int y) {

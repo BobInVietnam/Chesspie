@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.screens.GameplayScreen;
-import com.mygdx.game.screens.TitleScreen;
+//import com.mygdx.game.screens.TitleScreen;
 
 public class Chesspie extends Game {
 	public SpriteBatch batch;

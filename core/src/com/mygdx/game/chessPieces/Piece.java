@@ -1,8 +1,7 @@
-package com.mygdx.game.chesspieces;
+package com.mygdx.game.chessPieces;
 
-import com.mygdx.game.chessboard.ChessBoard;
+import com.mygdx.game.chessBoard.ChessBoard;
 
-import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.skills.*;
 
 public abstract class Piece {
