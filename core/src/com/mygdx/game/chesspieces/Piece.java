@@ -1,8 +1,7 @@
-package com.mygdx.game.chessPieces;
+package com.mygdx.game.chesspieces;
 
-import com.mygdx.game.chessBoard.ChessBoard;
+import com.mygdx.game.chessboard.ChessBoard;
 
-import java.util.Objects;
 
 public abstract class Piece {
     private int posX;

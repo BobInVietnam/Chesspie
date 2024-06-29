@@ -1,6 +1,6 @@
 package com.mygdx.game;
 
-import com.mygdx.game.chessPieces.Piece;
+import com.mygdx.game.chesspieces.Piece;
 
 public class Move {
     private int startX;

@@ -1,6 +1,6 @@
-package com.mygdx.game.chessBoard;
+package com.mygdx.game.chessboard;
 
-import com.mygdx.game.chessPieces.Piece;
+import com.mygdx.game.chesspieces.Piece;
 
 import java.util.ArrayList;
 
