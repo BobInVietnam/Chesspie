@@ -58,9 +58,15 @@ public class Bishop extends  Piece{
     }
 
     @Override
-    public boolean canKill(ChessBoard board, int x, int y) {
+    public boolean canKillwithBaseAtl(ChessBoard board, int x, int y) {
         return false;
     }
+
+    @Override
+    public boolean canKillwithSkill(ChessBoard board, int x, int y) {
+        return false;
+    }
+
 
     public void attack(Piece piece) {
 
@@ -77,5 +83,14 @@ public class Bishop extends  Piece{
 
     public void getSkillAttacked(Piece piece) {
         this.setHp(this.getHp() - piece.getChessSkill().getSkillDmg());
+    }
+
+    public void killOtherPiecebyAlt(ChessBoard board, int x, int y) {
+        if(this.canKillwithBaseAtl(board, x, y)) board.removeAt(x, y);
+    }
+
+    @Override
+    public void killOtherPiecebySkill(ChessBoard board, int x, int y) {
+        if(this.canKillwithSkill(board, x, y)) board.removeAt(x, y);
     }
 }

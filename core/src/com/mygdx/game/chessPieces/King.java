@@ -30,7 +30,22 @@ public class King extends Piece{
     }
 
     @Override
-    public boolean canKill(ChessBoard board, int x, int y) {
+    public boolean canKillwithBaseAtl(ChessBoard board, int x, int y) {
+        for(int i=-1;i<=1;i++) {
+            for(int j=-1;j<1;j++) {
+                if(i != 0 || j != 0) {
+                    int newRow = this.getPosX() + i;
+                    int newCol = this.getPosY() + j;
+                    if(newRow == x && newCol == y && board.getAt(x, y).getHp() < this.getHp()) return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean canKillwithSkill(ChessBoard board, int x, int y) {
         return false;
     }
 
@@ -51,4 +66,12 @@ public class King extends Piece{
         this.setHp(this.getHp() - piece.getChessSkill().getSkillDmg());
     }
 
+    public void killOtherPiecebyAlt(ChessBoard board, int x, int y) {
+        if(this.canKillwithBaseAtl(board, x, y)) board.removeAt(x, y);
+    }
+
+    @Override
+    public void killOtherPiecebySkill(ChessBoard board, int x, int y) {
+        if(this.canKillwithSkill(board, x, y)) board.removeAt(x, y);
+    }
 }

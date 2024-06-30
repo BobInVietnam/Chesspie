@@ -29,7 +29,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean canKill(ChessBoard board, int x, int y) {
+    public boolean canKillwithBaseAtl(ChessBoard board, int x, int y) {
         int x_pos = this.getPosX();
         int y_pos = this.getPosY();
         Piece enemy = board.getAt(x, y);
@@ -49,6 +49,12 @@ public class Knight extends Piece {
         return false;
     }
 
+    @Override
+    public boolean canKillwithSkill(ChessBoard board, int x, int y) {
+        return false;
+    }
+
+
     public void attack(Piece piece) {
 
     }
@@ -65,5 +71,14 @@ public class Knight extends Piece {
     @Override
     public void getSkillAttacked(Piece piece) {
 
+    }
+
+    public void killOtherPiecebyAlt(ChessBoard board, int x, int y) {
+        if(this.canKillwithBaseAtl(board, x, y)) board.removeAt(x, y);
+    }
+
+    @Override
+    public void killOtherPiecebySkill(ChessBoard board, int x, int y) {
+        if(this.canKillwithSkill(board, x, y)) board.removeAt(x, y);
     }
 }

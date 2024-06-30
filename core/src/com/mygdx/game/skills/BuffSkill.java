@@ -5,6 +5,11 @@ import com.mygdx.game.chessPieces.*;
 import java.util.ArrayList;
 
 public class BuffSkill extends Skill{
+
+    public Character getSymbol() {
+        return 'U';
+    }
+
     @Override
     public boolean inRange(ArrayList<Piece> pieces) {
         return false;
