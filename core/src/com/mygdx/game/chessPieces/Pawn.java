@@ -18,7 +18,7 @@ public class Pawn extends Piece{
     @Override
     public boolean canMove(ChessBoard board, int x, int y) {
         if(this.getColor().equals("white")) {
-            return y == this.getPosY() && x == this.getPosX()+1 && board.getAt(x, y) == null;
+            return y == this.getPosY() && x == this.getPosX() + 1 && board.getAt(x, y) == null;
         }
 
         if(this.getColor().equals("black")) {
@@ -29,8 +29,29 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public boolean canKillwithBaseAtl(ChessBoard board, int x, int y) {
+    public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
+        if(this.getColor().equals("white")){
+            if((x == this.getPosX()+1) || (x==this.getPosX()-1)
+                    && y == this.getPosY() + 1 && board.getAt(x, y).getColor().equals("black")) {
+                return true;
+            }
+        }
+
+        if(this.getColor().equals("black")){
+            return (x == this.getPosX() + 1) || (x == this.getPosX() - 1)
+                    && y == this.getPosY() - 1 && board.getAt(x, y).getColor().equals("white");
+        }
         return false;
+    }
+
+    @Override
+    public boolean inSkillRange(ChessBoard board, int x, int y) {
+        return false;
+    }
+
+    @Override
+    public boolean canKillwithBaseAtk(ChessBoard board, int x, int y) {
+        return this.inBaseAtkRange(board, x, y) && board.getAt(x, y).getHp() < this.getBaseAttack();
     }
 
     @Override
@@ -38,8 +59,11 @@ public class Pawn extends Piece{
         return false;
     }
 
-    public void attack(Piece piece) {
-
+    @Override
+    public void attack(ChessBoard board, Piece piece) {
+        if(this.inBaseAtkRange(board, piece.getPosX(), piece.getPosY())) {
+            piece.getAttacked(this);
+        }
     }
 
     @Override
@@ -55,8 +79,8 @@ public class Pawn extends Piece{
         this.setHp(this.getHp() - piece.getChessSkill().getSkillDmg());
     }
 
-    public void killOtherPiecebyAlt(ChessBoard board, int x, int y) {
-        if(this.canKillwithBaseAtl(board, x, y)) board.removeAt(x, y);
+    public void killOtherPiecebyBaseAtk(ChessBoard board, int x, int y) {
+        if(this.canKillwithBaseAtk(board, x, y)) board.removeAt(x, y);
     }
 
     @Override

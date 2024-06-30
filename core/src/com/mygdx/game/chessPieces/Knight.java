@@ -28,8 +28,9 @@ public class Knight extends Piece {
         else return x == x_pos + 2 && y == y_pos + 1 && board.getAt(x, y) == null;
     }
 
+    //Need to re-check this
     @Override
-    public boolean canKillwithBaseAtl(ChessBoard board, int x, int y) {
+    public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
         int x_pos = this.getPosX();
         int y_pos = this.getPosY();
         Piece enemy = board.getAt(x, y);
@@ -50,13 +51,25 @@ public class Knight extends Piece {
     }
 
     @Override
+    public boolean inSkillRange(ChessBoard board, int x, int y) {
+        return false;
+    }
+
+    @Override
+    public boolean canKillwithBaseAtk(ChessBoard board, int x, int y) {
+        return this.inBaseAtkRange(board, x, y) && board.getAt(x, y).getHp() < this.getBaseAttack();
+    }
+
+    @Override
     public boolean canKillwithSkill(ChessBoard board, int x, int y) {
         return false;
     }
 
 
-    public void attack(Piece piece) {
-
+    public void attack(ChessBoard board, Piece piece) {
+        if(this.inBaseAtkRange(board, piece.getPosX(), piece.getPosY())) {
+            piece.getAttacked(this);
+        }
     }
 
     @Override
@@ -73,8 +86,8 @@ public class Knight extends Piece {
 
     }
 
-    public void killOtherPiecebyAlt(ChessBoard board, int x, int y) {
-        if(this.canKillwithBaseAtl(board, x, y)) board.removeAt(x, y);
+    public void killOtherPiecebyBaseAtk(ChessBoard board, int x, int y) {
+        if(this.canKillwithBaseAtk(board, x, y)) board.removeAt(x, y);
     }
 
     @Override
