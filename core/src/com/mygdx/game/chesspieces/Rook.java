@@ -1,6 +1,6 @@
-package com.mygdx.game.chessPieces;
+package com.mygdx.game.chesspieces;
 
-import com.mygdx.game.chessBoard.ChessBoard;
+import com.mygdx.game.chessboard.ChessBoard;
 
 public class Rook extends Piece {
     public Rook(int x, int y) {
@@ -60,13 +60,29 @@ public class Rook extends Piece {
     }
 
     @Override
-    public boolean canKillwithBaseAtl(ChessBoard board, int x, int y) {
+    public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
         return false;
     }
 
     @Override
+    public boolean inSkillRange(ChessBoard board, int x, int y) {
+        return false;
+    }
+
+    @Override
+    public boolean canKillwithBaseAtk(ChessBoard board, int x, int y) {
+        return false;
+    }
+
+
+    @Override
     public boolean canKillwithSkill(ChessBoard board, int x, int y) {
         return false;
+    }
+
+    @Override
+    public void attack(ChessBoard board, Piece piece) {
+
     }
 
     public void attack(Piece piece) {
@@ -87,8 +103,8 @@ public class Rook extends Piece {
     }
 
     @Override
-    public void killOtherPiecebyAlt(ChessBoard board, int x, int y) {
-        if(this.canKillwithBaseAtl(board, x, y)) board.removeAt(x, y);
+    public void killOtherPiecebyBaseAtk(ChessBoard board, int x, int y) {
+
     }
 
     @Override

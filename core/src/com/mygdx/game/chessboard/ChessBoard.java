@@ -1,13 +1,14 @@
-package com.mygdx.game.chessBoard;
+package com.mygdx.game.chessboard;
 
-import com.mygdx.game.chessPieces.Piece;
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.chesspieces.Piece;
 
 import java.util.ArrayList;
 
 public class ChessBoard {
     public static final int WIDTH = 8;
     public static final int HEIGHT = 8;
-    private ArrayList<Piece> pieces = new ArrayList<>();
+    public Array<Piece> pieces = new Array<>();
 
     private int boardID;
 
@@ -39,9 +40,9 @@ public class ChessBoard {
     }
 
     public void removeAt(int x, int y) {
-        for (int i = 0; i < pieces.size(); i++) {
+        for (int i = 0; i < pieces.size; i++) {
             if (pieces.get(i).getPosX() == x && pieces.get(i).getPosY() == y) {
-                pieces.remove(i);
+                pieces.removeIndex(i);
                 i--;
             }
         }

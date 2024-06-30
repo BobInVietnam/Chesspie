@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,12 +10,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.chessBoard.ChessBoard;
-import com.mygdx.game.chessPieces.King;
-import com.mygdx.game.chessPieces.Piece;
+import com.mygdx.game.chessboard.ChessBoard;
+import com.mygdx.game.chesspieces.King;
+import com.mygdx.game.chesspieces.Piece;
 import com.mygdx.game.screens.GameplayScreen;
 
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.Objects;
 
 public class GameRenderer {
@@ -25,9 +30,13 @@ public class GameRenderer {
 
   private final Texture boardTexture;
   private final Texture pieces;
-  private TextureRegion boardRegion;
+  private final TextureRegion colorRectangle;
+  private final TextureRegion boardRegion;
   private final Array<TextureRegion> whitePieces;
   private final Array<TextureRegion> blackPieces;
+
+  public boolean pieceChosen;
+  public Piece chosenPiece;
 
   public GameRenderer(SpriteBatch batch, ChessBoard board, OrthographicCamera camera) {
     this.batch = batch;
@@ -36,6 +45,7 @@ public class GameRenderer {
     boardTexture = new Texture("Images/board_0.png");
     boardRegion = new TextureRegion(boardTexture, 0, 0, 2000, 2000);
     pieces = new Texture("Images/pieces.png");
+    colorRectangle = new TextureRegion(pieces, 0, 0, 1, 1);
 
     // Pieces sprites
     whitePieces = new Array<>();
@@ -59,10 +69,8 @@ public class GameRenderer {
     pieceToValue.put('Q', 4);
     pieceToValue.put('K', 5);
 
-    // TESTING: Add pieces to board
-    piecesList = new Array<>();
-    piecesList.add(new King(2, 3, "white"));
-    piecesList.add(new King(6, 6, "black"));
+    chosenPiece = null;
+    pieceChosen = false;
   }
 
   public void draw(float delta) {
@@ -71,7 +79,12 @@ public class GameRenderer {
     batch.setProjectionMatrix(camera.combined);
 
     batch.begin();
-    batch.draw(boardRegion, camera.viewportWidth/2 - 5, 1, 10, 10);
+    batch.draw(boardRegion, GameplayScreen.cornerX, GameplayScreen.cornerY, 10, 10);
+    if (pieceChosen) {
+      float posX = GameplayScreen.cornerX + chosenPiece.getPosX();
+      float posY = GameplayScreen.cornerY + chosenPiece.getPosY();
+      batch.draw(colorRectangle, posX, posY, 1, 1);
+    }
     drawPieces();
     batch.end();
   }
@@ -82,7 +95,7 @@ public class GameRenderer {
   }
 
   private void drawPieces() {
-    for (Piece piece: piecesList) {
+    for (Piece piece: board.pieces) {
       float posX = GameplayScreen.cornerX + piece.getPosX();
       float posY = GameplayScreen.cornerY + piece.getPosY();
       int type = pieceToValue.get(piece.getSymbol());

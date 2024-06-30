@@ -1,47 +1,46 @@
-package com.mygdx.game.chessPieces;
+package com.mygdx.game.chesspieces;
 
-import com.mygdx.game.chessBoard.ChessBoard;
+import com.mygdx.game.chessboard.ChessBoard;
 
-public class King extends Piece{
-    public King(int x, int y) {
+public class Pawn extends Piece{
+    public Pawn(int x, int y) {
         super(x, y);
     }
 
-    public King(int x, int y, String color) {
+    public Pawn(int x, int y, String color) {
         super(x, y, color);
     }
 
     public Character getSymbol() {
-        return 'K';
+        return 'P';
     }
 
     @Override
     public boolean canMove(ChessBoard board, int x, int y) {
-        int x_pos = this.getPosX();
-        int y_pos = this.getPosY();
-        if (x == x_pos-1 && y== y_pos && board.getAt(x, y) == null) return true;
-        else if (x == x_pos+1 && y== y_pos && board.getAt(x, y) == null) return true;
-        else if (x == x_pos && y== y_pos-1 && board.getAt(x, y) == null) return true;
-        else if (x == x_pos && y== y_pos+1 && board.getAt(x, y) == null) return true;
-        else if (x == x_pos-1 && y== y_pos-1 && board.getAt(x, y) == null) return true;
-        else if (x == x_pos+1 && y== y_pos+1 && board.getAt(x, y) == null) return true;
-        else if (x == x_pos+1 && y== y_pos-1 && board.getAt(x, y) == null) return true;
-        else return x == x_pos-1 && y == y_pos+1 && board.getAt(x, y) == null;
+        if(this.getColor().equals("white")) {
+            return y == this.getPosY() && x == this.getPosX() + 1 && board.getAt(x, y) == null;
+        }
+
+        if(this.getColor().equals("black")) {
+            return y == this.getPosY() && x == this.getPosX() - 1 && board.getAt(x, y) == null;
+        }
+
+        return false;
     }
 
     @Override
     public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
-        for(int i=-1;i<=1;i++) {
-            for(int j=-1;j<1;j++) {
-                if(i != 0 || j != 0) {
-                    int newRow = this.getPosX() + i;
-                    int newCol = this.getPosY() + j;
-                    if(newRow == x && newCol == y && board.getAt(x, y) != null
-                            && !(board.getAt(x, y).getColor().equals(this.getColor()))) return true;
-                }
+        if(this.getColor().equals("white")){
+            if((x == this.getPosX()+1) || (x==this.getPosX()-1)
+                    && y == this.getPosY() + 1 && board.getAt(x, y).getColor().equals("black")) {
+                return true;
             }
         }
 
+        if(this.getColor().equals("black")){
+            return (x == this.getPosX() + 1) || (x == this.getPosX() - 1)
+                    && y == this.getPosY() - 1 && board.getAt(x, y).getColor().equals("white");
+        }
         return false;
     }
 
@@ -60,6 +59,7 @@ public class King extends Piece{
         return false;
     }
 
+    @Override
     public void attack(ChessBoard board, Piece piece) {
         if(this.inBaseAtkRange(board, piece.getPosX(), piece.getPosY())) {
             piece.getAttacked(this);
@@ -88,3 +88,4 @@ public class King extends Piece{
         if(this.canKillwithSkill(board, x, y)) board.removeAt(x, y);
     }
 }
+
