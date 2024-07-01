@@ -11,8 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Chesspie;
 import com.mygdx.game.GameRenderer;
 import com.mygdx.game.chessboard.ChessBoard;
-import com.mygdx.game.chesspieces.King;
-import com.mygdx.game.chesspieces.Piece;
+import com.mygdx.game.chesspieces.*;
 
 import java.util.HashMap;
 
@@ -22,6 +21,7 @@ public class GameplayScreen implements Screen {
   private GameRenderer gameRenderer;
   private ChessBoard board;
   private HashMap<Piece, Rectangle> pieceHitboxes;
+  private Array<Array<Rectangle>> boardHitbox;
   public static float cornerX;
   public static float cornerY;
   private Vector2 mousePos;
@@ -48,14 +48,31 @@ public class GameplayScreen implements Screen {
 
     // TESTING: Add pieces to board
     Array<Piece> piecesList = new Array<>();
-    piecesList.add(new King(2, 3, "white"));
-    piecesList.add(new King(6, 6, "black"));
+    piecesList.add(new Rook(1, 1, "white"));
+    piecesList.add(new Rook(8, 1, "white"));
+    piecesList.add(new Knight(2, 1, "white"));
+    piecesList.add(new Knight(7, 1, "white"));
+    piecesList.add(new Bishop(3, 1, "white"));
+    piecesList.add(new Bishop(6, 1, "white"));
+    piecesList.add(new Queen(4, 1, "white"));
+    piecesList.add(new King(5, 1, "white"));
+    for (int i = 1; i <= 8; i++) {
+      piecesList.add(new Pawn(i, 2, "white"));
+    }
+    piecesList.add(new King(5, 8, "black"));
     board.pieces = piecesList;
 
     pieceHitboxes = new HashMap<>();
     for (Piece piece: board.pieces) {
       pieceHitboxes.put(piece, new Rectangle(cornerX + piece.getPosX(), cornerY + piece.getPosY(), 1, 1));
     }
+//    boardHitbox = new Array<>();
+//    for (int i = 0; i < ChessBoard.HEIGHT; i++) {
+//      boardHitbox.add(new Array<>());
+//      for (int j = 0; j < ChessBoard.WIDTH; j++) {
+//        boardHitbox.get(i).add(new Rectangle(cornerX + j + 1, cornerY + i + 1, 1, 1));
+//      }
+//    }
   }
   @Override
   public void show() {
@@ -82,11 +99,20 @@ public class GameplayScreen implements Screen {
           }
         }
       } else {
+        int posX = (int) (mousePos.x - cornerX);
+        int posY = (int) (mousePos.y - cornerY);
+        if (chosenPiece.canMove(board, posX, posY)) {
+          chosenPiece.setPosX(posX);
+          chosenPiece.setPosY(posY);
+          pieceHitboxes.put(chosenPiece, new Rectangle(
+              cornerX + chosenPiece.getPosX(), cornerY + chosenPiece.getPosY(), 1, 1)
+          );
+        }
         setSelectState(false, null);
       }
     }
     gameRenderer.draw(delta);
-    System.out.println(delta);
+//    System.out.println(delta);
   }
 
   @Override

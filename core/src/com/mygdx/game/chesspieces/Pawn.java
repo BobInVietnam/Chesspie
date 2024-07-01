@@ -3,12 +3,15 @@ package com.mygdx.game.chesspieces;
 import com.mygdx.game.chessboard.ChessBoard;
 
 public class Pawn extends Piece{
+    private boolean firstMove;
     public Pawn(int x, int y) {
         super(x, y);
+        firstMove = true;
     }
 
     public Pawn(int x, int y, String color) {
         super(x, y, color);
+        firstMove = true;
     }
 
     public Character getSymbol() {
@@ -18,11 +21,21 @@ public class Pawn extends Piece{
     @Override
     public boolean canMove(ChessBoard board, int x, int y) {
         if(this.getColor().equals("white")) {
-            return y == this.getPosY() && x == this.getPosX() + 1 && board.getAt(x, y) == null;
+            if (firstMove) {
+                return (y == this.getPosY() + 1 || y == this.getPosY() + 2)
+                    && x == this.getPosX() && board.getAt(x, y) == null;
+            } else {
+                return y == this.getPosY() + 1 && x == this.getPosX() && board.getAt(x, y) == null;
+            }
         }
 
         if(this.getColor().equals("black")) {
-            return y == this.getPosY() && x == this.getPosX() - 1 && board.getAt(x, y) == null;
+            if (firstMove) {
+                return (y == this.getPosY() - 1 || y == this.getPosY() - 2)
+                    && x == this.getPosX() && board.getAt(x, y) == null;
+            } else {
+                return y == this.getPosY() - 1 && x == this.getPosX() && board.getAt(x, y) == null;
+            }
         }
 
         return false;

@@ -84,6 +84,17 @@ public class GameRenderer {
       float posX = GameplayScreen.cornerX + chosenPiece.getPosX();
       float posY = GameplayScreen.cornerY + chosenPiece.getPosY();
       batch.draw(colorRectangle, posX, posY, 1, 1);
+      batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
+      for (int i = 1; i <= 8; i++) {
+        for (int j = 1; j <= 8; j++) {
+          if (chosenPiece.canMove(board, i, j)) {
+            posX = GameplayScreen.cornerX + i;
+            posY = GameplayScreen.cornerY + j;
+            batch.draw(colorRectangle, posX, posY, 1, 1);
+          }
+        }
+      }
+      batch.setColor(Color.WHITE);
     }
     drawPieces();
     batch.end();

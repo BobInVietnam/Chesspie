@@ -17,6 +17,9 @@ public class King extends Piece{
 
     @Override
     public boolean canMove(ChessBoard board, int x, int y) {
+        if (!board.validate(x, y)) {
+            return false;
+        }
         int x_pos = this.getPosX();
         int y_pos = this.getPosY();
         if (x == x_pos-1 && y== y_pos && board.getAt(x, y) == null) return true;
