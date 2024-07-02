@@ -1,9 +1,7 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -14,6 +12,7 @@ import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.*;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class GameplayScreen implements Screen {
   final Chesspie game;
@@ -21,11 +20,11 @@ public class GameplayScreen implements Screen {
   private GameRenderer gameRenderer;
   private ChessBoard board;
   private HashMap<Piece, Rectangle> pieceHitboxes;
-  private Array<Array<Rectangle>> boardHitbox;
   public static float cornerX;
   public static float cornerY;
   private Vector2 mousePos;
   private Vector3 mousePos3;
+  private boolean whiteTurn;
 
   public boolean pieceChosen;
   public Piece chosenPiece;
@@ -59,20 +58,24 @@ public class GameplayScreen implements Screen {
     for (int i = 1; i <= 8; i++) {
       piecesList.add(new Pawn(i, 2, "white"));
     }
+    piecesList.add(new Rook(1, 8, "black"));
+    piecesList.add(new Rook(8, 8, "black"));
+    piecesList.add(new Knight(2, 8, "black"));
+    piecesList.add(new Knight(7, 8, "black"));
+    piecesList.add(new Bishop(3, 8, "black"));
+    piecesList.add(new Bishop(6, 8, "black"));
+    piecesList.add(new Queen(4, 8, "black"));
     piecesList.add(new King(5, 8, "black"));
+    for (int i = 1; i <= 8; i++) {
+      piecesList.add(new Pawn(i, 7, "black"));
+    }
     board.pieces = piecesList;
 
     pieceHitboxes = new HashMap<>();
     for (Piece piece: board.pieces) {
       pieceHitboxes.put(piece, new Rectangle(cornerX + piece.getPosX(), cornerY + piece.getPosY(), 1, 1));
     }
-//    boardHitbox = new Array<>();
-//    for (int i = 0; i < ChessBoard.HEIGHT; i++) {
-//      boardHitbox.add(new Array<>());
-//      for (int j = 0; j < ChessBoard.WIDTH; j++) {
-//        boardHitbox.get(i).add(new Rectangle(cornerX + j + 1, cornerY + i + 1, 1, 1));
-//      }
-//    }
+    whiteTurn = true;
   }
   @Override
   public void show() {
@@ -93,7 +96,7 @@ public class GameplayScreen implements Screen {
       //Select piece. Else deselect piece
       if (!pieceChosen) {
         for (Piece piece: pieceHitboxes.keySet()) {
-          if (pieceHitboxes.get(piece).contains(mousePos)) {
+          if (pieceHitboxes.get(piece).contains(mousePos) && ((Objects.equals(piece.getColor(), "white")) == whiteTurn)) {
             setSelectState(true, piece);
             break;
           }
@@ -102,6 +105,7 @@ public class GameplayScreen implements Screen {
         int posX = (int) (mousePos.x - cornerX);
         int posY = (int) (mousePos.y - cornerY);
         if (chosenPiece.canMove(board, posX, posY)) {
+          whiteTurn = !whiteTurn;
           chosenPiece.setPosX(posX);
           chosenPiece.setPosY(posY);
           pieceHitboxes.put(chosenPiece, new Rectangle(
