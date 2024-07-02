@@ -20,6 +20,10 @@ public class Pawn extends Piece{
 
     @Override
     public boolean canMove(ChessBoard board, int x, int y) {
+        if (!board.validate(x, y)) {
+            return false;
+        }
+
         if(this.getColor().equals("white")) {
             if (firstMove) {
                 return (y == this.getPosY() + 1 || y == this.getPosY() + 2)

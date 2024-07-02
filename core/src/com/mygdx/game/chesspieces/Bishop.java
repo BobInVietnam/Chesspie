@@ -80,12 +80,9 @@ public class Bishop extends Piece{
 
     @Override
     public void attack(ChessBoard board, Piece piece) {
-
-    }
-
-
-    public void attack(Piece piece) {
-
+        if(this.inBaseAtkRange(board, piece.getPosX(), piece.getPosY())) {
+            piece.getAttacked(this);
+        }
     }
 
     @Override
@@ -103,7 +100,7 @@ public class Bishop extends Piece{
 
     @Override
     public void killOtherPiecebyBaseAtk(ChessBoard board, int x, int y) {
-
+        if(this.canKillwithBaseAtk(board, x, y)) board.removeAt(x, y);
     }
 
 

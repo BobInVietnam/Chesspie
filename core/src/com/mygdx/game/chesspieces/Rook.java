@@ -82,7 +82,9 @@ public class Rook extends Piece {
 
     @Override
     public void attack(ChessBoard board, Piece piece) {
-
+        if(this.inBaseAtkRange(board, piece.getPosX(), piece.getPosY())) {
+            piece.getAttacked(this);
+        }
     }
 
     public void attack(Piece piece) {
@@ -104,7 +106,7 @@ public class Rook extends Piece {
 
     @Override
     public void killOtherPiecebyBaseAtk(ChessBoard board, int x, int y) {
-
+        if(this.canKillwithBaseAtk(board, x, y)) board.removeAt(x, y);
     }
 
     @Override

@@ -19,6 +19,7 @@ public class Knight extends Piece {
         if (!board.validate(x, y)) {
             return false;
         }
+
         int x_pos = this.getPosX();
         int y_pos = this.getPosY();
         if (x == x_pos-1 && y== y_pos-2 && board.getAt(x, y) == null) return true;
