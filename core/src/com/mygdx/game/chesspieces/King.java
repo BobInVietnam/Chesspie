@@ -3,6 +3,8 @@ package com.mygdx.game.chesspieces;
 import com.mygdx.game.chessboard.ChessBoard;
 
 public class King extends Piece{
+    public King() {}
+
     public King(int x, int y) {
         super(x, y);
     }

@@ -74,6 +74,8 @@ public abstract class Piece {
         this.status = status;
     }
 
+    public Piece() {};
+
     public Piece(int x, int y) {
         this.posX = x;
         this.posY = y;

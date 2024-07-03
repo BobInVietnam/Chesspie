@@ -9,6 +9,8 @@ public abstract class Skill {
 
     int skillDmg;
 
+    SkillEffect skillEffect;
+
     public int getSkillID() {return skillID;}
 
     public int getSkillDmg() {
@@ -23,6 +25,6 @@ public abstract class Skill {
         this.skillDmg = skillDmg;
     }
 
-    public abstract boolean inRange(ArrayList<Piece> pieces);
-    //    public abstract void activateSkillEffect();
+    public abstract boolean inSkillRange(ArrayList<Piece> pieces, Piece king);
+    public abstract void setSkillEffect();
 }
