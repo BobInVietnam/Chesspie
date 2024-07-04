@@ -3,6 +3,8 @@ package com.mygdx.game.skills;
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.*;
 
+import java.util.ArrayList;
+
 public class QueenSkill extends Skill{
     @Override
     public boolean inSkillRange(ChessBoard board, Piece king) {
@@ -12,5 +14,10 @@ public class QueenSkill extends Skill{
     @Override
     public void setSkillEffect() {
         super.skillEffect = SkillEffect.AttackSkill;
+    }
+
+    @Override
+    public void activateSkill(ArrayList<Piece> pieces) {
+
     }
 }
