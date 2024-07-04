@@ -100,6 +100,10 @@ public abstract class Piece {
 
     public abstract Character getSymbol();
     public abstract boolean canMove(ChessBoard board, int x, int y);
+    public void move(int x, int y) {
+        this.setPosX(x);
+        this.setPosY(y);
+    }
     public abstract boolean inBaseAtkRange(ChessBoard board, int x, int y);
     public abstract boolean inSkillRange(ChessBoard board);
     public abstract boolean canKillwithBaseAtk(ChessBoard board, int x, int y);

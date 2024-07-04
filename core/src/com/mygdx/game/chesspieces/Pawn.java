@@ -48,7 +48,16 @@ public class Pawn extends Piece{
     }
 
     @Override
+    public void move(int x, int y) {
+        super.move(x, y);
+        if (firstMove) {
+            firstMove = false;
+        }
+    }
+
+    @Override
     public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
+        if (board.getAt(x, y) == null) return false;
         if(this.getColor().equals("white")){
             if((x == this.getPosX()+1) || (x==this.getPosX()-1)
                     && y == this.getPosY() + 1 && board.getAt(x, y).getColor().equals("black")) {

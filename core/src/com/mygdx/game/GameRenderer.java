@@ -23,10 +23,8 @@ import java.util.Objects;
 public class GameRenderer {
   private SpriteBatch batch;
   private ChessBoard board;
-  public Array<Piece> piecesList;
   private HashMap<Character, Integer> pieceToValue;
   private OrthographicCamera camera;
-  private Viewport vp;
 
   private final Texture boardTexture;
   private final Texture pieces;
@@ -57,9 +55,6 @@ public class GameRenderer {
     whitePieces.add(new TextureRegion(pieces, 0, 1200, 400, 600));
     blackPieces.add(new TextureRegion(pieces,400, 1200, 400, 600));
 
-    // Viewport stuffs
-
-
     // Piece-to-value map
     pieceToValue = new HashMap<>();
     pieceToValue.put('P', 0);
@@ -73,28 +68,44 @@ public class GameRenderer {
     pieceChosen = false;
   }
 
+  private void drawMoveSquare(float posX, float posY) {
+    batch.draw(colorRectangle, posX, posY, 1, 1);
+  }
+  private void drawAttackSquare(float posX, float posY) {
+    batch.setColor(1.0f, 0.0f, 0.0f, 0.8f);
+    batch.draw(colorRectangle, posX, posY, 1, 1);
+    batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
+  }
+  private void drawMoveableSquare(float posX, float posY) {
+    batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
+    for (int i = 1; i <= 8; i++) {
+      for (int j = 1; j <= 8; j++) {
+        posX = GameplayScreen.cornerX + i;
+        posY = GameplayScreen.cornerY + j;
+        if (chosenPiece.canMove(board, i, j)) {
+          drawMoveSquare(posX, posY);
+        } else if (chosenPiece.inBaseAtkRange(board, i, j)) {
+          drawAttackSquare(posX, posY);
+        }
+      }
+    }
+    batch.setColor(Color.WHITE);
+  }
+
   public void draw(float delta) {
     ScreenUtils.clear(0.4f, 0.4f, 0.6f, 1);
     camera.update();
     batch.setProjectionMatrix(camera.combined);
 
     batch.begin();
+    // Draw board
     batch.draw(boardRegion, GameplayScreen.cornerX, GameplayScreen.cornerY, 10, 10);
+    // Draw valid squares to move to
     if (pieceChosen) {
       float posX = GameplayScreen.cornerX + chosenPiece.getPosX();
       float posY = GameplayScreen.cornerY + chosenPiece.getPosY();
       batch.draw(colorRectangle, posX, posY, 1, 1);
-      batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
-      for (int i = 1; i <= 8; i++) {
-        for (int j = 1; j <= 8; j++) {
-          if (chosenPiece.canMove(board, i, j)) {
-            posX = GameplayScreen.cornerX + i;
-            posY = GameplayScreen.cornerY + j;
-            batch.draw(colorRectangle, posX, posY, 1, 1);
-          }
-        }
-      }
-      batch.setColor(Color.WHITE);
+      drawMoveableSquare(posX, posY);
     }
     drawPieces();
     batch.end();
@@ -110,7 +121,7 @@ public class GameRenderer {
       float posX = GameplayScreen.cornerX + piece.getPosX();
       float posY = GameplayScreen.cornerY + piece.getPosY();
       int type = pieceToValue.get(piece.getSymbol());
-      if (Objects.equals(piece.getColor(), "black"))
+      if (piece.getColor().equals("black"))
         batch.draw(blackPieces.get(type), posX, posY, 1, 1.5f);
       else batch.draw(whitePieces.get(type), posX, posY, 1, 1.5f);
     }

@@ -25,9 +25,9 @@ public class GameplayScreen implements Screen {
   private Vector2 mousePos;
   private Vector3 mousePos3;
   private boolean whiteTurn;
-
   public boolean pieceChosen;
   public Piece chosenPiece;
+
   public GameplayScreen(Chesspie game) {
     this.game = game;
 
@@ -82,21 +82,44 @@ public class GameplayScreen implements Screen {
 
   }
 
-  @Override
-  public void render(float delta) {
-    //Calculate mouse position
+  private void calculateMousePos() {
     mousePos3.x = Gdx.input.getX();
     mousePos3.y = Gdx.input.getY();
     mousePos3 = camera.unproject(mousePos3);
     mousePos.x = mousePos3.x;
     mousePos.y = mousePos3.y;
+  }
 
-    //Handle mouse click
+  private void setSelectState(boolean pieceChosen, Piece piece) {
+    this.pieceChosen = pieceChosen;
+    this.chosenPiece = piece;
+    gameRenderer.pieceChosen = pieceChosen;
+    gameRenderer.chosenPiece = piece;
+  }
+
+  private void movePiece(Piece piece, ChessBoard board, int posX, int posY) {
+    whiteTurn = !whiteTurn;
+    piece.move(posX, posY);
+    pieceHitboxes.put(piece, new Rectangle(
+        cornerX + piece.getPosX(), cornerY + piece.getPosY(), 1, 1)
+    );
+  }
+  private void attackPiece(Piece piece, ChessBoard board, int posX, int posY) {
+    whiteTurn = !whiteTurn;
+    // TESTING: integrating normal chess rule
+    pieceHitboxes.remove(board.getAt(posX, posY));
+    board.removeAt(posX, posY);
+    piece.move(posX, posY);
+    pieceHitboxes.put(piece, new Rectangle(
+    cornerX + piece.getPosX(), cornerY + piece.getPosY(), 1, 1)
+    );
+  }
+  private void handleMouseInput() {
     if (Gdx.input.justTouched()) {
       //Select piece. Else deselect piece
       if (!pieceChosen) {
         for (Piece piece: pieceHitboxes.keySet()) {
-          if (pieceHitboxes.get(piece).contains(mousePos) && ((Objects.equals(piece.getColor(), "white")) == whiteTurn)) {
+          if (pieceHitboxes.get(piece).contains(mousePos) && ((piece.getColor().equals("white")) == whiteTurn)) {
             setSelectState(true, piece);
             break;
           }
@@ -105,23 +128,24 @@ public class GameplayScreen implements Screen {
         int posX = (int) (mousePos.x - cornerX);
         int posY = (int) (mousePos.y - cornerY);
         if (chosenPiece.canMove(board, posX, posY)) {
-          whiteTurn = !whiteTurn;
-          chosenPiece.setPosX(posX);
-          chosenPiece.setPosY(posY);
-          pieceHitboxes.put(chosenPiece, new Rectangle(
-              cornerX + chosenPiece.getPosX(), cornerY + chosenPiece.getPosY(), 1, 1)
-          );
+          movePiece(chosenPiece, board, posX, posY);
+        } else if (chosenPiece.inBaseAtkRange(board, posX, posY)) {
+          attackPiece(chosenPiece, board, posX, posY);
         }
         setSelectState(false, null);
       }
     }
+  }
+
+  @Override
+  public void render(float delta) {
+    calculateMousePos();
+    handleMouseInput();
     gameRenderer.draw(delta);
-//    System.out.println(delta);
   }
 
   @Override
   public void resize(int width, int height) {
-
   }
 
   @Override
@@ -144,10 +168,4 @@ public class GameplayScreen implements Screen {
     gameRenderer.dispose();
   }
 
-  private void setSelectState(boolean pieceChosen, Piece piece) {
-    this.pieceChosen = pieceChosen;
-    this.chosenPiece = piece;
-    gameRenderer.pieceChosen = pieceChosen;
-    gameRenderer.chosenPiece = piece;
-  }
 }
