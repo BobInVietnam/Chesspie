@@ -4,6 +4,8 @@ import com.mygdx.game.chessboard.ChessBoard;
 
 import com.mygdx.game.skills.*;
 
+import java.util.ArrayList;
+
 public abstract class Piece {
     private int posX;
     private int posY;
@@ -99,11 +101,11 @@ public abstract class Piece {
     public abstract Character getSymbol();
     public abstract boolean canMove(ChessBoard board, int x, int y);
     public abstract boolean inBaseAtkRange(ChessBoard board, int x, int y);
-    public abstract boolean inSkillRange(ChessBoard board, int x, int y);
+    public abstract boolean inSkillRange(ChessBoard board);
     public abstract boolean canKillwithBaseAtk(ChessBoard board, int x, int y);
     public abstract boolean canKillwithSkill(ChessBoard board, int x, int y);
     public abstract void attack(ChessBoard board, Piece piece); //attack piece
-    public abstract void activateSKill();
+    public abstract void activateSKill(ArrayList<Piece> pieces, ChessBoard board);
     public abstract void getAttacked(Piece piece); //get attacked from piece
     public abstract void getSkillAttacked(Piece piece);
     public abstract void killOtherPiecebyBaseAtk(ChessBoard board, int x, int y);

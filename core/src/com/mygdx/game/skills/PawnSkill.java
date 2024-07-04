@@ -1,12 +1,11 @@
 package com.mygdx.game.skills;
 
+import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.*;
-
-import java.util.ArrayList;
 
 public class PawnSkill extends Skill{
     @Override
-    public boolean inSkillRange(ArrayList<Piece> pieces, Piece king) {
+    public boolean inSkillRange(ChessBoard board, Piece king) {
         return false;
     }
 

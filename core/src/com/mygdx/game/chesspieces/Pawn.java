@@ -2,6 +2,8 @@ package com.mygdx.game.chesspieces;
 
 import com.mygdx.game.chessboard.ChessBoard;
 
+import java.util.ArrayList;
+
 public class Pawn extends Piece{
     private boolean firstMove;
     public Pawn(int x, int y) {
@@ -62,7 +64,7 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public boolean inSkillRange(ChessBoard board, int x, int y) {
+    public boolean inSkillRange(ChessBoard board) {
         return false;
     }
 
@@ -84,12 +86,12 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public void activateSKill() {
+    public void activateSKill(ArrayList<Piece> pieces, ChessBoard board) {
 
     }
 
     public void getAttacked(Piece piece) {
-        this.setHp(this.getHp() - piece.getBaseAttack());
+        this.setHp(this.getHp() + this.getDefendShield() - piece.getBaseAttack());
     }
 
     public void getSkillAttacked(Piece piece) {

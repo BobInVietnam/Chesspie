@@ -1,5 +1,6 @@
 package com.mygdx.game.skills;
 
+import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.*;
 
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ public abstract class Skill {
     int skillDmg;
 
     SkillEffect skillEffect;
+
+    public Skill() {};
 
     public int getSkillID() {return skillID;}
 
@@ -25,6 +28,7 @@ public abstract class Skill {
         this.skillDmg = skillDmg;
     }
 
-    public abstract boolean inSkillRange(ArrayList<Piece> pieces, Piece king);
+    public abstract boolean inSkillRange(ChessBoard board, Piece king);
     public abstract void setSkillEffect();
+    public abstract void activateSkill(ArrayList<Piece> pieces);
 }
