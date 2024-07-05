@@ -18,42 +18,38 @@ public class Bishop extends Piece{
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {
-        int diffValue = Integer.min(Math.abs(this.getPosX() - x), Math.abs(this.getPosY() - y));
-
-        if (x > this.getPosX() && y > this.getPosY()) {
-            for (int i = 1; i < diffValue; i++) {
-                if (board.getAt(this.getPosX() + i, this.getPosY() + i) != null) {
+        int currentX = this.getPosX();
+        int currentY = this.getPosY();
+        if (Math.abs(x - currentX) != Math.abs(y - currentY)) {
+            return false;
+        }
+        if (x > currentX) {
+            for (int i = 1; i < y - currentY; i++) {
+                if (board.getAt(currentX + i, currentY + i) != null) {
+                    return false;
+                }
+            }
+            for (int i = 1; i < currentY - y; i++) {
+                if (board.getAt(currentX + i, currentY - i) != null) {
                     return false;
                 }
             }
         }
-
-        if (x < this.getPosX() && y < this.getPosY()) {
-            for (int i = 1; i < diffValue; i++) {
-                if (board.getAt(this.getPosX() - i, this.getPosY() - i) != null) {
+        if (x < currentX) {
+            for (int i = 1; i < y - currentY; i++) {
+                if (board.getAt(currentX - i, currentY + i) != null) {
                     return false;
                 }
             }
-        }
-
-        if (x > this.getPosX() && y < this.getPosY()) {
-            for (int i = 1; i < diffValue; i++) {
-                if (board.getAt(this.getPosX() + i, this.getPosY() - i) != null) {
-                    return false;
-                }
-            }
-        }
-
-        if (x < this.getPosX() && y > this.getPosY()) {
-            for (int i = 1; i < diffValue; i++) {
-                if (board.getAt(this.getPosX() - i, this.getPosY() + i) != null) {
+            for (int i = 1; i < currentY - y; i++) {
+                if (board.getAt(currentX - i, currentY - i) != null) {
                     return false;
                 }
             }
         }
 
         if (board.getAt(x, y) != null) {
-            return !(this.getColor().equals(board.getAt(x, y).getColor()));
+            return !board.getAt(x, y).getColor().equals(this.getColor());
         }
 
         return board.validate(x, y);

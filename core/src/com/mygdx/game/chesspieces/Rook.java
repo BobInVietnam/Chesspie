@@ -18,9 +18,7 @@ public class Rook extends Piece {
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {
-        if (x != this.getPosX() && y != this.getPosY()) {
-            return false;
-        }
+        if (x != this.getPosX() && y != this.getPosY()) return false;
 
         if (x > this.getPosX()) {
             for (int i = this.getPosX() + 1; i < x; i++) {
@@ -63,7 +61,41 @@ public class Rook extends Piece {
 
     @Override
     public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
-        return false;
+        if (x != this.getPosX() && y != this.getPosY()) return false;
+
+        if (x == this.getPosX() && y == this.getPosY()) return false;
+
+        if (x > this.getPosX()) {
+            for (int i = this.getPosX() + 1; i < x; i++) {
+                if (board.getAt(i, y) != null && (board.getAt(i, y).getColor().equals(this.getColor()))) {
+                    return false;
+                }
+            }
+        }
+        else if (x < this.getPosX()) {
+            for (int i = this.getPosX() - 1; i > x; i--) {
+                if (board.getAt(i, y) != null && board.getAt(i, y).getColor().equals(this.getColor())) {
+                    return false;
+                }
+            }
+        }
+
+        if (y > this.getPosY()) {
+            for (int i = this.getPosY() + 1; i < y; i++) {
+                if (board.getAt(x, i) != null && !(board.getAt(x, i).getColor().equals(this.getColor()))) {
+                    return true;
+                }
+            }
+        }
+        else if (y < this.getPosY()) {
+            for (int i = this.getPosY() - 1; i > y; i--) {
+                if (board.getAt(x, i) != null && board.getAt(x, i).getColor().equals(this.getColor())) {
+                    return false;
+                }
+            }
+        }
+
+        return board.validate(x,y);
     }
 
     @Override

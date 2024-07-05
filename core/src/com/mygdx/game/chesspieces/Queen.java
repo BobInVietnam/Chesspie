@@ -19,73 +19,74 @@ public class Queen extends Piece{
 
     @Override
     public boolean canMove(ChessBoard board, int x, int y) {
-        int diffValue = Integer.min(Math.abs(this.getPosX() - x), Math.abs(this.getPosY() - y));
-
-        if (x > this.getPosX() && y > this.getPosY()) {
-            for (int i = 1; i < diffValue; i++) {
-                if (board.getAt(this.getPosX() + i, this.getPosY() + i) != null) {
-                    return false;
-                }
-            }
-        }
-
-        if (x < this.getPosX() && y < this.getPosY()) {
-            for (int i = 1; i < diffValue; i++) {
-                if (board.getAt(this.getPosX() - i, this.getPosY() - i) != null) {
-                    return false;
-                }
-            }
-        }
-
-        if (x > this.getPosX() && y < this.getPosY()) {
-            for (int i = 1; i < diffValue; i++) {
-                if (board.getAt(this.getPosX() + i, this.getPosY() - i) != null) {
-                    return false;
-                }
-            }
-        }
-
-        if (x < this.getPosX() && y > this.getPosY()) {
-            for (int i = 1; i < diffValue; i++) {
-                if (board.getAt(this.getPosX() - i, this.getPosY() + i) != null) {
-                    return false;
-                }
-            }
-        }
-
-
-        if (x != this.getPosX() && y != this.getPosY()) {
+        int currentX = this.getPosX();
+        int currentY = this.getPosY();
+        if (Math.abs(x - currentX) != Math.abs(y - currentY) && x != currentX && y != currentY) {
             return false;
         }
+        if (x > currentX) {
+            if(y > currentY) {
+                for (int i = 1; i < y - currentY; i++) {
+                    if (board.getAt(currentX + i, currentY + i) != null) {
+                        return false;
+                    }
+                }
+            }
+            else if(y < currentY) {
+                for (int i = 1; i < currentY - y; i++) {
+                    if (board.getAt(currentX + i, currentY - i) != null) {
+                        return false;
+                    }
+                }
+            }
+            else {
+                for (int i = this.getPosX() + 1; i < x; i++) {
+                    if (board.getAt(i, y) != null) {
+                        return false;
+                    }
+                }
+            }
 
-        if (x > this.getPosX()) {
-            for (int i = this.getPosX() + 1; i < x; i++) {
-                if (board.getAt(i, y) != null) {
-                    return false;
+        }
+
+        else if (x < currentX) {
+            if (y > currentY) {
+                for (int i = 1; i < y - currentY; i++) {
+                    if (board.getAt(currentX - i, currentY + i) != null) {
+                        return false;
+                    }
+                }
+            }
+            else if(y < currentY) {
+                for (int i = 1; i < currentY - y; i++) {
+                    if (board.getAt(currentX - i, currentY - i) != null) {
+                        return false;
+                    }
+                }
+            }
+            else {
+                for (int i = this.getPosX() - 1; i > x; i--) {
+                    if (board.getAt(i, y) != null) {
+                        return false;
+                    }
                 }
             }
         }
 
-        if (y > this.getPosY()) {
-            for (int i = this.getPosY() + 1; i < y; i++) {
-                if (board.getAt(x, i) != null) {
-                    return false;
+        else {
+            if (y > this.getPosY()) {
+                for (int i = this.getPosY() + 1; i < y; i++) {
+                    if (board.getAt(x, i) != null) {
+                        return false;
+                    }
                 }
             }
-        }
 
-        if (x < this.getPosX()) {
-            for (int i = this.getPosX() - 1; i > x; i--) {
-                if (board.getAt(i, y) != null) {
-                    return false;
-                }
-            }
-        }
-
-        if (y < this.getPosY()) {
-            for (int i = this.getPosY() - 1; i > y; i--) {
-                if (board.getAt(x, i) != null) {
-                    return false;
+            if (y < this.getPosY()) {
+                for (int i = this.getPosY() - 1; i > y; i--) {
+                    if (board.getAt(x, i) != null) {
+                        return false;
+                    }
                 }
             }
         }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class QueenSkill extends Skill{
     @Override
-    public boolean inSkillRange(ChessBoard board, Piece king) {
+    public boolean inSkillRange(ChessBoard board, Piece piece) {
         return false;
     }
 

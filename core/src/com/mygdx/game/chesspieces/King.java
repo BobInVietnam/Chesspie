@@ -38,6 +38,9 @@ public class King extends Piece{
 
     @Override
     public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
+        if (!board.validate(x, y)) {
+            return false;
+        }
         for(int i=-1;i<=1;i++) {
             for(int j=-1;j<1;j++) {
                 if(i != 0 || j != 0) {

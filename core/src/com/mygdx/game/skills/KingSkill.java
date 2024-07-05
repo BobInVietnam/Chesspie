@@ -8,15 +8,15 @@ import java.util.ArrayList;
 public class KingSkill extends Skill{
     public KingSkill() {};
     @Override
-    public boolean inSkillRange(ChessBoard board, Piece king) {
+    public boolean inSkillRange(ChessBoard board, Piece piece) {
         int cnt = 0;
         for(int j=-1;j<=1;j++) {
             for(int k=-1;k<=1;k++) {
                 if(k != 0 || j != 0) {
-                    int newX = king.getPosX() + j;
-                    int newY = king.getPosY() + k;
+                    int newX = piece.getPosX() + j;
+                    int newY = piece.getPosY() + k;
                     if(board.getAt(newX, newY) != null
-                            && board.getAt(newX, newY).getColor().equals(king.getColor())) {
+                            && board.getAt(newX, newY).getColor().equals(piece.getColor())) {
                         cnt++;
                     }
                 }

@@ -28,7 +28,7 @@ public abstract class Skill {
         this.skillDmg = skillDmg;
     }
 
-    public abstract boolean inSkillRange(ChessBoard board, Piece king);
+    public abstract boolean inSkillRange(ChessBoard board, Piece piece);
     public abstract void setSkillEffect();
     public abstract void activateSkill(ArrayList<Piece> pieces);
 }

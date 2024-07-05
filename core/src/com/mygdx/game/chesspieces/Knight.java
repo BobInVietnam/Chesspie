@@ -42,18 +42,18 @@ public class Knight extends Piece {
         Piece enemy = board.getAt(x, y);
         if(enemy == null)  return false;
 
-        if(!enemy.getColor().equals(this.getColor()) && enemy.getHp() < this.getBaseAttack()) {
-            if (x == x_pos-1 && y == y_pos-2) return true;
-            else if (x == x_pos+1 && y== y_pos-2) return true;
-            else if (x == x_pos-1 && y== y_pos+2) return true;
-            else if (x == x_pos+1 && y== y_pos+2) return true;
-            else if (x == x_pos-2 && y== y_pos-1) return true;
-            else if (x == x_pos-2 && y== y_pos+1) return true;
-            else if (x == x_pos+2 && y== y_pos-1) return true;
-            else return x == x_pos + 2 && y == y_pos + 1;
+        if (!board.validate(x, y)) {
+            return false;
         }
 
-        return false;
+        if (x == x_pos-1 && y == y_pos-2 && !(enemy.getColor().equals(this.getColor()))) return true;
+        else if (x == x_pos+1 && y== y_pos-2 && !(enemy.getColor().equals(this.getColor()))) return true;
+        else if (x == x_pos-1 && y== y_pos+2 && !(enemy.getColor().equals(this.getColor()))) return true;
+        else if (x == x_pos+1 && y== y_pos+2 && !(enemy.getColor().equals(this.getColor()))) return true;
+        else if (x == x_pos-2 && y== y_pos-1 && !(enemy.getColor().equals(this.getColor()))) return true;
+        else if (x == x_pos-2 && y== y_pos+1 && !(enemy.getColor().equals(this.getColor()))) return true;
+        else if (x == x_pos+2 && y== y_pos-1 && !(enemy.getColor().equals(this.getColor()))) return true;
+        else return x == x_pos + 2 && y == y_pos + 1 && !(enemy.getColor().equals(this.getColor()));
     }
 
     @Override
