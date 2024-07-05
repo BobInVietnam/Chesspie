@@ -62,12 +62,12 @@ public class King extends Piece{
 
     @Override
     public boolean canKillwithBaseAtk(ChessBoard board, int x, int y) {
-        return this.inBaseAtkRange(board, x, y) && board.getAt(x, y).getHp() < this.getBaseAttack();
+        return this.inBaseAtkRange(board, x, y) && board.getAt(x, y).getHp() < this.getBaseAttack() + this.getDefendShield();
     }
 
     @Override
     public boolean canKillwithSkill(ChessBoard board, int x, int y) {
-        return false;
+        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getDefendShield();
     }
 
     public void attack(ChessBoard board, Piece piece) {
@@ -78,9 +78,9 @@ public class King extends Piece{
 
     @Override
     public void activateSKill(ArrayList<Piece> pieces, ChessBoard board) {
-        if(this.inSkillRange(board)) {
-            this.getChessSkill().activateSkill(pieces);
-        }
+//        if(this.inSkillRange(board)) {
+//            this.getChessSkill().activateSkill(pieces,  );
+//        }
     }
 
     public void getAttacked(Piece piece) {

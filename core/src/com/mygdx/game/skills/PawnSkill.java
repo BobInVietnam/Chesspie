@@ -17,7 +17,7 @@ public class PawnSkill extends Skill{
     }
 
     @Override
-    public void activateSkill(ArrayList<Piece> pieces) {
+    public void activateSkill(ArrayList<Piece> anemies, Piece piece) {
 
     }
 }

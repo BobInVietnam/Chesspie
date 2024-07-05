@@ -17,7 +17,7 @@ public class QueenSkill extends Skill{
     }
 
     @Override
-    public void activateSkill(ArrayList<Piece> pieces) {
+    public void activateSkill(ArrayList<Piece> anemies, Piece piece) {
 
     }
 }

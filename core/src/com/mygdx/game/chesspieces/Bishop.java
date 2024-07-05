@@ -67,13 +67,12 @@ public class Bishop extends Piece{
 
     @Override
     public boolean canKillwithBaseAtk(ChessBoard board, int x, int y) {
-        return false;
+        return this.inBaseAtkRange(board, x, y) && board.getAt(x, y).getHp() < this.getBaseAttack() + this.getDefendShield();
     }
-
 
     @Override
     public boolean canKillwithSkill(ChessBoard board, int x, int y) {
-        return false;
+        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getDefendShield();
     }
 
     @Override

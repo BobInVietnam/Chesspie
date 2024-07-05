@@ -61,21 +61,25 @@ public class Rook extends Piece {
 
     @Override
     public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
+        if (!board.validate(x, y)) {
+            return false;
+        }
+
         if (x != this.getPosX() && y != this.getPosY()) return false;
 
         if (x == this.getPosX() && y == this.getPosY()) return false;
 
         if (x > this.getPosX()) {
             for (int i = this.getPosX() + 1; i < x; i++) {
-                if (board.getAt(i, y) != null && (board.getAt(i, y).getColor().equals(this.getColor()))) {
-                    return false;
+                if (board.getAt(i, y) != null && !(board.getAt(i, y).getColor().equals(this.getColor()))) {
+                    return true;
                 }
             }
         }
         else if (x < this.getPosX()) {
             for (int i = this.getPosX() - 1; i > x; i--) {
-                if (board.getAt(i, y) != null && board.getAt(i, y).getColor().equals(this.getColor())) {
-                    return false;
+                if (board.getAt(i, y) != null && !board.getAt(i, y).getColor().equals(this.getColor())) {
+                    return true;
                 }
             }
         }
@@ -89,13 +93,13 @@ public class Rook extends Piece {
         }
         else if (y < this.getPosY()) {
             for (int i = this.getPosY() - 1; i > y; i--) {
-                if (board.getAt(x, i) != null && board.getAt(x, i).getColor().equals(this.getColor())) {
-                    return false;
+                if (board.getAt(x, i) != null && !board.getAt(x, i).getColor().equals(this.getColor())) {
+                    return true;
                 }
             }
         }
 
-        return board.validate(x,y);
+        return false;
     }
 
     @Override
@@ -105,13 +109,12 @@ public class Rook extends Piece {
 
     @Override
     public boolean canKillwithBaseAtk(ChessBoard board, int x, int y) {
-        return false;
+        return this.inBaseAtkRange(board, x, y) && board.getAt(x, y).getHp() < this.getBaseAttack() + this.getDefendShield();
     }
-
 
     @Override
     public boolean canKillwithSkill(ChessBoard board, int x, int y) {
-        return false;
+        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getDefendShield();
     }
 
     @Override
