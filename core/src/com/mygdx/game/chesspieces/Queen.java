@@ -19,6 +19,9 @@ public class Queen extends Piece{
 
     @Override
     public boolean canMove(ChessBoard board, int x, int y) {
+        if (!board.validate(x, y)) {
+            return false;
+        }
         int currentX = this.getPosX();
         int currentY = this.getPosY();
         if (Math.abs(x - currentX) != Math.abs(y - currentY) && x != currentX && y != currentY) {
@@ -72,7 +75,6 @@ public class Queen extends Piece{
                 }
             }
         }
-
         else {
             if (y > this.getPosY()) {
                 for (int i = this.getPosY() + 1; i < y; i++) {
@@ -91,16 +93,84 @@ public class Queen extends Piece{
             }
         }
 
-        if (board.getAt(x, y) != null) {
-            return !(this.getColor().equals(board.getAt(x, y).getColor()));
-        }
-
-        return board.validate(x, y);
+        return (board.getAt(x, y) == null);
     }
 
     @Override
     public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
-        return false;
+        if (!board.validate(x, y)) {
+            return false;
+        }
+        int currentX = this.getPosX();
+        int currentY = this.getPosY();
+        if (Math.abs(x - currentX) != Math.abs(y - currentY) && x != currentX && y != currentY) {
+            return false;
+        }
+        if (x > currentX) {
+            if(y > currentY) {
+                for (int i = 1; i < y - currentY; i++) {
+                    if (board.getAt(currentX + i, currentY + i) != null) {
+                        return false;
+                    }
+                }
+            }
+            else if(y < currentY) {
+                for (int i = 1; i < currentY - y; i++) {
+                    if (board.getAt(currentX + i, currentY - i) != null) {
+                        return false;
+                    }
+                }
+            }
+            else {
+                for (int i = this.getPosX() + 1; i < x; i++) {
+                    if (board.getAt(i, y) != null) {
+                        return false;
+                    }
+                }
+            }
+
+        }
+        else if (x < currentX) {
+            if (y > currentY) {
+                for (int i = 1; i < y - currentY; i++) {
+                    if (board.getAt(currentX - i, currentY + i) != null) {
+                        return false;
+                    }
+                }
+            }
+            else if(y < currentY) {
+                for (int i = 1; i < currentY - y; i++) {
+                    if (board.getAt(currentX - i, currentY - i) != null) {
+                        return false;
+                    }
+                }
+            }
+            else {
+                for (int i = this.getPosX() - 1; i > x; i--) {
+                    if (board.getAt(i, y) != null) {
+                        return false;
+                    }
+                }
+            }
+        }
+        else {
+            if (y > this.getPosY()) {
+                for (int i = this.getPosY() + 1; i < y; i++) {
+                    if (board.getAt(x, i) != null) {
+                        return false;
+                    }
+                }
+            }
+
+            if (y < this.getPosY()) {
+                for (int i = this.getPosY() - 1; i > y; i--) {
+                    if (board.getAt(x, i) != null) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return (board.getAt(x, y) != null && !board.getAt(x, y).getColor().equals(this.getColor()));
     }
 
     @Override

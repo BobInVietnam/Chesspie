@@ -26,14 +26,12 @@ public class King extends Piece{
         }
         int x_pos = this.getPosX();
         int y_pos = this.getPosY();
-        if (x == x_pos-1 && y== y_pos && board.getAt(x, y) == null) return true;
-        else if (x == x_pos+1 && y== y_pos && board.getAt(x, y) == null) return true;
-        else if (x == x_pos && y== y_pos-1 && board.getAt(x, y) == null) return true;
-        else if (x == x_pos && y== y_pos+1 && board.getAt(x, y) == null) return true;
-        else if (x == x_pos-1 && y== y_pos-1 && board.getAt(x, y) == null) return true;
-        else if (x == x_pos+1 && y== y_pos+1 && board.getAt(x, y) == null) return true;
-        else if (x == x_pos+1 && y== y_pos-1 && board.getAt(x, y) == null) return true;
-        else return x == x_pos-1 && y == y_pos+1 && board.getAt(x, y) == null;
+        if (x < x_pos - 1 || x > x_pos + 1 || y < y_pos - 1 || y > y_pos + 1
+            || (x == x_pos && y == y_pos)) {
+            return false;
+        } else {
+            return (board.getAt(x, y) == null);
+        }
     }
 
     @Override
@@ -41,18 +39,14 @@ public class King extends Piece{
         if (!board.validate(x, y)) {
             return false;
         }
-        for(int i=-1;i<=1;i++) {
-            for(int j=-1;j<1;j++) {
-                if(i != 0 || j != 0) {
-                    int newRow = this.getPosX() + i;
-                    int newCol = this.getPosY() + j;
-                    if(newRow == x && newCol == y && board.getAt(x, y) != null
-                            && !(board.getAt(x, y).getColor().equals(this.getColor()))) return true;
-                }
-            }
+        int x_pos = this.getPosX();
+        int y_pos = this.getPosY();
+        if (x < x_pos - 1 || x > x_pos + 1 || y < y_pos - 1 || y > y_pos + 1
+            || (x == x_pos && y == y_pos)) {
+            return false;
+        } else {
+            return (board.getAt(x, y) != null && !board.getAt(x, y).getColor().equals(this.getColor()));
         }
-
-        return false;
     }
 
     @Override

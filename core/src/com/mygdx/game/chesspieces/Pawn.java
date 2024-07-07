@@ -59,15 +59,13 @@ public class Pawn extends Piece{
     public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
         if (board.getAt(x, y) == null) return false;
         if(this.getColor().equals("white")){
-            if((x == this.getPosX()+1 && y == this.getPosY()+1) || (x == this.getPosX()-1 && y == this.getPosY()+1)
-                    &&  board.getAt(x, y).getColor().equals("black")) {
-                return true;
-            }
+            return ((x == this.getPosX()+1 || x == this.getPosX()-1) && y == this.getPosY()+1)
+                    &&  board.getAt(x, y).getColor().equals("black");
         }
 
         if(this.getColor().equals("black")){
-            return ((x == this.getPosX()+1 && y == this.getPosY()-1) || (x == this.getPosX()-1 && y == this.getPosY()-1)
-                    && board.getAt(x, y).getColor().equals("white"));
+            return ((x == this.getPosX()+1 || x == this.getPosX()-1) && y == this.getPosY()-1)
+                    && board.getAt(x, y).getColor().equals("white");
         }
         return false;
     }

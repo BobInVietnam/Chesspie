@@ -18,6 +18,9 @@ public class Bishop extends Piece{
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {
+        if (!board.validate(x, y)) {
+            return false;
+        }
         int currentX = this.getPosX();
         int currentY = this.getPosY();
         if (Math.abs(x - currentX) != Math.abs(y - currentY)) {
@@ -47,17 +50,44 @@ public class Bishop extends Piece{
                 }
             }
         }
-
-        if (board.getAt(x, y) != null) {
-            return !board.getAt(x, y).getColor().equals(this.getColor());
-        }
-
-        return board.validate(x, y);
+        return (board.getAt(x, y) == null);
     }
 
     @Override
     public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
-        return false;
+        if (!board.validate(x, y)) {
+            return false;
+        }
+        int currentX = this.getPosX();
+        int currentY = this.getPosY();
+        if (Math.abs(x - currentX) != Math.abs(y - currentY)) {
+            return false;
+        }
+        if (x > currentX) {
+            for (int i = 1; i < y - currentY; i++) {
+                if (board.getAt(currentX + i, currentY + i) != null) {
+                    return false;
+                }
+            }
+            for (int i = 1; i < currentY - y; i++) {
+                if (board.getAt(currentX + i, currentY - i) != null) {
+                    return false;
+                }
+            }
+        }
+        if (x < currentX) {
+            for (int i = 1; i < y - currentY; i++) {
+                if (board.getAt(currentX - i, currentY + i) != null) {
+                    return false;
+                }
+            }
+            for (int i = 1; i < currentY - y; i++) {
+                if (board.getAt(currentX - i, currentY - i) != null) {
+                    return false;
+                }
+            }
+        }
+        return (board.getAt(x, y) != null && !board.getAt(x, y).getColor().equals(this.getColor()));
     }
 
     @Override
