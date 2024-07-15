@@ -32,8 +32,8 @@ public class KingSkill extends Skill{
     }
 
     @Override
-    public void activateSkill(ArrayList<Piece> anemies, Piece piece) {
-//        for (Piece piece : anemies) {
+    public void activateSkill(ArrayList<Piece> enemies, Piece piece) {
+//        for (Piece piece : enemies) {
 //            piece.setDefendShield(5);
 //        }
     }

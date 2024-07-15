@@ -31,7 +31,7 @@ public class KnightSkill extends Skill{
     }
 
     @Override
-    public void activateSkill(ArrayList<Piece> anemies, Piece piece) {
+    public void activateSkill(ArrayList<Piece> enemies, Piece piece) {
 //        for (Piece piece : pieces) {
 //            piece.getAttacked();
 //        }
