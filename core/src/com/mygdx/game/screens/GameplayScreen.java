@@ -8,11 +8,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Chesspie;
 import com.mygdx.game.GameRenderer;
+import com.mygdx.game.GuiRenderer;
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.*;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 public class GameplayScreen implements Screen {
   final Chesspie game;
@@ -30,6 +30,8 @@ public class GameplayScreen implements Screen {
 
   public GameplayScreen(Chesspie game) {
     this.game = game;
+    this.game.gui = new GuiRenderer();
+    this.game.gui.loadGUI(GuiRenderer.guis.GAMEPLAY_GUI);
 
     board = new ChessBoard();
     camera = new OrthographicCamera();
@@ -142,6 +144,7 @@ public class GameplayScreen implements Screen {
     calculateMousePos();
     handleMouseInput();
     gameRenderer.draw(delta);
+    this.game.gui.render(delta);
   }
 
   @Override

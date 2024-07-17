@@ -10,10 +10,12 @@ import com.mygdx.game.screens.GameplayScreen;
 
 public class Chesspie extends Game {
 	public SpriteBatch batch;
+	public GuiRenderer gui;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		gui = new GuiRenderer();
 		this.setScreen(new GameplayScreen(this));
 	}
 
