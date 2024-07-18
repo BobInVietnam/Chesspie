@@ -8,9 +8,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Chesspie;
 import com.mygdx.game.GameRenderer;
-import com.mygdx.game.GuiRenderer;
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.*;
+import com.mygdx.game.sceneguis.GameplayGUI;
 
 import java.util.HashMap;
 
@@ -26,12 +26,22 @@ public class GameplayScreen implements Screen {
   private Vector3 mousePos3;
   private boolean whiteTurn;
   public boolean pieceChosen;
+  public boolean skillChosen;
   public Piece chosenPiece;
+
+  private GameplayGUI gui;
 
   public GameplayScreen(Chesspie game) {
     this.game = game;
-    this.game.gui = new GuiRenderer();
-    this.game.gui.loadGUI(GuiRenderer.guis.GAMEPLAY_GUI);
+    gui = new GameplayGUI(this.game.gui.getSkin()) {
+      @Override
+      public void buttonClicked() {
+        System.out.println("Skill button");
+        skillChosen = !skillChosen;
+        gameRenderer.skillChosen = !gameRenderer.skillChosen;
+      }
+    };
+    this.game.gui.loadGUI(gui);
 
     board = new ChessBoard();
     camera = new OrthographicCamera();
@@ -78,6 +88,7 @@ public class GameplayScreen implements Screen {
       pieceHitboxes.put(piece, new Rectangle(cornerX + piece.getPosX(), cornerY + piece.getPosY(), 1, 1));
     }
     whiteTurn = true;
+    System.out.println("A");
   }
   @Override
   public void show() {
@@ -95,8 +106,10 @@ public class GameplayScreen implements Screen {
   private void setSelectState(boolean pieceChosen, Piece piece) {
     this.pieceChosen = pieceChosen;
     this.chosenPiece = piece;
+    this.skillChosen = false;
     gameRenderer.pieceChosen = pieceChosen;
     gameRenderer.chosenPiece = piece;
+    gameRenderer.skillChosen = false;
   }
 
   private void movePiece(Piece piece, ChessBoard board, int posX, int posY) {
@@ -116,6 +129,7 @@ public class GameplayScreen implements Screen {
     cornerX + piece.getPosX(), cornerY + piece.getPosY(), 1, 1)
     );
   }
+  private void useSkill(){};
   private void handleMouseInput() {
     if (Gdx.input.justTouched()) {
       //Select piece. Else deselect piece
@@ -123,6 +137,8 @@ public class GameplayScreen implements Screen {
         for (Piece piece: pieceHitboxes.keySet()) {
           if (pieceHitboxes.get(piece).contains(mousePos) && ((piece.getColor().equals("white")) == whiteTurn)) {
             setSelectState(true, piece);
+            gui.showInfo(piece);
+            skillChosen = false;
             break;
           }
         }
@@ -135,6 +151,7 @@ public class GameplayScreen implements Screen {
           attackPiece(chosenPiece, board, posX, posY);
         }
         setSelectState(false, null);
+        gui.hideInfo();
       }
     }
   }
@@ -142,6 +159,7 @@ public class GameplayScreen implements Screen {
   @Override
   public void render(float delta) {
     calculateMousePos();
+    this.game.gui.act(delta);
     handleMouseInput();
     gameRenderer.draw(delta);
     this.game.gui.render(delta);

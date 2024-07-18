@@ -1,24 +1,17 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.chessboard.ChessBoard;
-import com.mygdx.game.chesspieces.King;
 import com.mygdx.game.chesspieces.Piece;
 import com.mygdx.game.screens.GameplayScreen;
 
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Objects;
 
 public class GameRenderer {
   private SpriteBatch batch;
@@ -34,6 +27,7 @@ public class GameRenderer {
   private final Array<TextureRegion> blackPieces;
 
   public boolean pieceChosen;
+  public boolean skillChosen;
   public Piece chosenPiece;
 
   public GameRenderer(SpriteBatch batch, ChessBoard board, OrthographicCamera camera) {
@@ -76,16 +70,27 @@ public class GameRenderer {
     batch.draw(colorRectangle, posX, posY, 1, 1);
     batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
   }
-  private void drawMoveableSquare(float posX, float posY) {
+  private void drawSkillSelectableSquare(float posX, float posY) {
+    batch.setColor(0.0f, 0.0f, 1.0f, 0.8f);
+    batch.draw(colorRectangle, posX, posY, 1, 1);
+    batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
+  }
+  private void drawSquares(float posX, float posY) {
     batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
     for (int i = 1; i <= 8; i++) {
       for (int j = 1; j <= 8; j++) {
         posX = GameplayScreen.cornerX + i;
         posY = GameplayScreen.cornerY + j;
-        if (chosenPiece.canMove(board, i, j)) {
-          drawMoveSquare(posX, posY);
-        } else if (chosenPiece.inBaseAtkRange(board, i, j)) {
-          drawAttackSquare(posX, posY);
+        if (!skillChosen) {
+          if (chosenPiece.canMove(board, i, j)) {
+            drawMoveSquare(posX, posY);
+          } else if (chosenPiece.inBaseAtkRange(board, i, j)) {
+            drawAttackSquare(posX, posY);
+          }
+        } else {
+          if (true) {
+            drawSkillSelectableSquare(posX, posY);
+          }
         }
       }
     }
@@ -105,7 +110,7 @@ public class GameRenderer {
       float posX = GameplayScreen.cornerX + chosenPiece.getPosX();
       float posY = GameplayScreen.cornerY + chosenPiece.getPosY();
       batch.draw(colorRectangle, posX, posY, 1, 1);
-      drawMoveableSquare(posX, posY);
+      drawSquares(posX, posY);
     }
     drawPieces();
     batch.end();
