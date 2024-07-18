@@ -10,21 +10,17 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.game.sceneguis.GameplayGUI;
 import com.mygdx.game.sceneguis.SceneGUI;
 
-public class GuiRenderer {
+public class GUIRenderer {
   private Stage stage;
   private SceneGUI rootTable;
   private Skin skin;
   private Texture ui;
 
-  public enum guis {
-    GAMEPLAY_GUI
-  }
-
-  public GuiRenderer() {
+  public GUIRenderer() {
     float ratio = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
     stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     rootTable = null;
@@ -54,22 +50,34 @@ public class GuiRenderer {
 
     Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.DARK_GRAY);
     skin.add("LabelSkin", labelStyle);
+
+    TextureRegionDrawable skill1Skin = new TextureRegionDrawable(
+        new TextureRegion(ui, 0, 248, 8, 8)
+    );
+    skin.add("SkillSkin", skill1Skin);
+
+    Gdx.input.setInputProcessor(stage);
   }
 
-  public SceneGUI loadGUI(guis guis) {
-    SceneGUI gui = null;
-    switch (guis) {
-      case GAMEPLAY_GUI:
-        gui = new GameplayGUI(this.skin);
-        stage.addActor(gui);
-      default:
-    }
-    return gui;
+  public Skin getSkin() {
+    return skin;
   }
 
-  public void render(float delta) {
+  public void loadGUI(SceneGUI gui) {
+    this.rootTable = gui;
+    gui.setDebug(true);
+    stage.addActor(rootTable);
+  }
+
+  public void act(float delta) {
     stage.act(delta);
+  };
+  public void render(float delta) {
     stage.draw();
+  }
+
+  public void resize (int width, int height) {
+    stage.getViewport().update(width, height, true);
   }
 
   public void dispose() {
