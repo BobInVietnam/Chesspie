@@ -18,6 +18,7 @@ public class GameplayScreen implements Screen {
   final Chesspie game;
   private OrthographicCamera camera;
   private GameRenderer gameRenderer;
+  private InputAdapter inputHandler;
   private ChessBoard board;
   private HashMap<Piece, Rectangle> pieceHitboxes;
   public static float cornerX;
@@ -83,6 +84,19 @@ public class GameplayScreen implements Screen {
     }
     board.pieces = piecesList;
 
+    inputHandler = new InputAdapter() {
+      @Override
+      public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        handleMouseInput();
+        return true;
+      }
+    };
+
+    InputMultiplexer inputMultiplexer = new InputMultiplexer();
+    inputMultiplexer.addProcessor(this.game.gui.getStage());
+    inputMultiplexer.addProcessor(inputHandler);
+    Gdx.input.setInputProcessor(inputMultiplexer);
+
     pieceHitboxes = new HashMap<>();
     for (Piece piece: board.pieces) {
       pieceHitboxes.put(piece, new Rectangle(cornerX + piece.getPosX(), cornerY + piece.getPosY(), 1, 1));
@@ -112,6 +126,15 @@ public class GameplayScreen implements Screen {
     gameRenderer.skillChosen = false;
   }
 
+  private void selectPiece() {
+    for (Piece piece: pieceHitboxes.keySet()) {
+      if (pieceHitboxes.get(piece).contains(mousePos) && ((piece.getColor().equals("white")) == whiteTurn)) {
+        setSelectState(true, piece);
+        gui.showInfo(piece);
+        break;
+      }
+    }
+  }
   private void movePiece(Piece piece, ChessBoard board, int posX, int posY) {
     whiteTurn = !whiteTurn;
     piece.move(posX, posY);
@@ -134,14 +157,7 @@ public class GameplayScreen implements Screen {
     if (Gdx.input.justTouched()) {
       //Select piece. Else deselect piece
       if (!pieceChosen) {
-        for (Piece piece: pieceHitboxes.keySet()) {
-          if (pieceHitboxes.get(piece).contains(mousePos) && ((piece.getColor().equals("white")) == whiteTurn)) {
-            setSelectState(true, piece);
-            gui.showInfo(piece);
-            skillChosen = false;
-            break;
-          }
-        }
+        selectPiece();
       } else {
         int posX = (int) (mousePos.x - cornerX);
         int posY = (int) (mousePos.y - cornerY);
@@ -159,14 +175,13 @@ public class GameplayScreen implements Screen {
   @Override
   public void render(float delta) {
     calculateMousePos();
-    this.game.gui.act(delta);
-    handleMouseInput();
     gameRenderer.draw(delta);
     this.game.gui.render(delta);
   }
 
   @Override
   public void resize(int width, int height) {
+    this.game.gui.resize(width, height);
   }
 
   @Override

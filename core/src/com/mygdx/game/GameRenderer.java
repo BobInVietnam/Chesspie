@@ -71,7 +71,7 @@ public class GameRenderer {
     batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
   }
   private void drawSkillSelectableSquare(float posX, float posY) {
-    batch.setColor(0.0f, 0.0f, 1.0f, 0.8f);
+    batch.setColor(0.0f, 0.0f, 1.0f, 0.2f);
     batch.draw(colorRectangle, posX, posY, 1, 1);
     batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
   }
@@ -88,7 +88,7 @@ public class GameRenderer {
             drawAttackSquare(posX, posY);
           }
         } else {
-          if (true) {
+          if (true) { // Replace condition with inSkillRange function
             drawSkillSelectableSquare(posX, posY);
           }
         }
