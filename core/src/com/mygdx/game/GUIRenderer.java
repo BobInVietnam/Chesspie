@@ -63,16 +63,18 @@ public class GUIRenderer {
     return skin;
   }
 
+  public Stage getStage(){
+    return stage;
+  }
+
   public void loadGUI(SceneGUI gui) {
     this.rootTable = gui;
     gui.setDebug(true);
     stage.addActor(rootTable);
   }
 
-  public void act(float delta) {
-    stage.act(delta);
-  };
   public void render(float delta) {
+    stage.act(delta);
     stage.draw();
   }
 
