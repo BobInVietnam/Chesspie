@@ -8,9 +8,11 @@ public class Queen extends Piece{
     public Queen(int x, int y) {
         super(x, y);
     }
-
     public Queen(int x, int y, String color) {
         super(x, y, color);
+    }
+    public Queen(int x, int y, String color, int maxHp, int baseAttack) {
+        super(x, y, color, maxHp, baseAttack);
     }
 
     public Character getSymbol() {

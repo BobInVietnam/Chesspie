@@ -10,9 +10,13 @@ public class Pawn extends Piece{
         super(x, y);
         firstMove = true;
     }
-
     public Pawn(int x, int y, String color) {
         super(x, y, color);
+        firstMove = true;
+    }
+
+    public Pawn(int x, int y, String color, int maxHp, int baseAttack) {
+        super(x, y, color, maxHp, baseAttack);
         firstMove = true;
     }
 

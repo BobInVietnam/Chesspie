@@ -11,6 +11,7 @@ public abstract class Piece {
     private int posY;
     private String color;
     private int hp;
+    private int maxHp;
     private int baseAttack;
     private int defendShield = 0;
     private boolean status; // true means alive, false means dead
@@ -29,6 +30,7 @@ public abstract class Piece {
     }
 
     public int getHp() {return hp;}
+    public int getMaxHp() {return maxHp;}
 
     public int getBaseAttack() {return baseAttack;}
 
@@ -76,7 +78,7 @@ public abstract class Piece {
         this.status = status;
     }
 
-    public Piece() {};
+    public Piece() {}
 
     public Piece(int x, int y) {
         this.posX = x;
@@ -88,6 +90,13 @@ public abstract class Piece {
         if (color.equals("white") || color.equals("black")) {
             this.color = color;
         }
+    }
+
+    public Piece(int x, int y, String color, int maxHp, int baseAttack) {
+        this(x, y, color);
+        this.maxHp = maxHp;
+        this.hp = maxHp;
+        this.baseAttack = baseAttack;
     }
 
     public boolean checkPosition(Piece p) {

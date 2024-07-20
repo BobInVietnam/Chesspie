@@ -26,7 +26,7 @@ public abstract class GameplayGUI extends SceneGUI {
     pieceInfoBoard.setDebug(true);
     // Piece avatar
     pieceAvatar = new Image();
-    pieceAvatar.setDrawable(skin.get("SkillSkin", TextureRegionDrawable.class));
+    pieceAvatar.setDrawable(skin.get("SkillSkin", TextureRegionDrawable.class)); // Will be replaced with actual piece avatar assets
     // Piece health
     pieceHealth = new Label("0/0", skin, "LabelSkin");
     // Piece skill button
@@ -45,26 +45,38 @@ public abstract class GameplayGUI extends SceneGUI {
 
       @Override
       public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-        System.out.println("We're so over]");
+        System.out.println("We're so over");
       }
     });
     skill1.getImageCell().expand().fill();
     skill1.getStyle().imageUp = skin.get("SkillSkin", TextureRegionDrawable.class);
-    // NOT YET IMPLEMENTED
-    enemyPieceInfoBoard = new Table();
-    enemyPieceInfoBoard.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
-    enemyPieceAvatar = new Image();
-    enemyPieceHealth = new Label("0/0", skin, "LabelSkin");
-    // Adding components to piece info table
-    pieceInfoBoard.pad(5, 5, 5, 5);
+
+    pieceInfoBoard.pad(15, 15, 15, 15);
     pieceInfoBoard.left();
     pieceInfoBoard.add(pieceAvatar).size(70).expandY();
     pieceInfoBoard.add(pieceHealth).center().expand();
+    // NOT YET IMPLEMENTED
+    enemyPieceInfoBoard = new Table();
+    enemyPieceInfoBoard.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
+    enemyPieceInfoBoard.setDebug(true);
+    enemyPieceAvatar = new Image();
+    enemyPieceAvatar.setDrawable(skin.get("Skill2Skin", TextureRegionDrawable.class)); // Will be replaced with actual piece avatar assets
+    enemyPieceHealth = new Label("0/0", skin, "LabelSkin");
+
+    enemyPieceInfoBoard.pad(15, 15, 15, 15);
+    enemyPieceInfoBoard.right();
+    enemyPieceInfoBoard.add(enemyPieceHealth).center().expand();
+    enemyPieceInfoBoard.add(enemyPieceAvatar).size(70).expandY();
+
     // Adding components to root table
-    this.left().top().add(pieceInfoBoard).size(300f, 80f);
+    this.left().top().add(pieceInfoBoard).size(300f, 80f).expandX().left();
+    this.add(enemyPieceInfoBoard).size(300f, 80f).expandX().right();
     this.row().left();
     this.add(skill1).size(100);
     this.setFillParent(true);
+
+    hideInfo();
+    hideEnemyInfo();
   }
 
   public abstract void buttonClicked();
@@ -75,8 +87,15 @@ public abstract class GameplayGUI extends SceneGUI {
 
   public void showInfo(Piece piece) {
     pieceInfoBoard.setVisible(true);
-    pieceHealth.setText(piece.getHp());
+    pieceHealth.setText(piece.getHp() + "/" + piece.getMaxHp());
     skill1.setVisible(true);
+  }
+  public void hideEnemyInfo() {
+    enemyPieceInfoBoard.setVisible(false);
+  }
+  public void showEnemyInfo(Piece piece) {
+    enemyPieceInfoBoard.setVisible(true);
+    enemyPieceHealth.setText(piece.getHp() + "/" + piece.getMaxHp());
   }
 
   public void setPieceAvatar(Drawable image) {

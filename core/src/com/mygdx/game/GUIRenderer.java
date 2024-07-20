@@ -17,8 +17,8 @@ import com.mygdx.game.sceneguis.SceneGUI;
 public class GUIRenderer {
   private Stage stage;
   private SceneGUI rootTable;
-  private Skin skin;
-  private Texture ui;
+  private final Skin skin;
+  private final Texture ui;
 
   public GUIRenderer() {
     float ratio = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
@@ -55,6 +55,10 @@ public class GUIRenderer {
         new TextureRegion(ui, 0, 248, 8, 8)
     );
     skin.add("SkillSkin", skill1Skin);
+    TextureRegionDrawable skill2Skin = new TextureRegionDrawable(
+        new TextureRegion(ui, 8, 248, 8, 8)
+    );
+    skin.add("Skill2Skin", skill2Skin);
 
     Gdx.input.setInputProcessor(stage);
   }
