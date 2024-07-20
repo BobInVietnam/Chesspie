@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 public class KnightSkill extends Skill{
     @Override
+    public boolean canUseSkillOn(ChessBoard board, int x, int y) {
+        return false;
+    }
+
+    @Override
     public boolean inSkillRange(ChessBoard board, Piece piece) {
         int cnt = 0;
         for(int i=-1;i<=1;i++) {
@@ -23,6 +28,11 @@ public class KnightSkill extends Skill{
         }
 
         return cnt > 0;
+    }
+
+    @Override
+    public boolean inSkillRange(ChessBoard board, int x, int y) {
+        return false;
     }
 
     @Override

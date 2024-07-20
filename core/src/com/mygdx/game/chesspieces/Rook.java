@@ -99,7 +99,17 @@ public class Rook extends Piece {
     }
 
     @Override
+    public boolean canUseSkillOn(ChessBoard board, int x, int y) {
+        return false;
+    }
+
+    @Override
     public boolean inSkillRange(ChessBoard board) {
+        return false;
+    }
+
+    @Override
+    public boolean inSkillRange(ChessBoard board, int x, int y) {
         return false;
     }
 

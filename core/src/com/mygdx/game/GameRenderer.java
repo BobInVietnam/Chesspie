@@ -75,6 +75,11 @@ public class GameRenderer {
     batch.draw(colorRectangle, posX, posY, 1, 1);
     batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
   }
+  private void drawSkillTargetSquare(float posX, float posY) {
+    batch.setColor(0.0f, 0.0f, 1.0f, 0.8f);
+    batch.draw(colorRectangle, posX, posY, 1, 1);
+    batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
+  }
   private void drawSquares(float posX, float posY) {
     batch.setColor(1.0f, 0.0f, 0.0f, 0.2f);
     for (int i = 1; i <= 8; i++) {
