@@ -114,7 +114,9 @@ public abstract class Piece {
         this.setPosY(y);
     }
     public abstract boolean inBaseAtkRange(ChessBoard board, int x, int y);
+    public abstract boolean canUseSkillOn(ChessBoard board, int x, int y);
     public abstract boolean inSkillRange(ChessBoard board);
+    public abstract boolean inSkillRange(ChessBoard board, int x, int y);
     public abstract boolean canKillwithBaseAtk(ChessBoard board, int x, int y);
     public abstract boolean canKillwithSkill(ChessBoard board, int x, int y);
     public abstract void attack(ChessBoard board, Piece piece); //attack piece

@@ -40,6 +40,11 @@ public class GameplayScreen implements Screen {
         skillChosen = !skillChosen;
         gameRenderer.skillChosen = !gameRenderer.skillChosen;
       }
+
+      @Override
+      public void timeup() {
+        System.out.println("Time up!");
+      }
     };
     this.game.gui.loadGUI(gui);
 
@@ -79,16 +84,22 @@ public class GameplayScreen implements Screen {
     inputMultiplexer.addProcessor(inputHandler);
     Gdx.input.setInputProcessor(inputMultiplexer);
 
-    pieceHitboxes = new HashMap<>();
-    for (Piece piece: board.pieces) {
-      pieceHitboxes.put(piece, new Rectangle(cornerX + piece.getPosX(), cornerY + piece.getPosY(), 1, 1));
-    }
+    pieceHitboxes = updatePieceHitboxes();
     whiteTurn = true;
-    System.out.println("A");
+    gui.setTimer(10);
+    gui.startTimer();
   }
   @Override
   public void show() {
 
+  }
+
+  private HashMap<Piece, Rectangle> updatePieceHitboxes() {
+    pieceHitboxes = new HashMap<>();
+    for (Piece piece: board.pieces) {
+      pieceHitboxes.put(piece, new Rectangle(cornerX + piece.getPosX(), cornerY + piece.getPosY(), 1, 1));
+    }
+    return pieceHitboxes;
   }
 
   private void calculateMousePos() {
@@ -120,19 +131,14 @@ public class GameplayScreen implements Screen {
   private void movePiece(Piece piece, ChessBoard board, int posX, int posY) {
     whiteTurn = !whiteTurn;
     piece.move(posX, posY);
-    pieceHitboxes.put(piece, new Rectangle(
-        cornerX + piece.getPosX(), cornerY + piece.getPosY(), 1, 1)
-    );
+    pieceHitboxes = updatePieceHitboxes();
   }
   private void attackPiece(Piece piece, ChessBoard board, int posX, int posY) {
     whiteTurn = !whiteTurn;
     // TESTING: integrating normal chess rule
-    pieceHitboxes.remove(board.getAt(posX, posY));
     board.removeAt(posX, posY);
     piece.move(posX, posY);
-    pieceHitboxes.put(piece, new Rectangle(
-    cornerX + piece.getPosX(), cornerY + piece.getPosY(), 1, 1)
-    );
+    pieceHitboxes = updatePieceHitboxes();
   }
   private void useSkill(){};
   private void handleMouseInput() {
@@ -169,6 +175,7 @@ public class GameplayScreen implements Screen {
   @Override
   public void render(float delta) {
     calculateMousePos();
+    gui.countdown();
     gameRenderer.draw(delta);
     this.game.gui.render(delta);
   }

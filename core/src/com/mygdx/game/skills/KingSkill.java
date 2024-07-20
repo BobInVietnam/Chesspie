@@ -6,7 +6,14 @@ import com.mygdx.game.chesspieces.*;
 import java.util.ArrayList;
 
 public class KingSkill extends Skill{
-    public KingSkill() {};
+    public KingSkill() {}
+
+    @Override
+    public boolean canUseSkillOn(ChessBoard board, int x, int y) {
+        return false;
+    }
+
+    ;
     @Override
     public boolean inSkillRange(ChessBoard board, Piece piece) {
         int cnt = 0;
@@ -24,6 +31,11 @@ public class KingSkill extends Skill{
         }
 
         return cnt > 0;
+    }
+
+    @Override
+    public boolean inSkillRange(ChessBoard board, int x, int y) {
+        return false;
     }
 
     @Override

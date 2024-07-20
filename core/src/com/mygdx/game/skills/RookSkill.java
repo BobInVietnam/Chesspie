@@ -7,7 +7,17 @@ import java.util.ArrayList;
 
 public class RookSkill extends Skill{
     @Override
+    public boolean canUseSkillOn(ChessBoard board, int x, int y) {
+        return false;
+    }
+
+    @Override
     public boolean inSkillRange(ChessBoard board, Piece piece) {
+        return false;
+    }
+
+    @Override
+    public boolean inSkillRange(ChessBoard board, int x, int y) {
         return false;
     }
 
