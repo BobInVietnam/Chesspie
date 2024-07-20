@@ -8,9 +8,11 @@ public class Knight extends Piece {
     public Knight(int x, int y) {
         super(x, y);
     }
-
     public Knight(int x, int y, String color) {
         super(x, y, color);
+    }
+    public Knight(int x, int y, String color, int maxHp, int baseAttack) {
+        super(x, y, color, maxHp, baseAttack);
     }
 
     public Character getSymbol() {

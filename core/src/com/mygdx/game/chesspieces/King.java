@@ -6,13 +6,14 @@ import java.util.ArrayList;
 
 public class King extends Piece{
     public King() {}
-
     public King(int x, int y) {
         super(x, y);
     }
-
     public King(int x, int y, String color) {
         super(x, y, color);
+    }
+    public King(int x, int y, String color, int maxHp, int baseAttack) {
+        super(x, y, color, maxHp, baseAttack);
     }
 
     public Character getSymbol() {

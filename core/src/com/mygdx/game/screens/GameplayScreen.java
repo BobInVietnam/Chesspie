@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Chesspie;
 import com.mygdx.game.GameRenderer;
 import com.mygdx.game.chessboard.ChessBoard;
@@ -59,35 +58,18 @@ public class GameplayScreen implements Screen {
     pieceChosen = false;
 
     // TESTING: Add pieces to board
-    Array<Piece> piecesList = new Array<>();
-    piecesList.add(new Rook(1, 1, "white"));
-    piecesList.add(new Rook(8, 1, "white"));
-    piecesList.add(new Knight(2, 1, "white"));
-    piecesList.add(new Knight(7, 1, "white"));
-    piecesList.add(new Bishop(3, 1, "white"));
-    piecesList.add(new Bishop(6, 1, "white"));
-    piecesList.add(new Queen(4, 1, "white"));
-    piecesList.add(new King(5, 1, "white"));
-    for (int i = 1; i <= 8; i++) {
-      piecesList.add(new Pawn(i, 2, "white"));
-    }
-    piecesList.add(new Rook(1, 8, "black"));
-    piecesList.add(new Rook(8, 8, "black"));
-    piecesList.add(new Knight(2, 8, "black"));
-    piecesList.add(new Knight(7, 8, "black"));
-    piecesList.add(new Bishop(3, 8, "black"));
-    piecesList.add(new Bishop(6, 8, "black"));
-    piecesList.add(new Queen(4, 8, "black"));
-    piecesList.add(new King(5, 8, "black"));
-    for (int i = 1; i <= 8; i++) {
-      piecesList.add(new Pawn(i, 7, "black"));
-    }
-    board.pieces = piecesList;
+    board.pieces = PieceListGenerator.generatePieces();
 
     inputHandler = new InputAdapter() {
       @Override
       public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         handleMouseInput();
+        return true;
+      }
+
+      @Override
+      public boolean mouseMoved(int screenX, int screenY) {
+        handleMouseOver();
         return true;
       }
     };
@@ -170,6 +152,18 @@ public class GameplayScreen implements Screen {
         gui.hideInfo();
       }
     }
+  }
+  private void showOpponentPieceInfo() {
+    for (Piece piece: pieceHitboxes.keySet()) {
+      if (pieceHitboxes.get(piece).contains(mousePos) && (!(piece.getColor().equals("white")) == whiteTurn)) {
+        gui.showEnemyInfo(piece);
+        return;
+      }
+    }
+    gui.hideEnemyInfo();
+  }
+  private void handleMouseOver() {
+    showOpponentPieceInfo();
   }
 
   @Override
