@@ -63,7 +63,7 @@ public class GUIRenderer {
     Gdx.input.setInputProcessor(stage);
   }
 
-  public Skin getSkin() {
+    public Skin getSkin() {
     return skin;
   }
 
