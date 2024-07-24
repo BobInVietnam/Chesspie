@@ -32,5 +32,5 @@ public abstract class Skill {
     public abstract boolean inSkillRange(ChessBoard board, Piece piece);
     public abstract boolean inSkillRange(ChessBoard board, int x, int y, Piece piece);
     public abstract void setSkillEffect();
-    public abstract void activateSkill(ArrayList<Piece> anemies, Piece piece);
+    public abstract void activateSkill(ArrayList<Piece> enemies, Piece piece);
 }
