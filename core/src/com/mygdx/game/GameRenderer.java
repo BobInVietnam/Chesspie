@@ -27,6 +27,7 @@ public class GameRenderer {
   private final Array<TextureRegion> blackPieces;
 
   public boolean pieceChosen;
+  public boolean skillRangeDisplay;
   public boolean skillChosen;
   public Piece chosenPiece;
 
@@ -86,7 +87,7 @@ public class GameRenderer {
       for (int j = 1; j <= 8; j++) {
         posX = GameplayScreen.cornerX + i;
         posY = GameplayScreen.cornerY + j;
-        if (!skillChosen) {
+        if (!skillRangeDisplay && !skillChosen) {
           if (chosenPiece.canMove(board, i, j)) {
             drawMoveSquare(posX, posY);
           } else if (chosenPiece.inBaseAtkRange(board, i, j)) {

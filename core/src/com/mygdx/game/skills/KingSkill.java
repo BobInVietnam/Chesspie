@@ -9,8 +9,11 @@ public class KingSkill extends Skill{
     public KingSkill() {}
 
     @Override
-    public boolean canUseSkillOn(ChessBoard board, int x, int y) {
-        return false;
+    public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {
+        int posX = piece.getPosX();
+        int posY = piece.getPosY();
+        return !(x > posX + 1 || x < posX - 1 || y > posY + 1 || y < posY - 1
+            || (x != posX && y!= posY));
     }
 
     ;
@@ -34,8 +37,9 @@ public class KingSkill extends Skill{
     }
 
     @Override
-    public boolean inSkillRange(ChessBoard board, int x, int y) {
-        return false;
+    public boolean inSkillRange(ChessBoard board, int x, int y, Piece piece) {
+        return canUseSkillOn(board, x, y, piece)
+            && (board.getAt(x, y).getColor().equals(piece.getColor()));
     }
 
     @Override

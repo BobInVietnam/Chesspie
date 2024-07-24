@@ -20,6 +20,13 @@ public class GUIRenderer {
   private final Skin skin;
   private final Texture ui;
 
+  public enum BitIcon {
+    SKILL1,
+    SKILL2,
+    ATK,
+    DEF
+  }
+
   public GUIRenderer() {
     float ratio = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
     stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -51,15 +58,12 @@ public class GUIRenderer {
     Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.DARK_GRAY);
     skin.add("LabelSkin", labelStyle);
 
-    TextureRegionDrawable skill1Skin = new TextureRegionDrawable(
-        new TextureRegion(ui, 0, 248, 8, 8)
-    );
-    skin.add("SkillSkin", skill1Skin);
-    TextureRegionDrawable skill2Skin = new TextureRegionDrawable(
-        new TextureRegion(ui, 8, 248, 8, 8)
-    );
-    skin.add("Skill2Skin", skill2Skin);
-
+    for (BitIcon bi: BitIcon.values()) {
+      TextureRegionDrawable icon = new TextureRegionDrawable(
+          new TextureRegion(ui, bi.ordinal() * 8, 248, 8, 8)
+      );
+      skin.add(bi.name(), icon);
+    }
     Gdx.input.setInputProcessor(stage);
   }
 
@@ -73,7 +77,6 @@ public class GUIRenderer {
 
   public void loadGUI(SceneGUI gui) {
     this.rootTable = gui;
-    gui.setDebug(true);
     stage.addActor(rootTable);
   }
 

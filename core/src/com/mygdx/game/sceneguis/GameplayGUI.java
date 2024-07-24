@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Timer;
+import com.mygdx.game.GUIRenderer;
 import com.mygdx.game.chesspieces.Piece;
 
 import java.text.DecimalFormat;
@@ -21,22 +22,49 @@ public abstract class GameplayGUI extends SceneGUI {
   private Table enemyPieceInfoBoard;
   private Image enemyPieceAvatar;
   private Label enemyPieceHealth;
+  private Label attack;
+  private Label defense;
+  private Label enemyAttack;
+  private Label enemyDefense;
   private float timer;
   private Label timerDisplay;
   private Table timerBoard;
   private boolean timeRunning;
+  private static final boolean DEBUG_MODE = true;
+  private Skin skin;
 
   public GameplayGUI(Skin skin) {
     // Piece info table
-    pieceInfoBoard = new Table();
-    pieceInfoBoard.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
-    pieceInfoBoard.setDebug(true);
-    // Piece avatar
-    pieceAvatar = new Image();
-    pieceAvatar.setDrawable(skin.get("SkillSkin", TextureRegionDrawable.class)); // Will be replaced with actual piece avatar assets
-    // Piece health
-    pieceHealth = new Label("0/0", skin, "LabelSkin");
-    // Piece skill button
+    this.skin = skin;
+
+    createSkillButton();
+    initializeStats();
+    initializePlayerBoardComponents();
+    createPlayerBoard();
+
+    initializeEnemyBoardComponents();
+    createEnemyBoard();
+    createTimer();
+    // Adding components to root table
+    loadComponents();
+
+    hideInfo();
+    hideEnemyInfo();
+  }
+  private Image loadImage(GUIRenderer.BitIcon icon) {
+    return new Image(skin.get(icon.name(),TextureRegionDrawable.class));
+  }
+  private void initializeStats() {
+    attack = new Label("0", skin, "LabelSkin");
+    attack.setFontScale(0.5f);
+    enemyAttack = new Label("0", skin, "LabelSkin");
+    enemyAttack.setFontScale(0.5f);
+    defense = new Label("0", skin, "LabelSkin");
+    defense.setFontScale(0.5f);
+    enemyDefense = new Label("0", skin, "LabelSkin");
+    enemyDefense.setFontScale(0.5f);
+  }
+  private void createSkillButton() {
     skill1 = new ImageButton(skin.get("ImageButtonSkin", ImageButton.ImageButtonStyle.class));
     skill1.addListener( new InputListener() {
       @Override
@@ -44,46 +72,70 @@ public abstract class GameplayGUI extends SceneGUI {
         buttonClicked();
         return true;
       }
-
       @Override
       public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-        System.out.println("ENTER CHADLIPS");
+        buttonEnter();
       }
-
       @Override
       public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-        System.out.println("We're so over");
+        buttonExit();
       }
     });
     skill1.getImageCell().expand().fill();
-    skill1.getStyle().imageUp = skin.get("SkillSkin", TextureRegionDrawable.class);
-
+    skill1.getStyle().imageUp = skin.get("SKILL1", TextureRegionDrawable.class);
+  }
+  private void initializePlayerBoardComponents() {
+    pieceInfoBoard = new Table();
+    pieceInfoBoard.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
+    pieceInfoBoard.setDebug(DEBUG_MODE);
+    pieceAvatar = loadImage(GUIRenderer.BitIcon.SKILL1);// Will be replaced with actual piece avatar assets
+    pieceHealth = new Label("0/0", skin, "LabelSkin");
+  }
+  private void createPlayerBoard() {
     pieceInfoBoard.pad(15, 15, 15, 15);
     pieceInfoBoard.left();
-    pieceInfoBoard.add(pieceAvatar).size(70).expandY();
-    pieceInfoBoard.add(pieceHealth).center().expand();
-
-    // Enemy piece info board
+    Table info = new Table();
+    info.setDebug(DEBUG_MODE);
+    info.add(pieceHealth).center().expand().colspan(4);
+    info.row();
+    info.add(loadImage(GUIRenderer.BitIcon.ATK)).size(25).expandX();
+    info.add(attack).expandX();
+    info.add(loadImage(GUIRenderer.BitIcon.DEF)).size(25).expandX();
+    info.add(defense).expandX();
+    pieceInfoBoard.add(pieceAvatar).size(60).expandY();
+    pieceInfoBoard.add(info).fill().expand();
+  }
+  private void initializeEnemyBoardComponents() {
     enemyPieceInfoBoard = new Table();
     enemyPieceInfoBoard.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
-    enemyPieceInfoBoard.setDebug(true);
-    enemyPieceAvatar = new Image();
-    enemyPieceAvatar.setDrawable(skin.get("Skill2Skin", TextureRegionDrawable.class)); // Will be replaced with actual piece avatar assets
+    enemyPieceInfoBoard.setDebug(DEBUG_MODE);
+    enemyPieceAvatar = loadImage(GUIRenderer.BitIcon.SKILL2);// Will be replaced with actual piece avatar assets
     enemyPieceHealth = new Label("0/0", skin, "LabelSkin");
-
+  }
+  private void createEnemyBoard() {
     enemyPieceInfoBoard.pad(15, 15, 15, 15);
     enemyPieceInfoBoard.right();
-    enemyPieceInfoBoard.add(enemyPieceHealth).center().expand();
-    enemyPieceInfoBoard.add(enemyPieceAvatar).size(70).expandY();
-
+    Table info2 = new Table();
+    info2.setDebug(DEBUG_MODE);
+    info2.add(enemyPieceHealth).center().expand().colspan(4);
+    info2.row();
+    info2.add(loadImage(GUIRenderer.BitIcon.ATK)).size(25).expandX();
+    info2.add(enemyAttack).expandX();
+    info2.add(loadImage(GUIRenderer.BitIcon.DEF)).size(25).expandX();
+    info2.add(enemyDefense).expandX();
+    enemyPieceInfoBoard.add(info2).fill().expand();
+    enemyPieceInfoBoard.add(enemyPieceAvatar).size(60).expandY();
+  }
+  private void createTimer() {
     timerBoard = new Table();
     timerBoard.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
     timerDisplay = new Label("Timer: 00:00", skin, "LabelSkin");
     timerDisplay.setFontScale(0.7f);
     timerBoard.padLeft(15);
     timerBoard.add(timerDisplay).left();
-
-    // Adding components to root table
+  }
+  private void loadComponents() {
+    this.setDebug(DEBUG_MODE);
     this.left().top().add(pieceInfoBoard).size(300f, 80f).expandX().left();
     this.add(enemyPieceInfoBoard).size(300f, 80f).expandX().right();
     this.row().left();
@@ -91,12 +143,11 @@ public abstract class GameplayGUI extends SceneGUI {
     this.row().left();
     this.add(timerBoard).size(300, 80).left();
     this.setFillParent(true);
-
-    hideInfo();
-    hideEnemyInfo();
   }
 
   public abstract void buttonClicked();
+  public abstract void buttonEnter();
+  public abstract void buttonExit();
   public void hideInfo() {
     pieceInfoBoard.setVisible(false);
     skill1.setVisible(false);
@@ -105,6 +156,8 @@ public abstract class GameplayGUI extends SceneGUI {
   public void showInfo(Piece piece) {
     pieceInfoBoard.setVisible(true);
     pieceHealth.setText(piece.getHp() + "/" + piece.getMaxHp());
+    attack.setText(piece.getBaseAttack());
+    defense.setText(piece.getDefendShield());
     skill1.setVisible(true);
   }
   public void hideEnemyInfo() {
@@ -113,6 +166,8 @@ public abstract class GameplayGUI extends SceneGUI {
   public void showEnemyInfo(Piece piece) {
     enemyPieceInfoBoard.setVisible(true);
     enemyPieceHealth.setText(piece.getHp() + "/" + piece.getMaxHp());
+    enemyAttack.setText(piece.getBaseAttack());
+    enemyDefense.setText(piece.getDefendShield());
   }
   public void setPieceAvatar(Drawable image) {
     pieceAvatar.setDrawable(image);

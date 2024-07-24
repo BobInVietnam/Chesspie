@@ -42,6 +42,16 @@ public class GameplayScreen implements Screen {
       }
 
       @Override
+      public void buttonEnter() {
+        gameRenderer.skillRangeDisplay = true;
+      }
+
+      @Override
+      public void buttonExit() {
+        gameRenderer.skillRangeDisplay = false;
+      }
+
+      @Override
       public void timeup() {
         System.out.println("Time up!");
       }
@@ -116,7 +126,7 @@ public class GameplayScreen implements Screen {
     this.skillChosen = false;
     gameRenderer.pieceChosen = pieceChosen;
     gameRenderer.chosenPiece = piece;
-    gameRenderer.skillChosen = false;
+    gameRenderer.skillRangeDisplay = false;
   }
 
   private void selectPiece() {

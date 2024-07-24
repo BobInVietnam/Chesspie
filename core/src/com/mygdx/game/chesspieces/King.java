@@ -52,7 +52,7 @@ public class King extends Piece{
 
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y) {
-        return false;
+        return chessSkill.canUseSkillOn(board, x, y, this);
     }
 
     @Override
