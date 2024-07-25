@@ -114,24 +114,32 @@ public class Rook extends Piece {
     }
 
     @Override
-    public boolean canKillwithBaseAtk(ChessBoard board, int x, int y) {
-        return this.inBaseAtkRange(board, x, y) && board.getAt(x, y).getHp() < this.getBaseAttack() + this.getDefendShield();
-    }
-
-    @Override
     public boolean canKillwithSkill(ChessBoard board, int x, int y) {
         return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getDefendShield();
     }
 
     @Override
     public void attack(ChessBoard board, Piece piece) {
-        if(this.inBaseAtkRange(board, piece.getPosX(), piece.getPosY())) {
+        if (canKillwithBaseAtk(board, piece)) killPiece(board, piece);
+        else {
             piece.getAttacked(this);
+            moveAfterAttack(board, piece);
         }
     }
 
-    public void attack(Piece piece) {
-
+    @Override
+    public void moveAfterAttack(ChessBoard board, Piece piece) {
+        int x = piece.getPosX();
+        int y = piece.getPosY();
+        if (x == this.getPosX()) {
+            if (y > this.getPosY())
+                this.move(x, y - 1);
+            else this.move(x, y + 1);
+        } else {
+            if (x > this.getPosX())
+                this.move(x - 1, y);
+            else this.move(x + 1, y);
+        }
     }
 
     @Override
@@ -139,17 +147,8 @@ public class Rook extends Piece {
 
     }
 
-    public void getAttacked(Piece piece) {
-        this.setHp(this.getHp() + this.getDefendShield() - piece.getBaseAttack());
-    }
-
     public void getSkillAttacked(Piece piece) {
         this.setHp(this.getHp() + this.getDefendShield() - piece.getChessSkill().getSkillDmg());
-    }
-
-    @Override
-    public void killOtherPiecebyBaseAtk(ChessBoard board, int x, int y) {
-        if(this.canKillwithBaseAtk(board, x, y)) board.removeAt(x, y);
     }
 
     @Override

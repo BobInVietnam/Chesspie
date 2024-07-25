@@ -11,6 +11,7 @@ public abstract class Skill {
     int skillDmg;
 
     SkillEffect skillEffect;
+    public boolean isAura = false;
 
     public Skill() {};
 

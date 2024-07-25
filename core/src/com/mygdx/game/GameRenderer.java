@@ -94,7 +94,9 @@ public class GameRenderer {
             drawAttackSquare(posX, posY);
           }
         } else {
-          if (true) { // Replace condition with inSkillRange function
+          if (chosenPiece.inSkillRange(board, i, j)) {
+            drawSkillTargetSquare(posX, posY);
+          } else if (chosenPiece.canUseSkillOn(board, i, j)) {
             drawSkillRangeSquare(posX, posY);
           }
         }

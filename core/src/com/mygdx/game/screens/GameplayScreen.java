@@ -29,6 +29,8 @@ public class GameplayScreen implements Screen {
   public boolean skillChosen;
   public Piece chosenPiece;
 
+  private final int TIMER = 120; // Timer before the game automatically closes
+
   private GameplayGUI gui;
 
   public GameplayScreen(Chesspie game) {
@@ -37,8 +39,10 @@ public class GameplayScreen implements Screen {
       @Override
       public void buttonClicked() {
         System.out.println("Skill button");
-        skillChosen = !skillChosen;
-        gameRenderer.skillChosen = !gameRenderer.skillChosen;
+        if (!chosenPiece.getChessSkill().isAura) {
+          skillChosen = !skillChosen;
+          gameRenderer.skillChosen = !gameRenderer.skillChosen;
+        }
       }
 
       @Override
@@ -52,8 +56,10 @@ public class GameplayScreen implements Screen {
       }
 
       @Override
-      public void timeup() {
+      public void timeup() { // Change this if you don't want the game to close on your face
         System.out.println("Time up!");
+        game.dispose();
+        Gdx.app.exit();
       }
     };
     this.game.gui.loadGUI(gui);
@@ -96,7 +102,7 @@ public class GameplayScreen implements Screen {
 
     pieceHitboxes = updatePieceHitboxes();
     whiteTurn = true;
-    gui.setTimer(10);
+    gui.setTimer(TIMER);
     gui.startTimer();
   }
   @Override
@@ -145,9 +151,7 @@ public class GameplayScreen implements Screen {
   }
   private void attackPiece(Piece piece, ChessBoard board, int posX, int posY) {
     whiteTurn = !whiteTurn;
-    // TESTING: integrating normal chess rule
-    board.removeAt(posX, posY);
-    piece.move(posX, posY);
+    piece.attack(board, board.getAt(posX, posY));
     pieceHitboxes = updatePieceHitboxes();
   }
   private void useSkill(){};

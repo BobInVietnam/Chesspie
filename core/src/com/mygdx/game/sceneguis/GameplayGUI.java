@@ -30,7 +30,7 @@ public abstract class GameplayGUI extends SceneGUI {
   private Label timerDisplay;
   private Table timerBoard;
   private boolean timeRunning;
-  private static final boolean DEBUG_MODE = true;
+  private static final boolean DEBUG_MODE = false;
   private Skin skin;
 
   public GameplayGUI(Skin skin) {

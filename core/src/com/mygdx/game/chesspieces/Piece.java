@@ -117,12 +117,21 @@ public abstract class Piece {
     public abstract boolean canUseSkillOn(ChessBoard board, int x, int y);
     public abstract boolean inSkillRange(ChessBoard board);
     public abstract boolean inSkillRange(ChessBoard board, int x, int y);
-    public abstract boolean canKillwithBaseAtk(ChessBoard board, int x, int y);
+    public boolean canKillwithBaseAtk(ChessBoard board, Piece piece) {
+        return (this.baseAttack - piece.defendShield >= piece.hp);
+    }
     public abstract boolean canKillwithSkill(ChessBoard board, int x, int y);
     public abstract void attack(ChessBoard board, Piece piece); //attack piece
     public abstract void activateSKill(ArrayList<Piece> pieces, ChessBoard board);
-    public abstract void getAttacked(Piece piece); //get attacked from piece
+    public void getAttacked(Piece piece) {
+        int damage = piece.baseAttack - this.defendShield;
+        this.setHp(this.hp - (Math.max(damage, 0)));
+    }
     public abstract void getSkillAttacked(Piece piece);
-    public abstract void killOtherPiecebyBaseAtk(ChessBoard board, int x, int y);
+    public void killPiece(ChessBoard board, Piece piece) {
+        board.removeAt(piece.posX, piece.posY);
+        this.move(piece.posX, piece.posY);
+    }
+    public void moveAfterAttack(ChessBoard board, Piece piece) {}
     public abstract void killOtherPiecebySkill(ChessBoard board, int x, int y);
 }

@@ -6,17 +6,18 @@ import com.mygdx.game.chesspieces.*;
 import java.util.ArrayList;
 
 public class KingSkill extends Skill{
-    public KingSkill() {}
+    public KingSkill() {
+        isAura = true;
+    }
 
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {
         int posX = piece.getPosX();
         int posY = piece.getPosY();
         return !(x > posX + 1 || x < posX - 1 || y > posY + 1 || y < posY - 1
-            || (x != posX && y!= posY));
+            || (x == posX && y == posY));
     }
 
-    ;
     @Override
     public boolean inSkillRange(ChessBoard board, Piece piece) {
         int cnt = 0;
@@ -38,6 +39,7 @@ public class KingSkill extends Skill{
 
     @Override
     public boolean inSkillRange(ChessBoard board, int x, int y, Piece piece) {
+        if (board.getAt(x, y) == null) return false;
         return canUseSkillOn(board, x, y, piece)
             && (board.getAt(x, y).getColor().equals(piece.getColor()));
     }

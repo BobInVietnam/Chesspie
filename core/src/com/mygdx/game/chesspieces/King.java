@@ -1,6 +1,7 @@
 package com.mygdx.game.chesspieces;
 
 import com.mygdx.game.chessboard.ChessBoard;
+import com.mygdx.game.skills.KingSkill;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ public class King extends Piece{
     }
     public King(int x, int y, String color, int maxHp, int baseAttack) {
         super(x, y, color, maxHp, baseAttack);
+        this.chessSkill = new KingSkill();
     }
 
     public Character getSymbol() {
@@ -62,12 +64,7 @@ public class King extends Piece{
 
     @Override
     public boolean inSkillRange(ChessBoard board, int x, int y) {
-        return false;
-    }
-
-    @Override
-    public boolean canKillwithBaseAtk(ChessBoard board, int x, int y) {
-        return this.inBaseAtkRange(board, x, y) && board.getAt(x, y).getHp() < this.getBaseAttack() + this.getDefendShield();
+        return chessSkill.inSkillRange(board, x, y, this);
     }
 
     @Override
@@ -76,7 +73,8 @@ public class King extends Piece{
     }
 
     public void attack(ChessBoard board, Piece piece) {
-        if(this.inBaseAtkRange(board, piece.getPosX(), piece.getPosY())) {
+        if (canKillwithBaseAtk(board, piece)) killPiece(board, piece);
+        else {
             piece.getAttacked(this);
         }
     }
@@ -88,16 +86,8 @@ public class King extends Piece{
 //        }
     }
 
-    public void getAttacked(Piece piece) {
-        this.setHp(this.getHp() + this.getDefendShield() - piece.getBaseAttack());
-    }
-
     public void getSkillAttacked(Piece piece) {
         this.setHp(this.getHp() + this.getDefendShield() - piece.getChessSkill().getSkillDmg());
-    }
-
-    public void killOtherPiecebyBaseAtk(ChessBoard board, int x, int y) {
-        if(this.canKillwithBaseAtk(board, x, y)) board.removeAt(x, y);
     }
 
     @Override
