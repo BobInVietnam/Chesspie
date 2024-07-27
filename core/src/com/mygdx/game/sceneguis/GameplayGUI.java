@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.GUIRenderer;
 import com.mygdx.game.chesspieces.Piece;
 
@@ -30,7 +29,9 @@ public abstract class GameplayGUI extends SceneGUI {
   private Label timerDisplay;
   private Table timerBoard;
   private boolean timeRunning;
-  private static final boolean DEBUG_MODE = false;
+  private Table turnIndicator;
+  private Label turnIndicatorText;
+  private static final boolean DEBUG_MODE = true;
   private Skin skin;
 
   public GameplayGUI(Skin skin) {
@@ -45,6 +46,7 @@ public abstract class GameplayGUI extends SceneGUI {
     initializeEnemyBoardComponents();
     createEnemyBoard();
     createTimer();
+    createTurnIndicator();
     // Adding components to root table
     loadComponents();
 
@@ -134,6 +136,12 @@ public abstract class GameplayGUI extends SceneGUI {
     timerBoard.padLeft(15);
     timerBoard.add(timerDisplay).left();
   }
+  private void createTurnIndicator() {
+    turnIndicator = new Table();
+    turnIndicator.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
+    turnIndicatorText = new Label("W", skin, "LabelSkin");
+    turnIndicator.add(turnIndicatorText);
+  }
   private void loadComponents() {
     this.setDebug(DEBUG_MODE);
     this.left().top().add(pieceInfoBoard).size(300f, 80f).expandX().left();
@@ -142,6 +150,7 @@ public abstract class GameplayGUI extends SceneGUI {
     this.add(skill1).size(100).expand();
     this.row().left();
     this.add(timerBoard).size(300, 80).left();
+    this.add(turnIndicator).size(80, 80).right();
     this.setFillParent(true);
   }
 
@@ -156,8 +165,8 @@ public abstract class GameplayGUI extends SceneGUI {
   public void showInfo(Piece piece) {
     pieceInfoBoard.setVisible(true);
     pieceHealth.setText(piece.getHp() + "/" + piece.getMaxHp());
-    attack.setText(piece.getBaseAttack());
-    defense.setText(piece.getDefendShield());
+    attack.setText(piece.getAttack());
+    defense.setText(piece.getDefense());
     skill1.setVisible(true);
   }
   public void hideEnemyInfo() {
@@ -166,8 +175,8 @@ public abstract class GameplayGUI extends SceneGUI {
   public void showEnemyInfo(Piece piece) {
     enemyPieceInfoBoard.setVisible(true);
     enemyPieceHealth.setText(piece.getHp() + "/" + piece.getMaxHp());
-    enemyAttack.setText(piece.getBaseAttack());
-    enemyDefense.setText(piece.getDefendShield());
+    enemyAttack.setText(piece.getAttack());
+    enemyDefense.setText(piece.getDefense());
   }
   public void setPieceAvatar(Drawable image) {
     pieceAvatar.setDrawable(image);
@@ -193,4 +202,11 @@ public abstract class GameplayGUI extends SceneGUI {
     timerDisplay.setText("Timer: " + min + ':' + df.format(sec));
   }
   public abstract void timeup();
+  public void setTurnIndicatorText(boolean whiteTurn) {
+    if (whiteTurn) {
+      turnIndicatorText.setText("W");
+    } else {
+      turnIndicatorText.setText("B");
+    }
+  }
 }

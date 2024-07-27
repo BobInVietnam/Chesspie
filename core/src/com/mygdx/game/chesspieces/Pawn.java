@@ -2,8 +2,6 @@ package com.mygdx.game.chesspieces;
 
 import com.mygdx.game.chessboard.ChessBoard;
 
-import java.util.ArrayList;
-
 public class Pawn extends Piece{
     private boolean firstMove;
     public Pawn(int x, int y) {
@@ -91,7 +89,7 @@ public class Pawn extends Piece{
 
     @Override
     public boolean canKillwithSkill(ChessBoard board, int x, int y) {
-        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getDefendShield();
+        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getBaseDefense();
     }
 
     @Override
@@ -100,11 +98,6 @@ public class Pawn extends Piece{
         else {
             piece.getAttacked(this);
         }
-    }
-
-    @Override
-    public void activateSKill(ArrayList<Piece> pieces, ChessBoard board) {
-
     }
 
     public void getSkillAttacked(Piece piece) {

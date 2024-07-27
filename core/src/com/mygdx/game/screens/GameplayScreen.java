@@ -10,6 +10,7 @@ import com.mygdx.game.GameRenderer;
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.*;
 import com.mygdx.game.sceneguis.GameplayGUI;
+import com.mygdx.game.skills.SkillActivation;
 
 import java.util.HashMap;
 
@@ -39,9 +40,11 @@ public class GameplayScreen implements Screen {
       @Override
       public void buttonClicked() {
         System.out.println("Skill button");
-        if (!chosenPiece.getChessSkill().isAura) {
+        if (chosenPiece.getChessSkill().getSkillActivation() == SkillActivation.TARGET) {
           skillChosen = !skillChosen;
           gameRenderer.skillChosen = !gameRenderer.skillChosen;
+        } else if (chosenPiece.getChessSkill().getSkillActivation() == SkillActivation.TRIGGER) {
+          useSkill();
         }
       }
 
@@ -134,7 +137,14 @@ public class GameplayScreen implements Screen {
     gameRenderer.chosenPiece = piece;
     gameRenderer.skillRangeDisplay = false;
   }
-
+  private void switchSide() {
+    activateStatusEffects(whiteTurn);
+    pieceHitboxes = updatePieceHitboxes();
+    whiteTurn = !whiteTurn;
+    gui.setTurnIndicatorText(whiteTurn);
+  }
+  private void activateStatusEffects(boolean whiteSide) {
+  }
   private void selectPiece() {
     for (Piece piece: pieceHitboxes.keySet()) {
       if (pieceHitboxes.get(piece).contains(mousePos) && ((piece.getColor().equals("white")) == whiteTurn)) {
@@ -145,16 +155,15 @@ public class GameplayScreen implements Screen {
     }
   }
   private void movePiece(Piece piece, ChessBoard board, int posX, int posY) {
-    whiteTurn = !whiteTurn;
     piece.move(posX, posY);
-    pieceHitboxes = updatePieceHitboxes();
+    switchSide();
   }
   private void attackPiece(Piece piece, ChessBoard board, int posX, int posY) {
-    whiteTurn = !whiteTurn;
     piece.attack(board, board.getAt(posX, posY));
-    pieceHitboxes = updatePieceHitboxes();
+    switchSide();
   }
   private void useSkill(){};
+  private void useTargetedSkill(int posX, int posY) {}
   private void handleMouseInput() {
     if (Gdx.input.justTouched()) {
       //Select piece. Else deselect piece
@@ -163,6 +172,9 @@ public class GameplayScreen implements Screen {
       } else {
         int posX = (int) (mousePos.x - cornerX);
         int posY = (int) (mousePos.y - cornerY);
+        if (skillChosen && chosenPiece.canUseSkillOn(board, posX, posY)) {
+          useTargetedSkill(posX, posY);
+        }
         if (chosenPiece.canMove(board, posX, posY)) {
           movePiece(chosenPiece, board, posX, posY);
         } else if (chosenPiece.inBaseAtkRange(board, posX, posY)) {
@@ -173,17 +185,25 @@ public class GameplayScreen implements Screen {
       }
     }
   }
-  private void showOpponentPieceInfo() {
+  private void showPieceInfo() {
     for (Piece piece: pieceHitboxes.keySet()) {
-      if (pieceHitboxes.get(piece).contains(mousePos) && (!(piece.getColor().equals("white")) == whiteTurn)) {
-        gui.showEnemyInfo(piece);
-        return;
+      if (pieceHitboxes.get(piece).contains(mousePos)) {
+        if ((piece.getColor().equals("white")) == whiteTurn) {
+          gui.showInfo(piece);
+          return;
+        } else {
+          gui.showEnemyInfo(piece);
+          return;
+        }
       }
+    }
+    if (!pieceChosen) {
+      gui.hideInfo();
     }
     gui.hideEnemyInfo();
   }
   private void handleMouseOver() {
-    showOpponentPieceInfo();
+    showPieceInfo();
   }
 
   @Override

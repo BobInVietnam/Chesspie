@@ -2,8 +2,6 @@ package com.mygdx.game.chesspieces;
 
 import com.mygdx.game.chessboard.ChessBoard;
 
-import java.util.ArrayList;
-
 public class Queen extends Piece{
     public Queen(int x, int y) {
         super(x, y);
@@ -192,7 +190,7 @@ public class Queen extends Piece{
 
     @Override
     public boolean canKillwithSkill(ChessBoard board, int x, int y) {
-        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getDefendShield();
+        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getBaseDefense();
     }
 
     @Override
@@ -200,39 +198,37 @@ public class Queen extends Piece{
         if (canKillwithBaseAtk(board, piece)) killPiece(board, piece);
         else {
             piece.getAttacked(this);
-            int x = piece.getPosX();
-            int y = piece.getPosY();
-            if (x == this.getPosX()) {
-                if (y > this.getPosY())
-                    this.move(x, y - 1);
-                else this.move(x, y + 1);
+            moveAfterAttack(board, piece);
+        }
+    }
+    public void moveAfterAttack(ChessBoard board, Piece piece) {
+        int x = piece.getPosX();
+        int y = piece.getPosY();
+        if (x == this.getPosX()) {
+            if (y > this.getPosY())
+                this.move(x, y - 1);
+            else this.move(x, y + 1);
+        } else {
+            if (y == this.getPosY()) {
+                if (x > this.getPosX())
+                    this.move(x - 1, y);
+                else this.move(x + 1, y);
             } else {
-                if (y == this.getPosY()) {
-                    if (x > this.getPosX())
-                        this.move(x - 1, y);
-                    else this.move(x + 1, y);
+                if (x > this.getPosX()) {
+                    if (y > this.getPosY())
+                        this.move(x - 1, y - 1);
+                    else this.move(x - 1, y + 1);
                 } else {
-                    if (x > this.getPosX()) {
-                        if (y > this.getPosY())
-                            this.move(x - 1, y - 1);
-                        else this.move(x - 1, y + 1);
-                    } else {
-                        if (y > this.getPosY())
-                            this.move(x + 1, y - 1);
-                        else this.move(x + 1, y + 1);
-                    }
+                    if (y > this.getPosY())
+                        this.move(x + 1, y - 1);
+                    else this.move(x + 1, y + 1);
                 }
             }
         }
     }
 
-    @Override
-    public void activateSKill(ArrayList<Piece> pieces, ChessBoard board) {
-
-    }
-
     public void getSkillAttacked(Piece piece) {
-        this.setHp(this.getHp() + this.getDefendShield() - piece.getChessSkill().getSkillDmg());
+        this.setHp(this.getHp() + this.getBaseDefense() - piece.getChessSkill().getSkillDmg());
     }
 
     @Override

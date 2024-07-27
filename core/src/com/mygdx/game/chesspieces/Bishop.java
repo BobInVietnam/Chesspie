@@ -2,8 +2,6 @@ package com.mygdx.game.chesspieces;
 
 import com.mygdx.game.chessboard.ChessBoard;
 
-import java.util.ArrayList;
-
 public class Bishop extends Piece{
     public Bishop(int x, int y) {
         super(x, y);
@@ -109,7 +107,7 @@ public class Bishop extends Piece{
 
     @Override
     public boolean canKillwithSkill(ChessBoard board, int x, int y) {
-        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getDefendShield();
+        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getBaseDefense();
     }
 
     @Override
@@ -136,13 +134,8 @@ public class Bishop extends Piece{
         }
     }
 
-    @Override
-    public void activateSKill(ArrayList<Piece> pieces, ChessBoard board) {
-
-    }
-
     public void getSkillAttacked(Piece piece) {
-        this.setHp(this.getHp() + this.getDefendShield() - piece.getChessSkill().getSkillDmg());
+        this.setHp(this.getHp() + this.getBaseDefense() - piece.getChessSkill().getSkillDmg());
     }
 
 

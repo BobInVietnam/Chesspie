@@ -27,7 +27,8 @@ public class RookSkill extends Skill{
     }
 
     @Override
-    public void activateSkill(ArrayList<Piece> enemies, Piece piece) {
+    public void activateSkill(ChessBoard board, Piece piece) {
 
     }
+
 }

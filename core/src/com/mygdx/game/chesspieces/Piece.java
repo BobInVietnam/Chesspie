@@ -4,8 +4,6 @@ import com.mygdx.game.chessboard.ChessBoard;
 
 import com.mygdx.game.skills.*;
 
-import java.util.ArrayList;
-
 public abstract class Piece {
     private int posX;
     private int posY;
@@ -13,7 +11,9 @@ public abstract class Piece {
     private int hp;
     private int maxHp;
     private int baseAttack;
-    private int defendShield = 0;
+    private int attack;
+    private int baseDefense = 0;
+    private int defense;
     private boolean status; // true means alive, false means dead
     Skill chessSkill;
 
@@ -33,9 +33,15 @@ public abstract class Piece {
     public int getMaxHp() {return maxHp;}
 
     public int getBaseAttack() {return baseAttack;}
+    public int getAttack() {
+        return attack;
+    }
+    public int getBaseDefense() {
+        return baseDefense;
+    }
 
-    public int getDefendShield() {
-        return defendShield;
+    public int getDefense() {
+        return defense;
     }
 
     public boolean isStatus() {
@@ -62,12 +68,11 @@ public abstract class Piece {
         this.hp = hp;
     }
 
-    public void setBaseAttack(int baseAttack) {
-        this.baseAttack = baseAttack;
+    public void setAttack(int attack) {
+        this.attack = attack;
     }
-
-    public void setDefendShield(int defendShield) {
-        this.defendShield = defendShield;
+    public void setDefense(int defense) {
+        this.defense = defense;
     }
 
     public void setChessSkill(Skill chessSkill) {
@@ -97,14 +102,9 @@ public abstract class Piece {
         this.maxHp = maxHp;
         this.hp = maxHp;
         this.baseAttack = baseAttack;
-    }
-
-    public boolean checkPosition(Piece p) {
-        if ((p.getPosX() >= 1 && p.getPosX() <= 8)
-                && (p.getPosY() >= 1 && p.getPosY() <= 8)) {
-            return true;
-        }
-        return false;
+        this.attack = baseAttack;
+        this.baseDefense = 0;
+        this.defense = 0;
     }
 
     public abstract Character getSymbol();
@@ -118,17 +118,20 @@ public abstract class Piece {
     public abstract boolean inSkillRange(ChessBoard board);
     public abstract boolean inSkillRange(ChessBoard board, int x, int y);
     public boolean canKillwithBaseAtk(ChessBoard board, Piece piece) {
-        return (this.baseAttack - piece.defendShield >= piece.hp);
+        return (this.baseAttack - piece.baseDefense >= piece.hp);
     }
     public abstract boolean canKillwithSkill(ChessBoard board, int x, int y);
     public abstract void attack(ChessBoard board, Piece piece); //attack piece
-    public abstract void activateSKill(ArrayList<Piece> pieces, ChessBoard board);
+    public void activateSkill(ChessBoard board) {
+        this.chessSkill.activateSkill(board, this);
+    }
     public void getAttacked(Piece piece) {
-        int damage = piece.baseAttack - this.defendShield;
+        int damage = piece.baseAttack - this.baseDefense;
         this.setHp(this.hp - (Math.max(damage, 0)));
     }
     public abstract void getSkillAttacked(Piece piece);
     public void killPiece(ChessBoard board, Piece piece) {
+        piece.setStatus(false);
         board.removeAt(piece.posX, piece.posY);
         this.move(piece.posX, piece.posY);
     }

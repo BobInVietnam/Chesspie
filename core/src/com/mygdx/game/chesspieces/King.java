@@ -3,8 +3,6 @@ package com.mygdx.game.chesspieces;
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.skills.KingSkill;
 
-import java.util.ArrayList;
-
 public class King extends Piece{
     public King() {}
     public King(int x, int y) {
@@ -69,7 +67,7 @@ public class King extends Piece{
 
     @Override
     public boolean canKillwithSkill(ChessBoard board, int x, int y) {
-        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getDefendShield();
+        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getBaseDefense();
     }
 
     public void attack(ChessBoard board, Piece piece) {
@@ -79,15 +77,8 @@ public class King extends Piece{
         }
     }
 
-    @Override
-    public void activateSKill(ArrayList<Piece> pieces, ChessBoard board) {
-//        if(this.inSkillRange(board)) {
-//            this.getChessSkill().activateSkill(pieces,  );
-//        }
-    }
-
     public void getSkillAttacked(Piece piece) {
-        this.setHp(this.getHp() + this.getDefendShield() - piece.getChessSkill().getSkillDmg());
+        this.setHp(this.getHp() + this.getBaseDefense() - piece.getChessSkill().getSkillDmg());
     }
 
     @Override

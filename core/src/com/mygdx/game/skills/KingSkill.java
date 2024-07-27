@@ -3,11 +3,9 @@ package com.mygdx.game.skills;
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.*;
 
-import java.util.ArrayList;
-
 public class KingSkill extends Skill{
     public KingSkill() {
-        isAura = true;
+        skillActivation = SkillActivation.PASSIVE;
     }
 
     @Override
@@ -50,9 +48,8 @@ public class KingSkill extends Skill{
     }
 
     @Override
-    public void activateSkill(ArrayList<Piece> enemies, Piece piece) {
-//        for (Piece piece : enemies) {
-//            piece.setDefendShield(5);
-//        }
+    public void activateSkill(ChessBoard board, Piece piece) {
+
     }
+
 }
