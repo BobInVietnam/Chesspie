@@ -13,7 +13,7 @@ public class King extends Piece{
     }
     public King(int x, int y, String color, int maxHp, int baseAttack) {
         super(x, y, color, maxHp, baseAttack);
-        this.chessSkill = new KingSkill();
+        this.chessSkill = new KingSkill(5);
     }
 
     public Character getSymbol() {
@@ -51,23 +51,8 @@ public class King extends Piece{
     }
 
     @Override
-    public boolean canUseSkillOn(ChessBoard board, int x, int y) {
-        return chessSkill.canUseSkillOn(board, x, y, this);
-    }
-
-    @Override
     public boolean inSkillRange(ChessBoard board) {
         return this.getChessSkill().inSkillRange(board, this);
-    }
-
-    @Override
-    public boolean inSkillRange(ChessBoard board, int x, int y) {
-        return chessSkill.inSkillRange(board, x, y, this);
-    }
-
-    @Override
-    public boolean canKillwithSkill(ChessBoard board, int x, int y) {
-        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getBaseDefense();
     }
 
     public void attack(ChessBoard board, Piece piece) {
@@ -75,14 +60,5 @@ public class King extends Piece{
         else {
             piece.getAttacked(this);
         }
-    }
-
-    public void getSkillAttacked(Piece piece) {
-        this.setHp(this.getHp() + this.getBaseDefense() - piece.getChessSkill().getSkillDmg());
-    }
-
-    @Override
-    public void killOtherPiecebySkill(ChessBoard board, int x, int y) {
-        if(this.canKillwithSkill(board, x, y)) board.removeAt(x, y);
     }
 }

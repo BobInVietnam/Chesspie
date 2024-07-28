@@ -2,8 +2,7 @@ package com.mygdx.game.chessboard;
 
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.chesspieces.Piece;
-
-import java.util.ArrayList;
+import com.mygdx.game.statusfxs.StatusEffect;
 
 public class ChessBoard {
     public static final int WIDTH = 8;
@@ -44,6 +43,25 @@ public class ChessBoard {
             if (pieces.get(i).getPosX() == x && pieces.get(i).getPosY() == y) {
                 pieces.removeIndex(i);
                 i--;
+            }
+        }
+    }
+    public void refresh(boolean whiteTurn) {
+        for (Piece p: pieces) {
+            if (p.getHp() <= 0) {
+                pieces.removeValue(p, false);
+            }
+             if (p.getColor().equals("white") == whiteTurn)
+                 activateStatusEffects(p);
+        }
+    }
+    private void activateStatusEffects(Piece p) {
+        p.setAttack(p.getBaseAttack());
+        p.setDefense(p.getBaseDefense());
+        for (StatusEffect s: p.getStatus()) {
+            s.activate(p);
+            if (s.duration == 0) {
+                p.getStatus().removeValue(s, false);
             }
         }
     }

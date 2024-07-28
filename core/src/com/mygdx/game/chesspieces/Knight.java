@@ -1,6 +1,7 @@
 package com.mygdx.game.chesspieces;
 
 import com.mygdx.game.chessboard.ChessBoard;
+import com.mygdx.game.skills.KnightSkill;
 
 public class Knight extends Piece {
     public Knight(int x, int y) {
@@ -11,6 +12,7 @@ public class Knight extends Piece {
     }
     public Knight(int x, int y, String color, int maxHp, int baseAttack) {
         super(x, y, color, maxHp, baseAttack);
+        chessSkill = new KnightSkill(7);
     }
 
     public Character getSymbol() {
@@ -57,40 +59,14 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean canUseSkillOn(ChessBoard board, int x, int y) {
-        return false;
-    }
-
-    @Override
     public boolean inSkillRange(ChessBoard board) {
         return false;
     }
-
-    @Override
-    public boolean inSkillRange(ChessBoard board, int x, int y) {
-        return false;
-    }
-
-    @Override
-    public boolean canKillwithSkill(ChessBoard board, int x, int y) {
-        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getBaseDefense();
-    }
-
 
     public void attack(ChessBoard board, Piece piece) {
         if (canKillwithBaseAtk(board, piece)) killPiece(board, piece);
         else {
             piece.getAttacked(this);
         }
-    }
-
-    @Override
-    public void getSkillAttacked(Piece piece) {
-        this.setHp(this.getHp() + this.getBaseDefense() - piece.getChessSkill().getSkillDmg());
-    }
-
-    @Override
-    public void killOtherPiecebySkill(ChessBoard board, int x, int y) {
-        if(this.canKillwithSkill(board, x, y)) board.removeAt(x, y);
     }
 }

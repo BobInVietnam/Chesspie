@@ -135,15 +135,15 @@ public class GameplayScreen implements Screen {
     this.skillChosen = false;
     gameRenderer.pieceChosen = pieceChosen;
     gameRenderer.chosenPiece = piece;
+    gameRenderer.skillChosen = false;
     gameRenderer.skillRangeDisplay = false;
   }
   private void switchSide() {
-    activateStatusEffects(whiteTurn);
+    board.refresh(whiteTurn);
     pieceHitboxes = updatePieceHitboxes();
+    setSelectState(false, null);
     whiteTurn = !whiteTurn;
     gui.setTurnIndicatorText(whiteTurn);
-  }
-  private void activateStatusEffects(boolean whiteSide) {
   }
   private void selectPiece() {
     for (Piece piece: pieceHitboxes.keySet()) {
@@ -162,8 +162,14 @@ public class GameplayScreen implements Screen {
     piece.attack(board, board.getAt(posX, posY));
     switchSide();
   }
-  private void useSkill(){};
-  private void useTargetedSkill(int posX, int posY) {}
+  private void useSkill(){
+    chosenPiece.activateSkill(board);
+    switchSide();
+  };
+  private void useTargetedSkill(int posX, int posY) {
+    chosenPiece.activateTargetedSkill(board, posX, posY);
+    switchSide();
+  }
   private void handleMouseInput() {
     if (Gdx.input.justTouched()) {
       //Select piece. Else deselect piece
@@ -172,16 +178,16 @@ public class GameplayScreen implements Screen {
       } else {
         int posX = (int) (mousePos.x - cornerX);
         int posY = (int) (mousePos.y - cornerY);
-        if (skillChosen && chosenPiece.canUseSkillOn(board, posX, posY)) {
+        if (skillChosen && chosenPiece.inSkillRange(board, posX, posY)) {
           useTargetedSkill(posX, posY);
-        }
-        if (chosenPiece.canMove(board, posX, posY)) {
+        } else if (chosenPiece.canMove(board, posX, posY)) {
           movePiece(chosenPiece, board, posX, posY);
         } else if (chosenPiece.inBaseAtkRange(board, posX, posY)) {
           attackPiece(chosenPiece, board, posX, posY);
+        } else {
+          setSelectState(false, null);
+          gui.hideInfo();
         }
-        setSelectState(false, null);
-        gui.hideInfo();
       }
     }
   }

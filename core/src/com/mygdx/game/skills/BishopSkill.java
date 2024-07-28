@@ -6,6 +6,10 @@ import com.mygdx.game.chesspieces.*;
 import java.util.ArrayList;
 
 public class BishopSkill extends Skill{
+    public BishopSkill(int dmg) {
+        skillActivation = SkillActivation.TARGET;
+        skillDmg = dmg;
+    }
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {
         int posX = piece.getPosX();
@@ -32,7 +36,7 @@ public class BishopSkill extends Skill{
     }
 
     @Override
-    public void activateSkill(ChessBoard board, Piece piece) {
-
+    public void activateTargetedSkill(ChessBoard board, Piece piece, int x, int y) {
+        board.getAt(x, y).getSkillAttacked(piece);
     }
 }

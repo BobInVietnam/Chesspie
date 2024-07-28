@@ -4,8 +4,9 @@ import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.*;
 
 public class KingSkill extends Skill{
-    public KingSkill() {
+    public KingSkill(int buff) {
         skillActivation = SkillActivation.PASSIVE;
+        skillDmg = buff;
     }
 
     @Override
