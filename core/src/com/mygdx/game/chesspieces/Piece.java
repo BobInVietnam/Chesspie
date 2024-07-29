@@ -18,6 +18,7 @@ public abstract class Piece {
     private int defense;
     private boolean isAlive; // true means alive, false means dead
     private Array<StatusEffect> status;
+    private boolean evenMove;
     Skill chessSkill;
 
     public int getPosX() {
@@ -56,6 +57,9 @@ public abstract class Piece {
 
     public Skill getChessSkill() {
         return chessSkill;
+    }
+    public boolean isEvenMove() {
+        return evenMove;
     }
 
     public void setPosX(int posX) {
@@ -121,6 +125,7 @@ public abstract class Piece {
         this.baseDefense = 0;
         this.defense = 0;
         this.status = new Array<>();
+        evenMove = true;
     }
 
     public abstract Character getSymbol();
@@ -128,23 +133,27 @@ public abstract class Piece {
     public void move(int x, int y) {
         this.setPosX(x);
         this.setPosY(y);
+        evenMove = !evenMove;
     }
     public abstract boolean inBaseAtkRange(ChessBoard board, int x, int y);
     public boolean canUseSkillOn(ChessBoard board, int x, int y) {
         return chessSkill.canUseSkillOn(board, x, y, this);
     }
-    public abstract boolean inSkillRange(ChessBoard board);
     public boolean inSkillRange(ChessBoard board, int x, int y) {
         return chessSkill.inSkillRange(board, x, y, this);
     }
     public boolean canKillwithBaseAtk(ChessBoard board, Piece piece) {
         return (this.attack - piece.defense >= piece.hp);
     }
-    public abstract void attack(ChessBoard board, Piece piece); //attack piece
+    public void attack(ChessBoard board, Piece piece) {
+        evenMove = !evenMove;
+    } //attack piece
     public void activateSkill(ChessBoard board) {
+        evenMove = !evenMove;
         this.chessSkill.activateSkill(board, this);
     }
     public void activateTargetedSkill(ChessBoard board, int x, int y) {
+        evenMove = !evenMove;
         this.chessSkill.activateTargetedSkill(board, this, x, y);
     }
     public void getAttacked(Piece piece) {

@@ -93,12 +93,8 @@ public class Bishop extends Piece{
     }
 
     @Override
-    public boolean inSkillRange(ChessBoard board) {
-        return false;
-    }
-
-    @Override
     public void attack(ChessBoard board, Piece piece) {
+        super.attack(board, piece);
         if (canKillwithBaseAtk(board, piece)) killPiece(board, piece);
         else {
             piece.getAttacked(this);

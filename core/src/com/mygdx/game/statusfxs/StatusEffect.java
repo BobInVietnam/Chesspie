@@ -7,7 +7,8 @@ public abstract class StatusEffect {
   protected int strength;
   public enum Effect {
     PROTECTION,
-    KINGS_ORDER
+    KINGS_ORDER,
+    PAWN_SHIELD
   }
   public StatusEffect(int duration, int strength) {
     this.duration = duration;
@@ -38,6 +39,8 @@ public abstract class StatusEffect {
       case KINGS_ORDER:
         piece.applyStatus(new KingsOrder(duration, strength));
         break;
+      case PAWN_SHIELD:
+        piece.applyStatus(new PawnShield(strength, piece));
     }
   }
   public void activate(Piece piece) {

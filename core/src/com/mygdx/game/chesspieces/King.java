@@ -50,12 +50,8 @@ public class King extends Piece{
         }
     }
 
-    @Override
-    public boolean inSkillRange(ChessBoard board) {
-        return this.getChessSkill().inSkillRange(board, this);
-    }
-
     public void attack(ChessBoard board, Piece piece) {
+        super.attack(board, piece);
         if (canKillwithBaseAtk(board, piece)) killPiece(board, piece);
         else {
             piece.getAttacked(this);

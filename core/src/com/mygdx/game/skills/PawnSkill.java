@@ -33,7 +33,7 @@ public class PawnSkill extends Skill{
 
     @Override
     public void activateSkill(ChessBoard board, Piece piece) {
-        StatusEffect.apply(piece, StatusEffect.Effect.PROTECTION, 1, 1000);
+        StatusEffect.apply(piece, StatusEffect.Effect.PAWN_SHIELD, 1, 5);
     }
 
 }
