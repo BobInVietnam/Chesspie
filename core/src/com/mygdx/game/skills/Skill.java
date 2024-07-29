@@ -11,9 +11,9 @@ public abstract class Skill {
     protected SkillEffect skillEffect;
     protected SkillActivation skillActivation;
 
-    public Skill() {};
+    public Skill() {}
 
-    public int getSkillID() {return skillID;}
+  public int getSkillID() {return skillID;}
 
     public int getSkillDmg() {
         return skillDmg;

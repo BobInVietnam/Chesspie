@@ -22,15 +22,14 @@ public class ChessBoard {
     }
 
     public boolean validate(int x, int y) {
-        if ((x >= 1 && x <= 8) && (y >= 1 && y <= 8)) {
-            return true;
-        }
-        return false;
+      return (x >= 1 && x <= 8) && (y >= 1 && y <= 8);
     }
 
     public Piece getAt(int x, int y) {
         Piece rand = null;
-        for (Piece piece : pieces) {
+        int l = pieces.size;
+        for (int i = 0; i < l; i++) {
+            Piece piece = pieces.get(i);
             if (piece.getPosX() == x && piece.getPosY() == y) {
                 rand = piece;
             }
@@ -60,7 +59,7 @@ public class ChessBoard {
         p.setDefense(p.getBaseDefense());
         for (StatusEffect s: p.getStatus()) {
             s.activate(p);
-            if (s.duration == 0) {
+            if (s.getDuration() == 0) {
                 p.getStatus().removeValue(s, false);
             }
         }

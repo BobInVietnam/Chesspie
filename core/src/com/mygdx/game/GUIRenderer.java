@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.sceneguis.SceneGUI;
 
 public class GUIRenderer {
-  private Stage stage;
+  private final Stage stage;
   private SceneGUI rootTable;
   private final Skin skin;
   private final Texture ui;

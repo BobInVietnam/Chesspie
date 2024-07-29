@@ -14,10 +14,10 @@ import com.mygdx.game.screens.GameplayScreen;
 import java.util.HashMap;
 
 public class GameRenderer {
-  private SpriteBatch batch;
-  private ChessBoard board;
-  private HashMap<Character, Integer> pieceToValue;
-  private OrthographicCamera camera;
+  private final SpriteBatch batch;
+  private final ChessBoard board;
+  private final HashMap<Character, Integer> pieceToValue;
+  private final OrthographicCamera camera;
 
   private final Texture boardTexture;
   private final Texture pieces;

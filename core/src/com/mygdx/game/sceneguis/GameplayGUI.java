@@ -32,7 +32,7 @@ public abstract class GameplayGUI extends SceneGUI {
   private Table turnIndicator;
   private Label turnIndicatorText;
   private static final boolean DEBUG_MODE = true;
-  private Skin skin;
+  private final Skin skin;
 
   public GameplayGUI(Skin skin) {
     // Piece info table

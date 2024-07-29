@@ -16,23 +16,23 @@ import java.util.HashMap;
 
 public class GameplayScreen implements Screen {
   final Chesspie game;
-  private OrthographicCamera camera;
-  private GameRenderer gameRenderer;
-  private InputAdapter inputHandler;
-  private ChessBoard board;
+  private final OrthographicCamera camera;
+  private final GameRenderer gameRenderer;
+  private final InputAdapter inputHandler;
+  private final ChessBoard board;
   private HashMap<Piece, Rectangle> pieceHitboxes;
   public static float cornerX;
   public static float cornerY;
-  private Vector2 mousePos;
+  private final Vector2 mousePos;
   private Vector3 mousePos3;
   private boolean whiteTurn;
   public boolean pieceChosen;
   public boolean skillChosen;
   public Piece chosenPiece;
 
-  private final int TIMER = 120; // Timer before the game automatically closes
+  private final int TIMER = 300; // Timer before the game automatically closes
 
-  private GameplayGUI gui;
+  private final GameplayGUI gui;
 
   public GameplayScreen(Chesspie game) {
     this.game = game;
@@ -138,7 +138,17 @@ public class GameplayScreen implements Screen {
     gameRenderer.skillChosen = false;
     gameRenderer.skillRangeDisplay = false;
   }
+  private void activatePassiveSkills(boolean whiteTurn) {
+    int l = board.pieces.size;
+    for (int i = 0; i < l; i++) {
+      Piece p = board.pieces.get(i);
+      if (p.getColor().equals("white") == whiteTurn
+          && p.getChessSkill().getSkillActivation() == SkillActivation.PASSIVE)
+        p.activateSkill(board);
+    }
+  }
   private void switchSide() {
+    activatePassiveSkills(whiteTurn);
     board.refresh(whiteTurn);
     pieceHitboxes = updatePieceHitboxes();
     setSelectState(false, null);
@@ -165,7 +175,8 @@ public class GameplayScreen implements Screen {
   private void useSkill(){
     chosenPiece.activateSkill(board);
     switchSide();
-  };
+  }
+
   private void useTargetedSkill(int posX, int posY) {
     chosenPiece.activateTargetedSkill(board, posX, posY);
     switchSide();

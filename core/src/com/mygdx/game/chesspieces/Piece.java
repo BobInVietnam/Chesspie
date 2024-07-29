@@ -85,7 +85,18 @@ public abstract class Piece {
         this.isAlive = alive;
     }
     public void applyStatus(StatusEffect s) {
-            status.add(s);
+        for (StatusEffect s0: status) {
+            if (s0.getClass().equals(s.getClass())) {
+                if (s.getStrength() > s0.getStrength()) {
+                    status.set(status.indexOf(s0, false), s);
+                }
+                if (s.getStrength() == s0.getStrength()) {
+                    s0.setDuration(s.getDuration() + s0.getDuration());
+                }
+                return;
+            }
+        }
+        status.add(s);
     }
     public Piece() {}
 
