@@ -46,6 +46,7 @@ public class GameplayScreen implements Screen {
         } else if (chosenPiece.getChessSkill().getSkillActivation() == SkillActivation.TRIGGER) {
           useSkill();
         }
+        gui.skillButtonCheck(!skillChosen);
       }
 
       @Override
@@ -152,9 +153,25 @@ public class GameplayScreen implements Screen {
     board.refresh(whiteTurn);
     pieceHitboxes = updatePieceHitboxes();
     setSelectState(false, null);
+    gui.skillButtonCheck(skillChosen);
+    if (isWinState()) return;
     whiteTurn = !whiteTurn;
     gui.setTurnIndicatorText(whiteTurn);
   }
+
+  private boolean isWinState() {
+    switch (board.boardState) {
+      case WHITE_WON:
+        System.out.println("WHITE WON! CONGRATZ!");
+        return true;
+      case BLACK_WON:
+        System.out.println("BLACK WON! CONGRATZ!");
+        return true;
+      default:
+    }
+    return false;
+  }
+
   private void selectPiece() {
     for (Piece piece: pieceHitboxes.keySet()) {
       if (pieceHitboxes.get(piece).contains(mousePos) && ((piece.getColor().equals("white")) == whiteTurn)) {
@@ -206,6 +223,7 @@ public class GameplayScreen implements Screen {
     for (Piece piece: pieceHitboxes.keySet()) {
       if (pieceHitboxes.get(piece).contains(mousePos)) {
         if ((piece.getColor().equals("white")) == whiteTurn) {
+          if (pieceChosen) return;
           gui.showInfo(piece);
           return;
         } else {

@@ -56,15 +56,30 @@ public abstract class GameplayGUI extends SceneGUI {
   private Image loadImage(GUIRenderer.BitIcon icon) {
     return new Image(skin.get(icon.name(),TextureRegionDrawable.class));
   }
+  private Table createTable(boolean isDarkMode) {
+    Table table = new Table();
+    if (isDarkMode) {
+      table.setBackground(skin.get("BlockDarkSkin", NinePatchDrawable.class));
+    } else {
+      table.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
+    }
+    return table;
+  }
+  private Label createLabel(String placeholder, float fontScale, boolean isDarkMode) {
+    Label label;
+    if (isDarkMode) {
+      label = new Label(placeholder, skin, "LabelDarkSkin");
+    } else {
+      label = new Label(placeholder, skin, "LabelSkin");
+    }
+    label.setFontScale(fontScale);
+    return label;
+  }
   private void initializeStats() {
-    attack = new Label("0", skin, "LabelSkin");
-    attack.setFontScale(0.5f);
-    enemyAttack = new Label("0", skin, "LabelSkin");
-    enemyAttack.setFontScale(0.5f);
-    defense = new Label("0", skin, "LabelSkin");
-    defense.setFontScale(0.5f);
-    enemyDefense = new Label("0", skin, "LabelSkin");
-    enemyDefense.setFontScale(0.5f);
+    attack = createLabel("0", 0.5f, false);
+    enemyAttack = createLabel("0", 0.5f, false);
+    defense = createLabel("0", 0.5f, false);
+    enemyDefense = createLabel("0", 0.5f, false);
   }
   private void createSkillButton() {
     skill1 = new ImageButton(skin.get("ImageButtonSkin", ImageButton.ImageButtonStyle.class));
@@ -85,14 +100,15 @@ public abstract class GameplayGUI extends SceneGUI {
     });
     skill1.getImageCell().expand().fill();
     skill1.getStyle().imageUp = skin.get("SKILL1", TextureRegionDrawable.class);
+    skill1.getStyle().imageChecked = skin.get("SKILL2", TextureRegionDrawable.class);
   }
   private void initializePlayerBoardComponents() {
-    pieceInfoBoard = new Table();
-    pieceInfoBoard.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
+    pieceInfoBoard = createTable(false);
     pieceInfoBoard.setDebug(DEBUG_MODE);
     pieceAvatar = loadImage(GUIRenderer.BitIcon.SKILL1);// Will be replaced with actual piece avatar assets
-    pieceHealth = new Label("0/0", skin, "LabelSkin");
+    pieceHealth = createLabel("0", 1f, false);
   }
+
   private void createPlayerBoard() {
     pieceInfoBoard.pad(15, 15, 15, 15);
     pieceInfoBoard.left();
@@ -108,11 +124,10 @@ public abstract class GameplayGUI extends SceneGUI {
     pieceInfoBoard.add(info).fill().expand();
   }
   private void initializeEnemyBoardComponents() {
-    enemyPieceInfoBoard = new Table();
-    enemyPieceInfoBoard.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
+    enemyPieceInfoBoard = createTable(false);
     enemyPieceInfoBoard.setDebug(DEBUG_MODE);
     enemyPieceAvatar = loadImage(GUIRenderer.BitIcon.SKILL2);// Will be replaced with actual piece avatar assets
-    enemyPieceHealth = new Label("0/0", skin, "LabelSkin");
+    enemyPieceHealth = createLabel("0", 1f, false);
   }
   private void createEnemyBoard() {
     enemyPieceInfoBoard.pad(15, 15, 15, 15);
@@ -129,17 +144,14 @@ public abstract class GameplayGUI extends SceneGUI {
     enemyPieceInfoBoard.add(enemyPieceAvatar).size(60).expandY();
   }
   private void createTimer() {
-    timerBoard = new Table();
-    timerBoard.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
-    timerDisplay = new Label("Timer: 00:00", skin, "LabelSkin");
-    timerDisplay.setFontScale(0.7f);
+    timerBoard = createTable(false);
+    timerDisplay = createLabel("Timer: 0:00.00", 0.7f, false);
     timerBoard.padLeft(15);
     timerBoard.add(timerDisplay).left();
   }
   private void createTurnIndicator() {
-    turnIndicator = new Table();
-    turnIndicator.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
-    turnIndicatorText = new Label("W", skin, "LabelSkin");
+    turnIndicator = createTable(false);
+    turnIndicatorText = createLabel("W", 1f, false);
     turnIndicator.add(turnIndicatorText);
   }
   private void loadComponents() {
@@ -157,6 +169,9 @@ public abstract class GameplayGUI extends SceneGUI {
   public abstract void buttonClicked();
   public abstract void buttonEnter();
   public abstract void buttonExit();
+  public void skillButtonCheck(boolean checked) {
+    skill1.setChecked(checked);
+  }
   public void hideInfo() {
     pieceInfoBoard.setVisible(false);
     skill1.setVisible(false);

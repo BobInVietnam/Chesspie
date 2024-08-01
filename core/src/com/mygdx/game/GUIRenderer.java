@@ -41,12 +41,20 @@ public class GUIRenderer {
     NinePatchDrawable block = new NinePatchDrawable(
         new NinePatch(new TextureRegion(ui, 190, 60, 23, 23), 10, 10, 10, 10));
     skin.add("BlockSkin", block);
+    NinePatchDrawable blockDark = new NinePatchDrawable(
+        new NinePatch(new TextureRegion(ui, 213, 60, 23, 23), 8, 8, 8, 8));
+    skin.add("BlockDarkSkin", blockDark);
 
     FreeTypeFontGenerator fontGen = new FreeTypeFontGenerator(Gdx.files.internal("Font/pc-senior.regular.ttf"));
     FreeTypeFontGenerator.FreeTypeFontParameter fontParam = new FreeTypeFontGenerator.FreeTypeFontParameter();
     fontParam.size = 28;
     fontParam.color = Color.DARK_GRAY;
     BitmapFont font = fontGen.generateFont(fontParam);
+    FreeTypeFontGenerator font2Gen = new FreeTypeFontGenerator(Gdx.files.internal("Font/cnc-red-alert-lan.ttf"));
+    FreeTypeFontGenerator.FreeTypeFontParameter font2Param = new FreeTypeFontGenerator.FreeTypeFontParameter();
+    fontParam.size = 28;
+    fontParam.color = Color.DARK_GRAY;
+    BitmapFont font2 = fontGen.generateFont(fontParam);
 
     NinePatchDrawable button = new NinePatchDrawable(
         new NinePatch(new TextureRegion(ui, 190, 0, 60, 60), 25, 25, 25, 25));
@@ -57,6 +65,10 @@ public class GUIRenderer {
 
     Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.DARK_GRAY);
     skin.add("LabelSkin", labelStyle);
+    Label.LabelStyle label2Style = new Label.LabelStyle(font, Color.WHITE);
+    skin.add("LabelDarkSkin", label2Style);
+    Label.LabelStyle labelSmallStyle = new Label.LabelStyle(font2, Color.DARK_GRAY);
+    skin.add("LabelSmallSkin", labelSmallStyle);
 
     for (BitIcon bi: BitIcon.values()) {
       TextureRegionDrawable icon = new TextureRegionDrawable(

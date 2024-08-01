@@ -1,17 +1,27 @@
 package com.mygdx.game.chessboard;
 
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.chesspieces.King;
 import com.mygdx.game.chesspieces.Piece;
 import com.mygdx.game.statusfxs.StatusEffect;
 
 public class ChessBoard {
+    public enum State {
+        START,
+        PLAYING,
+        BLACK_WON,
+        WHITE_WON
+    }
     public static final int WIDTH = 8;
     public static final int HEIGHT = 8;
     public Array<Piece> pieces = new Array<>();
+    public State boardState;
 
     private int boardID;
 
-    public ChessBoard(){}
+    public ChessBoard(){
+        boardState = State.START;
+    }
 
     public int getBoardID() {
         return boardID;
@@ -47,11 +57,22 @@ public class ChessBoard {
     }
     public void refresh(boolean whiteTurn) {
         for (Piece p: pieces) {
-            if (p.getHp() <= 0) {
-                pieces.removeValue(p, false);
+            checkDead(p);
+            if (p.getColor().equals("white") == whiteTurn)
+             activateStatusEffects(p);
+            checkDead(p);
+        }
+    }
+    private void checkDead(Piece p) {
+        if (p.getHp() <= 0) {
+            if (p.getClass().equals(King.class)) {
+                if (p.getColor().equals("white")){
+                    boardState = State.BLACK_WON;
+                } else {
+                    boardState = State.WHITE_WON;
+                }
             }
-             if (p.getColor().equals("white") == whiteTurn)
-                 activateStatusEffects(p);
+            pieces.removeValue(p, false);
         }
     }
     private void activateStatusEffects(Piece p) {
