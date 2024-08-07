@@ -30,7 +30,7 @@ public class GameplayScreen implements Screen {
   public boolean skillChosen;
   public Piece chosenPiece;
 
-  private final int TIMER = 300; // Timer before the game automatically closes
+  private final int TIMER = 1800; // Timer before the game automatically closes
 
   private final GameplayGUI gui;
 
@@ -52,11 +52,14 @@ public class GameplayScreen implements Screen {
       @Override
       public void buttonEnter() {
         gameRenderer.skillRangeDisplay = true;
+        if (chosenPiece != null)
+          showSkillInfo(chosenPiece);
       }
 
       @Override
       public void buttonExit() {
         gameRenderer.skillRangeDisplay = false;
+        hideSkillInfo();
       }
 
       @Override

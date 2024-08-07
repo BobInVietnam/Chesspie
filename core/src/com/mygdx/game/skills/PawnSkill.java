@@ -8,16 +8,13 @@ import java.util.ArrayList;
 
 public class PawnSkill extends Skill{
     public PawnSkill(int shield) {
+        skillID = 3;
         skillActivation = SkillActivation.TRIGGER;
         skillDmg = shield;
+        setSkillDetails(skillID);
     }
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {
-        return false;
-    }
-
-    @Override
-    public boolean inSkillRange(ChessBoard board, Piece piece) {
         return false;
     }
 

@@ -13,7 +13,7 @@ public class Rook extends Piece {
 
     public Rook(int x, int y, String color, int maxHp, int baseAttack) {
         super(x, y, color, maxHp, baseAttack);
-        chessSkill = new RookSkill(5);
+        chessSkill = new RookSkill(8);
     }
 
     public Character getSymbol() {

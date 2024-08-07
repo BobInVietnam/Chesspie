@@ -7,8 +7,10 @@ import java.util.ArrayList;
 
 public class BishopSkill extends Skill{
     public BishopSkill(int dmg) {
+        skillID = 0;
         skillActivation = SkillActivation.TARGET;
         skillDmg = dmg;
+        setSkillDetails(skillID);
     }
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {
@@ -16,11 +18,6 @@ public class BishopSkill extends Skill{
         int posY = piece.getPosY();
         return !(x > posX + 2 || x < posX - 2 || y > posY + 2 || y < posY - 2
             || (x == posX && y == posY));
-    }
-
-    @Override
-    public boolean inSkillRange(ChessBoard board, Piece piece) {
-        return false;
     }
 
     @Override

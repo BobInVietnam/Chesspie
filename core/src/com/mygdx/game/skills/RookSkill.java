@@ -9,15 +9,13 @@ import java.util.ArrayList;
 
 public class RookSkill extends Skill{
     public RookSkill(int shield) {
+        skillID = 5;
         skillActivation = SkillActivation.TRIGGER;
+        skillDmg = shield;
+        setSkillDetails(skillID);
     }
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {
-        return false;
-    }
-
-    @Override
-    public boolean inSkillRange(ChessBoard board, Piece piece) {
         return false;
     }
 
@@ -33,7 +31,7 @@ public class RookSkill extends Skill{
 
     @Override
     public void activateSkill(ChessBoard board, Piece piece) {
-        StatusEffect.apply(piece, StatusEffect.Effect.PROTECTION, 3, 5);
+        StatusEffect.apply(piece, StatusEffect.Effect.PROTECTION, 3, skillDmg);
     }
 
 }

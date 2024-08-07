@@ -1,6 +1,7 @@
 package com.mygdx.game.sceneguis;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -17,18 +18,26 @@ public abstract class GameplayGUI extends SceneGUI {
   private Table pieceInfoBoard;
   private Image pieceAvatar;
   private Label pieceHealth;
+
   private ImageButton skill1;
+  private Table skillDescriptionPane;
+  private Label skillName;
+  private Label skillDescription;
+
   private Table enemyPieceInfoBoard;
   private Image enemyPieceAvatar;
   private Label enemyPieceHealth;
+
   private Label attack;
   private Label defense;
   private Label enemyAttack;
   private Label enemyDefense;
+
   private float timer;
   private Label timerDisplay;
   private Table timerBoard;
   private boolean timeRunning;
+
   private Table turnIndicator;
   private Label turnIndicatorText;
   private static final boolean DEBUG_MODE = true;
@@ -39,6 +48,7 @@ public abstract class GameplayGUI extends SceneGUI {
     this.skin = skin;
 
     createSkillButton();
+    createSkillDescriptionPane();
     initializeStats();
     initializePlayerBoardComponents();
     createPlayerBoard();
@@ -52,6 +62,7 @@ public abstract class GameplayGUI extends SceneGUI {
 
     hideInfo();
     hideEnemyInfo();
+    hideSkillInfo();
   }
   private Image loadImage(GUIRenderer.BitIcon icon) {
     return new Image(skin.get(icon.name(),TextureRegionDrawable.class));
@@ -63,23 +74,32 @@ public abstract class GameplayGUI extends SceneGUI {
     } else {
       table.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
     }
+    table.setDebug(DEBUG_MODE);
     return table;
   }
-  private Label createLabel(String placeholder, float fontScale, boolean isDarkMode) {
+  private Label createLabel(String placeholder, float fontScale, boolean isDarkMode, boolean isSmall) {
     Label label;
-    if (isDarkMode) {
-      label = new Label(placeholder, skin, "LabelDarkSkin");
+    if (isSmall) {
+      if (isDarkMode) {
+        label = new Label(placeholder, skin, "LabelSmallDarkSkin");
+      } else {
+        label = new Label(placeholder, skin, "LabelSmallSkin");
+      }
     } else {
-      label = new Label(placeholder, skin, "LabelSkin");
+      if (isDarkMode) {
+        label = new Label(placeholder, skin, "LabelDarkSkin");
+      } else {
+        label = new Label(placeholder, skin, "LabelSkin");
+      }
     }
     label.setFontScale(fontScale);
     return label;
   }
   private void initializeStats() {
-    attack = createLabel("0", 0.5f, false);
-    enemyAttack = createLabel("0", 0.5f, false);
-    defense = createLabel("0", 0.5f, false);
-    enemyDefense = createLabel("0", 0.5f, false);
+    attack = createLabel("0", 0.6f, false, false);
+    enemyAttack = createLabel("0", 0.6f, false, false);
+    defense = createLabel("0", 0.6f, false, false);
+    enemyDefense = createLabel("0", 0.6f, false, false);
   }
   private void createSkillButton() {
     skill1 = new ImageButton(skin.get("ImageButtonSkin", ImageButton.ImageButtonStyle.class));
@@ -102,18 +122,28 @@ public abstract class GameplayGUI extends SceneGUI {
     skill1.getStyle().imageUp = skin.get("SKILL1", TextureRegionDrawable.class);
     skill1.getStyle().imageChecked = skin.get("SKILL2", TextureRegionDrawable.class);
   }
+  private void createSkillDescriptionPane() {
+    skillDescriptionPane = createTable(true);
+    skillName = createLabel("Skill", 1, true, false);
+    skillName.setWrap(true);
+    skillDescription = createLabel(
+        "deals damage, buffs allies or self and many other effects can happen if you push this button, deals damage, buffs allies or self and many other effects can happen if you push this button",
+        1f, true, true);
+    skillDescription.setWrap(true);
+    skillDescriptionPane.add(skillName).center().fillX().expand().pad(10, 10, 0, 10);
+    skillDescriptionPane.row();
+    skillDescriptionPane.add(skillDescription).fill().expand().pad(10, 10, 10, 10);
+  }
   private void initializePlayerBoardComponents() {
     pieceInfoBoard = createTable(false);
-    pieceInfoBoard.setDebug(DEBUG_MODE);
     pieceAvatar = loadImage(GUIRenderer.BitIcon.SKILL1);// Will be replaced with actual piece avatar assets
-    pieceHealth = createLabel("0", 1f, false);
+    pieceHealth = createLabel("0", 1f, false, false);
   }
 
   private void createPlayerBoard() {
     pieceInfoBoard.pad(15, 15, 15, 15);
     pieceInfoBoard.left();
     Table info = new Table();
-    info.setDebug(DEBUG_MODE);
     info.add(pieceHealth).center().expand().colspan(4);
     info.row();
     info.add(loadImage(GUIRenderer.BitIcon.ATK)).size(25).expandX();
@@ -125,15 +155,13 @@ public abstract class GameplayGUI extends SceneGUI {
   }
   private void initializeEnemyBoardComponents() {
     enemyPieceInfoBoard = createTable(false);
-    enemyPieceInfoBoard.setDebug(DEBUG_MODE);
     enemyPieceAvatar = loadImage(GUIRenderer.BitIcon.SKILL2);// Will be replaced with actual piece avatar assets
-    enemyPieceHealth = createLabel("0", 1f, false);
+    enemyPieceHealth = createLabel("0", 1f, false, false);
   }
   private void createEnemyBoard() {
     enemyPieceInfoBoard.pad(15, 15, 15, 15);
     enemyPieceInfoBoard.right();
     Table info2 = new Table();
-    info2.setDebug(DEBUG_MODE);
     info2.add(enemyPieceHealth).center().expand().colspan(4);
     info2.row();
     info2.add(loadImage(GUIRenderer.BitIcon.ATK)).size(25).expandX();
@@ -145,13 +173,13 @@ public abstract class GameplayGUI extends SceneGUI {
   }
   private void createTimer() {
     timerBoard = createTable(false);
-    timerDisplay = createLabel("Timer: 0:00.00", 0.7f, false);
+    timerDisplay = createLabel("Timer: 0:00.00", 0.8f, false, false);
     timerBoard.padLeft(15);
     timerBoard.add(timerDisplay).left();
   }
   private void createTurnIndicator() {
     turnIndicator = createTable(false);
-    turnIndicatorText = createLabel("W", 1f, false);
+    turnIndicatorText = createLabel("W", 1.2f, false, false);
     turnIndicator.add(turnIndicatorText);
   }
   private void loadComponents() {
@@ -159,7 +187,11 @@ public abstract class GameplayGUI extends SceneGUI {
     this.left().top().add(pieceInfoBoard).size(300f, 80f).expandX().left();
     this.add(enemyPieceInfoBoard).size(300f, 80f).expandX().right();
     this.row().left();
-    this.add(skill1).size(100).expand();
+    Table t = new Table();
+    t.setDebug(DEBUG_MODE);
+    t.left().add(skill1).size(100).expand();
+    t.add(skillDescriptionPane).prefWidth(300);
+    this.add(t).expand();
     this.row().left();
     this.add(timerBoard).size(300, 80).left();
     this.add(turnIndicator).size(80, 80).right();
@@ -192,6 +224,14 @@ public abstract class GameplayGUI extends SceneGUI {
     enemyPieceHealth.setText(piece.getHp() + "/" + piece.getMaxHp());
     enemyAttack.setText(piece.getAttack());
     enemyDefense.setText(piece.getDefense());
+  }
+  public void hideSkillInfo() {
+    skillDescriptionPane.setVisible(false);
+  }
+  public void showSkillInfo(Piece piece) {
+    skillDescriptionPane.setVisible(true);
+    skillName.setText(piece.getChessSkill().getSkillName());
+    skillDescription.setText(piece.getChessSkill().getSkillDescription());
   }
   public void setPieceAvatar(Drawable image) {
     pieceAvatar.setDrawable(image);

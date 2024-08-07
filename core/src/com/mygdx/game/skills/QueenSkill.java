@@ -8,8 +8,10 @@ import java.util.ArrayList;
 
 public class QueenSkill extends Skill{
     public QueenSkill(int dmg) {
+        skillID = 4;
         skillActivation = SkillActivation.TARGET;
         skillDmg = dmg;
+        setSkillDetails(skillID);
     }
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {
@@ -17,11 +19,6 @@ public class QueenSkill extends Skill{
         int posY = piece.getPosY();
         return ((x <= posX + 3 && x >= posX - 3) && (y <= posY + 3 && y >= posY - 3)
         && (x == posX || y == posY || Math.abs(x - posX) == Math.abs(y - posY)));
-    }
-
-    @Override
-    public boolean inSkillRange(ChessBoard board, Piece piece) {
-        return false;
     }
 
     @Override

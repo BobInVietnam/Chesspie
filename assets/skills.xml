@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<skills>
+    <skill>
+        <id>0</id>
+        <name>Bishop's Skill</name>
+        <description>Deal 10 DMG to a selected target in 2 squares range.</description>
+    </skill>
+    <skill>
+        <id>1</id>
+        <name>King's Order</name>
+        <description>Buff allies' ATK and DEF by 5 in a 1 square range.</description>
+    </skill>
+    <skill>
+        <id>2</id>
+        <name>Knight's Skill</name>
+        <description>Deal 5 DMG to all enemies in a 1 square range.</description>
+    </skill>
+    <skill>
+        <id>3</id>
+        <name>Pawn's Shield</name>
+        <description>Gain 5 DEF. Expire when moving or attacking enemies.</description>
+    </skill>
+    <skill>
+        <id>4</id>
+        <name>Queen's Prowess</name>
+        <description>Deal 8 DMG to all enemies in a line in 3 squares diagonal, vertical or horizontal to the Queen.</description>
+    </skill>
+    <skill>
+        <id>5</id>
+        <name>Rook's Endurance</name>
+        <description>Gain 8 DEF in 3 turn.</description>
+    </skill>
+</skills>

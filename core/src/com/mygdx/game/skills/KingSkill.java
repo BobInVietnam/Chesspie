@@ -6,8 +6,10 @@ import com.mygdx.game.statusfxs.StatusEffect;
 
 public class KingSkill extends Skill{
     public KingSkill(int buff) {
+        skillID = 1;
         skillActivation = SkillActivation.PASSIVE;
         skillDmg = buff;
+        setSkillDetails(skillID);
     }
 
     @Override
@@ -16,25 +18,6 @@ public class KingSkill extends Skill{
         int posY = piece.getPosY();
         return !(x > posX + 1 || x < posX - 1 || y > posY + 1 || y < posY - 1
             || (x == posX && y == posY));
-    }
-
-    @Override
-    public boolean inSkillRange(ChessBoard board, Piece piece) {
-        int cnt = 0;
-        for(int j=-1;j<=1;j++) {
-            for(int k=-1;k<=1;k++) {
-                if(k != 0 || j != 0) {
-                    int newX = piece.getPosX() + j;
-                    int newY = piece.getPosY() + k;
-                    if(board.getAt(newX, newY) != null
-                            && board.getAt(newX, newY).getColor().equals(piece.getColor())) {
-                        cnt++;
-                    }
-                }
-            }
-        }
-
-        return cnt > 0;
     }
 
     @Override

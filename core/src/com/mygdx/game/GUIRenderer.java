@@ -47,14 +47,25 @@ public class GUIRenderer {
 
     FreeTypeFontGenerator fontGen = new FreeTypeFontGenerator(Gdx.files.internal("Font/pc-senior.regular.ttf"));
     FreeTypeFontGenerator.FreeTypeFontParameter fontParam = new FreeTypeFontGenerator.FreeTypeFontParameter();
-    fontParam.size = 28;
-    fontParam.color = Color.DARK_GRAY;
-    BitmapFont font = fontGen.generateFont(fontParam);
     FreeTypeFontGenerator font2Gen = new FreeTypeFontGenerator(Gdx.files.internal("Font/cnc-red-alert-lan.ttf"));
     FreeTypeFontGenerator.FreeTypeFontParameter font2Param = new FreeTypeFontGenerator.FreeTypeFontParameter();
-    fontParam.size = 28;
+    fontParam.size = 24;
     fontParam.color = Color.DARK_GRAY;
-    BitmapFont font2 = fontGen.generateFont(fontParam);
+    font2Param.size = 24;
+    font2Param.color = Color.WHITE;
+    BitmapFont font = fontGen.generateFont(fontParam);
+    BitmapFont fontDark = fontGen.generateFont(font2Param);
+    BitmapFont font2 = font2Gen.generateFont(fontParam);
+    BitmapFont font2Dark = font2Gen.generateFont(font2Param);
+
+    Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
+    skin.add("LabelSkin", labelStyle);
+    Label.LabelStyle labelDarkStyle = new Label.LabelStyle(fontDark, Color.WHITE);
+    skin.add("LabelDarkSkin", labelDarkStyle);
+    Label.LabelStyle labelSmallStyle = new Label.LabelStyle(font2, Color.WHITE);
+    skin.add("LabelSmallSkin", labelSmallStyle);
+    Label.LabelStyle labelSmallDarkStyle = new Label.LabelStyle(font2Dark, Color.WHITE);
+    skin.add("LabelSmallDarkSkin", labelSmallDarkStyle);
 
     NinePatchDrawable button = new NinePatchDrawable(
         new NinePatch(new TextureRegion(ui, 190, 0, 60, 60), 25, 25, 25, 25));
@@ -62,13 +73,6 @@ public class GUIRenderer {
     skin.add("ImageButtonSkin", iconButton);
     TextButton.TextButtonStyle gameButtonStyle = new TextButton.TextButtonStyle(button, button, button, font);
     skin.add("TextButtonSkin", gameButtonStyle);
-
-    Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.DARK_GRAY);
-    skin.add("LabelSkin", labelStyle);
-    Label.LabelStyle label2Style = new Label.LabelStyle(font, Color.WHITE);
-    skin.add("LabelDarkSkin", label2Style);
-    Label.LabelStyle labelSmallStyle = new Label.LabelStyle(font2, Color.DARK_GRAY);
-    skin.add("LabelSmallSkin", labelSmallStyle);
 
     for (BitIcon bi: BitIcon.values()) {
       TextureRegionDrawable icon = new TextureRegionDrawable(
