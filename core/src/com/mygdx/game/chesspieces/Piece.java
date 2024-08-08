@@ -165,8 +165,7 @@ public abstract class Piece {
         this.setHp(this.hp - (Math.max(damage, 0)));
     }
     public void killPiece(ChessBoard board, Piece piece) {
-        piece.setAlive(false);
-        board.removeAt(piece.posX, piece.posY);
+        piece.getAttacked(this);
         this.move(piece.posX, piece.posY);
     }
     public void moveAfterAttack(ChessBoard board, Piece piece) {}
