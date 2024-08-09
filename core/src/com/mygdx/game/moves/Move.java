@@ -1,5 +1,25 @@
+/**
+ * Ý tưởng cho Move và MoveHistory:
+ *
+ * Lưu lại lịch sử bàn đấu trên 1 bảng hiển thị. Có thể undo, redo khi chạm vào dòng lịch sử.
+ *
+ * Ý tưởng thiết kế:
+ *
+ * MoveHistory sẽ chứa một Array chứa Move và các hàm nhập xuất hoặc thay đổi thông tin (chưa rõ có cần thiết không?)
+ *
+ * Move sẽ chứa những thông tin cơ bản của hành động đã xảy ra và trạng thái ChessBoard sau hành động đó.
+ * Thông tin cơ bản bao gồm quân cờ đã hành động trong lượt đó và những quân cờ chịu tác động sau đó (bị tấn công, được
+ * buff, bị tiêu diệt). Move sẽ có hàm khởi tạo và hàm xuất ra string thuyết minh hành động đó. (VD "Mã trắng đi đến c4",
+ * "Hậu đen dùng kĩ năng. Tốt trắng, tốt trắng bị tấn công, tượng trắng bị tiêu diệt"). Khi được khởi tạo, lập trình viên
+ * phải tự đưa các giá trị cần thiết vào (sẽ phải thêm hàm hỗ trợ trong phần model và controller).
+ *
+ * PieceHistory là 1 phần của Move, gồm 1 quân cờ và trạng thái tác động. Khi được khởi tạo, lập trình viên phải tự gán
+ * trạng thái cho quân cờ.
+ */
 package com.mygdx.game.moves;
 
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.Piece;
 
 public class Move {
@@ -7,94 +27,37 @@ public class Move {
     private int endX;
     private int startY;
     private int endY;
-    private Piece movedPiece;
-    private Piece killedPiece;
-    private Piece attackingPiece;
-    private Piece attackedPiece;
+    private PieceHistory movedPieceHistory;
+    private Array<PieceHistory> affectedPieceHistory;
+    private ChessBoard board;
 
-
-    public Move(int startX, int endX, int startY, int endY, Piece movedPiece) {
+    /**
+     * A "move" contains details of the action taken this turn and the board state after it takes place.
+     * Board state is there to enable undo and redo actions.
+     * @param startX
+     * @param endX
+     * @param startY
+     * @param endY
+     * @param movedPieceHistory The piece the player interacted with this turn
+     * @param affectedPieceHistory Any piece that was affected this turn
+     * @param board
+     */
+    public Move(int startX, int endX, int startY, int endY,
+                PieceHistory movedPieceHistory, Array<PieceHistory> affectedPieceHistory, ChessBoard board) {
         this.startX = startX;
-        this.startY = startY;
         this.endX = endX;
+        this.startY = startY;
         this.endY = endY;
-        this.movedPiece = movedPiece;
+        this.movedPieceHistory = movedPieceHistory;
+        this.affectedPieceHistory = affectedPieceHistory;
+        this.board = board;
     }
 
-    public Move(int startX, int endX, int startY, int endY,
-                Piece movedPiece, Piece killedPiece) {
-        this(startX, endX, startY, endY, movedPiece);
-        this.killedPiece = killedPiece;
-    }
-
-    public Move(int startX, int endX, int startY, int endY,
-                Piece movedPiece, Piece killedPiece, Piece attackingPiece, Piece attackedPiece) {
-        this(startX, endX, startY, endY, movedPiece, killedPiece);
-        this.attackingPiece = attackingPiece;
-        this.attackedPiece = attackedPiece;
-    }
-
-    public int getStartX() {
-        return this.startX;
-    }
-
-    public int getEndX() {
-        return this.endX;
-    }
-
-    public int getStartY() {
-        return this.startY;
-    }
-
-    public int getEndY() {
-        return this.endY;
-    }
-
-    public void setStartX(int x) {
-        this.startX = x;
-    }
-
-    public void setEndX(int x) {
-        this.endX = x;
-    }
-
-    public void setStartY(int y) {
-        this.startY = y;
-    }
-
-    public void setEndY(int y) {
-        this.endY = y;
-    }
-
-    public Piece getMovedPiece() {
-        return this.movedPiece;
-    }
-
-    public Piece getKilledPiece() {
-        return this.killedPiece;
-    }
-
-    public void setMovedPiece(Piece piece) {
-        this.movedPiece = piece;
-    }
-
-    public void setKilledPiece(Piece piece) {
-        this.killedPiece = piece;
-    }
-
-    public Piece getAttackingPiece() {
-        return this.attackingPiece;
-    }
-
-    public Piece getAttackedPiece() {
-        return this.attackedPiece;
-    }
-
-    public void setAttackingPiece(Piece attackingPiece) {
-        this.attackingPiece = attackingPiece;
-    }
-
-    public void setAttackedPiece(Piece attackedPiece) {
-        this.attackedPiece = attackedPiece;
+    /**
+     * Generate a string for display on the history board.
+     * @return String to put on labels.
+     */
+    public String getMoveLine() {
+        return "placeholder";
     }
 }
