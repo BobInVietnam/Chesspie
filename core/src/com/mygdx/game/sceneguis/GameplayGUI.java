@@ -23,6 +23,8 @@ public abstract class GameplayGUI extends SceneGUI {
   private Table skillDescriptionPane;
   private Label skillName;
   private Label skillDescription;
+  private Table skillSelectedMessagePane;
+  private Label skillSelectedMessage;
 
   private Table enemyPieceInfoBoard;
   private Image enemyPieceAvatar;
@@ -40,8 +42,7 @@ public abstract class GameplayGUI extends SceneGUI {
 
   private Table turnIndicator;
   private Label turnIndicatorText;
-  private static final boolean DEBUG_MODE = false;
-  private final Skin skin;
+  private static final boolean DEBUG_MODE = true;
 
   public GameplayGUI(Skin skin) {
     // Piece info table
@@ -49,6 +50,7 @@ public abstract class GameplayGUI extends SceneGUI {
 
     createSkillButton();
     createSkillDescriptionPane();
+    createSkillSelectedMessage();
     initializeStats();
     initializePlayerBoardComponents();
     createPlayerBoard();
@@ -76,24 +78,6 @@ public abstract class GameplayGUI extends SceneGUI {
     }
     table.setDebug(DEBUG_MODE);
     return table;
-  }
-  private Label createLabel(String placeholder, float fontScale, boolean isDarkMode, boolean isSmall) {
-    Label label;
-    if (isSmall) {
-      if (isDarkMode) {
-        label = new Label(placeholder, skin, "LabelSmallDarkSkin");
-      } else {
-        label = new Label(placeholder, skin, "LabelSmallSkin");
-      }
-    } else {
-      if (isDarkMode) {
-        label = new Label(placeholder, skin, "LabelDarkSkin");
-      } else {
-        label = new Label(placeholder, skin, "LabelSkin");
-      }
-    }
-    label.setFontScale(fontScale);
-    return label;
   }
   private void initializeStats() {
     attack = createLabel("0", 0.6f, false, false);
@@ -133,6 +117,12 @@ public abstract class GameplayGUI extends SceneGUI {
     skillDescriptionPane.add(skillName).center().fillX().expand().pad(10, 10, 0, 10);
     skillDescriptionPane.row();
     skillDescriptionPane.add(skillDescription).fill().expand().pad(10, 10, 10, 10);
+  }
+  private void createSkillSelectedMessage() {
+    skillSelectedMessagePane = createTable(false);
+    skillSelectedMessage = createLabel("Select skill target", 1, false, true);
+    skillSelectedMessagePane.add(skillSelectedMessage);
+    skillSelectedMessagePane.setVisible(false);
   }
   private void initializePlayerBoardComponents() {
     pieceInfoBoard = createTable(false);
@@ -185,6 +175,7 @@ public abstract class GameplayGUI extends SceneGUI {
   private void loadComponents() {
     this.setDebug(DEBUG_MODE);
     this.left().top().add(pieceInfoBoard).size(300f, 80f).expandX().left();
+    this.add().expandX();
     this.add(enemyPieceInfoBoard).size(300f, 80f).expandX().right();
     this.row().left();
     Table t = new Table();
@@ -193,7 +184,8 @@ public abstract class GameplayGUI extends SceneGUI {
     t.add(skillDescriptionPane).prefWidth(300);
     this.add(t).expand();
     this.row().left();
-    this.add(timerBoard).size(300, 80).left();
+    this.add(timerBoard).size(320, 80).left();
+    this.add(skillSelectedMessagePane).size(200, 50);
     this.add(turnIndicator).size(80, 80).right();
     this.setFillParent(true);
   }
@@ -203,6 +195,9 @@ public abstract class GameplayGUI extends SceneGUI {
   public abstract void buttonExit();
   public void skillButtonCheck(boolean checked) {
     skill1.setChecked(checked);
+  }
+  public void setSkillSelectedMessageDisplay(boolean checked) {
+    skillSelectedMessagePane.setVisible(checked);
   }
   public void hideInfo() {
     pieceInfoBoard.setVisible(false);

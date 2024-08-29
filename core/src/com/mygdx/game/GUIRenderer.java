@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -19,7 +20,6 @@ public class GUIRenderer {
   private SceneGUI rootTable;
   private final Skin skin;
   private final Texture ui;
-
   public enum BitIcon {
     SKILL1,
     SKILL2,
@@ -92,6 +92,7 @@ public class GUIRenderer {
   }
 
   public void loadGUI(SceneGUI gui) {
+    stage.clear();
     this.rootTable = gui;
     stage.addActor(rootTable);
   }

@@ -43,6 +43,7 @@ public class GameplayScreen implements Screen {
         if (chosenPiece.getChessSkill().getSkillActivation() == SkillActivation.TARGET) {
           skillChosen = !skillChosen;
           gameRenderer.skillChosen = !gameRenderer.skillChosen;
+          gui.setSkillSelectedMessageDisplay(skillChosen);
         } else if (chosenPiece.getChessSkill().getSkillActivation() == SkillActivation.TRIGGER) {
           useSkill();
         }
@@ -156,6 +157,7 @@ public class GameplayScreen implements Screen {
     board.refresh(whiteTurn);
     pieceHitboxes = updatePieceHitboxes();
     setSelectState(false, null);
+    gui.setSkillSelectedMessageDisplay(skillChosen);
     gui.skillButtonCheck(skillChosen);
     if (isWinState()) return;
     whiteTurn = !whiteTurn;

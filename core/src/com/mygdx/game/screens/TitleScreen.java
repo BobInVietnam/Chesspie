@@ -1,15 +1,37 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.mygdx.game.Chesspie;
+import com.mygdx.game.GUIRenderer;
+import com.mygdx.game.sceneguis.TitleGUI;
 
 public class TitleScreen implements Screen {
   final Chesspie game;
+  private final TitleGUI gui;
 
   public TitleScreen(Chesspie game) {
     this.game = game;
+    this.gui = new TitleGUI(this.game.gui.getSkin()) {
+      @Override
+      public void handleStartButton() {
+        game.setScreen(new GameplayScreen(game));
+      }
 
+      @Override
+      public void handleSettingButton() {
+
+      }
+
+      @Override
+      public void handleQuitButton() {
+        dispose();
+        game.dispose();
+        Gdx.app.exit();
+      }
+    };
+    this.game.gui.loadGUI(gui);
   }
   @Override
   public void show() {
@@ -18,7 +40,7 @@ public class TitleScreen implements Screen {
 
   @Override
   public void render(float delta) {
-
+    this.game.gui.render(delta);
   }
 
   @Override
@@ -43,6 +65,6 @@ public class TitleScreen implements Screen {
 
   @Override
   public void dispose() {
-
+    gui.dispose();
   }
 }
