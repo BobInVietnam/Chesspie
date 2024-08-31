@@ -17,7 +17,7 @@ import com.mygdx.game.sceneguis.SceneGUI;
 
 public class GUIRenderer {
   private final Stage stage;
-  private SceneGUI rootTable;
+  private SceneGUI sceneGUI;
   private final Skin skin;
   private final Texture ui;
   public enum BitIcon {
@@ -30,7 +30,7 @@ public class GUIRenderer {
   public GUIRenderer() {
     float ratio = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
     stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-    rootTable = null;
+    sceneGUI = null;
     skin = new Skin();
 
     // Load skin data
@@ -74,6 +74,8 @@ public class GUIRenderer {
     TextButton.TextButtonStyle gameButtonStyle = new TextButton.TextButtonStyle(button, button, button, font);
     skin.add("TextButtonSkin", gameButtonStyle);
 
+    List.ListStyle listStyle = new List.ListStyle(font2, Color.WHITE, Color.BLACK, block);
+
     for (BitIcon bi: BitIcon.values()) {
       TextureRegionDrawable icon = new TextureRegionDrawable(
           new TextureRegion(ui, bi.ordinal() * 8, 248, 8, 8)
@@ -93,8 +95,11 @@ public class GUIRenderer {
 
   public void loadGUI(SceneGUI gui) {
     stage.clear();
-    this.rootTable = gui;
-    stage.addActor(rootTable);
+    this.sceneGUI = gui;
+    stage.addActor(sceneGUI.getRoot());
+    for (Table t: sceneGUI.getWindows()) {
+      stage.addActor(t);
+    }
   }
 
   public void render(float delta) {

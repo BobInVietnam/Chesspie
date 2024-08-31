@@ -1,13 +1,11 @@
 package com.mygdx.game.sceneguis;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.GUIRenderer;
 import com.mygdx.game.chesspieces.Piece;
@@ -69,21 +67,11 @@ public abstract class GameplayGUI extends SceneGUI {
   private Image loadImage(GUIRenderer.BitIcon icon) {
     return new Image(skin.get(icon.name(),TextureRegionDrawable.class));
   }
-  private Table createTable(boolean isDarkMode) {
-    Table table = new Table();
-    if (isDarkMode) {
-      table.setBackground(skin.get("BlockDarkSkin", NinePatchDrawable.class));
-    } else {
-      table.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
-    }
-    table.setDebug(DEBUG_MODE);
-    return table;
-  }
   private void initializeStats() {
-    attack = createLabel("0", 0.6f, false, false);
-    enemyAttack = createLabel("0", 0.6f, false, false);
-    defense = createLabel("0", 0.6f, false, false);
-    enemyDefense = createLabel("0", 0.6f, false, false);
+    attack = createLabel(skin, "0", 0.6f, false, false);
+    enemyAttack = createLabel(skin, "0", 0.6f, false, false);
+    defense = createLabel(skin, "0", 0.6f, false, false);
+    enemyDefense = createLabel(skin, "0", 0.6f, false, false);
   }
   private void createSkillButton() {
     skill1 = new ImageButton(skin.get("ImageButtonSkin", ImageButton.ImageButtonStyle.class));
@@ -107,11 +95,11 @@ public abstract class GameplayGUI extends SceneGUI {
     skill1.getStyle().imageChecked = skin.get("SKILL2", TextureRegionDrawable.class);
   }
   private void createSkillDescriptionPane() {
-    skillDescriptionPane = createTable(true);
-    skillName = createLabel("Skill", 1, true, false);
+    skillDescriptionPane = createBlock(skin, true, DEBUG_MODE);
+    skillName = createLabel(skin, "Skill", 1, true, false);
     skillName.setWrap(true);
     skillDescription = createLabel(
-        "deals damage, buffs allies or self and many other effects can happen if you push this button, deals damage, buffs allies or self and many other effects can happen if you push this button",
+        skin, "deals damage, buffs allies or self and many other effects can happen if you push this button, deals damage, buffs allies or self and many other effects can happen if you push this button",
         1f, true, true);
     skillDescription.setWrap(true);
     skillDescriptionPane.add(skillName).center().fillX().expand().pad(10, 10, 0, 10);
@@ -119,15 +107,15 @@ public abstract class GameplayGUI extends SceneGUI {
     skillDescriptionPane.add(skillDescription).fill().expand().pad(10, 10, 10, 10);
   }
   private void createSkillSelectedMessage() {
-    skillSelectedMessagePane = createTable(false);
-    skillSelectedMessage = createLabel("Select skill target", 1, false, true);
+    skillSelectedMessagePane = createBlock(skin, false, DEBUG_MODE);
+    skillSelectedMessage = createLabel(skin, "Select skill target", 1, false, true);
     skillSelectedMessagePane.add(skillSelectedMessage);
     skillSelectedMessagePane.setVisible(false);
   }
   private void initializePlayerBoardComponents() {
-    pieceInfoBoard = createTable(false);
+    pieceInfoBoard = createBlock(skin, false, DEBUG_MODE);
     pieceAvatar = loadImage(GUIRenderer.BitIcon.SKILL1);// Will be replaced with actual piece avatar assets
-    pieceHealth = createLabel("0", 1f, false, false);
+    pieceHealth = createLabel(skin, "0", 1f, false, false);
   }
 
   private void createPlayerBoard() {
@@ -144,9 +132,9 @@ public abstract class GameplayGUI extends SceneGUI {
     pieceInfoBoard.add(info).fill().expand();
   }
   private void initializeEnemyBoardComponents() {
-    enemyPieceInfoBoard = createTable(false);
+    enemyPieceInfoBoard = createBlock(skin, false, DEBUG_MODE);
     enemyPieceAvatar = loadImage(GUIRenderer.BitIcon.SKILL2);// Will be replaced with actual piece avatar assets
-    enemyPieceHealth = createLabel("0", 1f, false, false);
+    enemyPieceHealth = createLabel(skin, "0", 1f, false, false);
   }
   private void createEnemyBoard() {
     enemyPieceInfoBoard.pad(15, 15, 15, 15);
@@ -162,32 +150,32 @@ public abstract class GameplayGUI extends SceneGUI {
     enemyPieceInfoBoard.add(enemyPieceAvatar).size(60).expandY();
   }
   private void createTimer() {
-    timerBoard = createTable(false);
-    timerDisplay = createLabel("Timer: 0:00.00", 0.8f, false, false);
+    timerBoard = createBlock(skin, false, DEBUG_MODE);
+    timerDisplay = createLabel(skin, "Timer: 0:00.00", 0.8f, false, false);
     timerBoard.padLeft(15);
     timerBoard.add(timerDisplay).left();
   }
   private void createTurnIndicator() {
-    turnIndicator = createTable(false);
-    turnIndicatorText = createLabel("W", 1.2f, false, false);
+    turnIndicator = createBlock(skin, false, DEBUG_MODE);
+    turnIndicatorText = createLabel(skin, "W", 1.2f, false, false);
     turnIndicator.add(turnIndicatorText);
   }
   private void loadComponents() {
-    this.setDebug(DEBUG_MODE);
-    this.left().top().add(pieceInfoBoard).size(300f, 80f).expandX().left();
-    this.add().expandX();
-    this.add(enemyPieceInfoBoard).size(300f, 80f).expandX().right();
-    this.row().left();
+    root.setDebug(DEBUG_MODE);
+    root.left().top().add(pieceInfoBoard).size(300f, 80f).expandX().left();
+    root.add().expandX();
+    root.add(enemyPieceInfoBoard).size(300f, 80f).expandX().right();
+    root.row().left();
     Table t = new Table();
     t.setDebug(DEBUG_MODE);
     t.left().add(skill1).size(100).expand();
     t.add(skillDescriptionPane).prefWidth(300);
-    this.add(t).expand();
-    this.row().left();
-    this.add(timerBoard).size(320, 80).left();
-    this.add(skillSelectedMessagePane).size(200, 50);
-    this.add(turnIndicator).size(80, 80).right();
-    this.setFillParent(true);
+    root.add(t).expand();
+    root.row().left();
+    root.add(timerBoard).size(320, 80).left();
+    root.add(skillSelectedMessagePane).size(200, 50);
+    root.add(turnIndicator).size(80, 80).right();
+    root.setFillParent(true);
   }
 
   public abstract void buttonClicked();

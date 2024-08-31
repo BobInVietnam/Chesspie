@@ -4,9 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public abstract class TitleGUI extends SceneGUI{
@@ -16,11 +14,13 @@ public abstract class TitleGUI extends SceneGUI{
   private TextButton startButton;
   private TextButton settingButton;
   private TextButton quitButton;
+  private SettingTable settingsBoard;
 
   private static final boolean DEBUG_MODE = true;
 
   public TitleGUI(Skin skin) {
     this.skin = skin;
+    settingsBoard = SettingTable.getInstance(skin);
     loadTextures();
     createStartButton();
     createSettingButton();
@@ -30,7 +30,7 @@ public abstract class TitleGUI extends SceneGUI{
   private void loadTextures() {
     titleTexture = new Texture("Images/title.png");
     bg = new Texture("Images/concept_arts.jpg");
-    this.setBackground(new TextureRegionDrawable(
+    root.setBackground(new TextureRegionDrawable(
         new TextureRegion(bg)
     ));
     title = new Image(titleTexture);
@@ -38,7 +38,7 @@ public abstract class TitleGUI extends SceneGUI{
     title.setScale(1f);
   }
   private void createStartButton() {
-    startButton = createTextButton("START", 1.2f, 300, 80);
+    startButton = createTextButton(skin, "START", 1.2f, 300, 80);
     startButton.addListener(new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -49,7 +49,7 @@ public abstract class TitleGUI extends SceneGUI{
     startButton.setDebug(DEBUG_MODE);
   }
   private void createSettingButton() {
-    settingButton = createTextButton("SETTINGS", 1.2f, 300, 80);
+    settingButton = createTextButton(skin, "SETTINGS", 1.2f, 300, 80);
     settingButton.addListener(new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -60,7 +60,7 @@ public abstract class TitleGUI extends SceneGUI{
     settingButton.setDebug(DEBUG_MODE);
   }
   private void createQuitButton() {
-    quitButton = createTextButton("QUIT", 1.2f, 300, 80);
+    quitButton = createTextButton(skin, "QUIT", 1.2f, 300, 80);
     quitButton.addListener(new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -71,16 +71,16 @@ public abstract class TitleGUI extends SceneGUI{
     quitButton.setDebug(DEBUG_MODE);
   }
   private void loadComponents() {
-    this.defaults().space(15f);
-    this.center().add(title).size(823, 272).padBottom(35f);
-    this.row();
-    this.center().add(startButton).size(300, 80);
-    this.row();
-    this.center().add(settingButton).size(300, 80);
-    this.row();
-    this.center().add(quitButton).size(300, 80);
-    this.setDebug(DEBUG_MODE);
-    this.setFillParent(true);
+    root.defaults().space(15f);
+    root.center().add(title).size(823, 272).padBottom(35f);
+    root.row();
+    root.center().add(startButton).size(300, 80);
+    root.row();
+    root.center().add(settingButton).size(300, 80);
+    root.row();
+    root.center().add(quitButton).size(300, 80);
+    root.setDebug(DEBUG_MODE);
+    root.setFillParent(true);
   }
   public abstract void handleStartButton();
   public abstract void handleSettingButton();
