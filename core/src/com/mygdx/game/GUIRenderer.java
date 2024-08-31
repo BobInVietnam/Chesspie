@@ -1,10 +1,12 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.sceneguis.SceneGUI;
 
@@ -19,69 +23,58 @@ public class GUIRenderer {
   private final Stage stage;
   private SceneGUI sceneGUI;
   private final Skin skin;
-  private final Texture ui;
-  public enum BitIcon {
-    SKILL1,
-    SKILL2,
-    ATK,
-    DEF
-  }
+  private TextureAtlas atlas;
 
   public GUIRenderer() {
     float ratio = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
     stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     sceneGUI = null;
-    skin = new Skin();
+    skin = new Skin(Gdx.files.internal("Images/normal_skin.json")) {
+      //Override json loader to process FreeType fonts from skin JSON
+      @Override
+      protected Json getJsonLoader(final FileHandle skinFile) {
+        Json json = super.getJsonLoader(skinFile);
+        final Skin skin = this;
 
-    // Load skin data
-    ui = new Texture("Images/ui.png");
-    NinePatchDrawable window = new NinePatchDrawable(
-        new NinePatch(new TextureRegion(ui, 0, 0, 190, 190), 90, 90, 90, 90));
-    skin.add("TableSkin", window);
-    NinePatchDrawable block = new NinePatchDrawable(
-        new NinePatch(new TextureRegion(ui, 190, 60, 23, 23), 10, 10, 10, 10));
-    skin.add("BlockSkin", block);
-    NinePatchDrawable blockDark = new NinePatchDrawable(
-        new NinePatch(new TextureRegion(ui, 213, 60, 23, 23), 8, 8, 8, 8));
-    skin.add("BlockDarkSkin", blockDark);
+        json.setSerializer(FreeTypeFontGenerator.class, new Json.ReadOnlySerializer<FreeTypeFontGenerator>() {
+          @Override
+          public FreeTypeFontGenerator read(Json json,
+                                            JsonValue jsonData, Class type) {
+            String path = json.readValue("font", String.class, jsonData);
+            jsonData.remove("font");
 
-    FreeTypeFontGenerator fontGen = new FreeTypeFontGenerator(Gdx.files.internal("Font/pc-senior.regular.ttf"));
-    FreeTypeFontGenerator.FreeTypeFontParameter fontParam = new FreeTypeFontGenerator.FreeTypeFontParameter();
-    FreeTypeFontGenerator font2Gen = new FreeTypeFontGenerator(Gdx.files.internal("Font/cnc-red-alert-lan.ttf"));
-    FreeTypeFontGenerator.FreeTypeFontParameter font2Param = new FreeTypeFontGenerator.FreeTypeFontParameter();
-    fontParam.size = 24;
-    fontParam.color = Color.DARK_GRAY;
-    font2Param.size = 24;
-    font2Param.color = Color.WHITE;
-    BitmapFont font = fontGen.generateFont(fontParam);
-    BitmapFont fontDark = fontGen.generateFont(font2Param);
-    BitmapFont font2 = font2Gen.generateFont(fontParam);
-    BitmapFont font2Dark = font2Gen.generateFont(font2Param);
+            FreeTypeFontGenerator.Hinting hinting = FreeTypeFontGenerator.Hinting.valueOf(json.readValue("hinting",
+                String.class, "AutoMedium", jsonData));
+            jsonData.remove("hinting");
 
-    Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
-    skin.add("LabelSkin", labelStyle);
-    Label.LabelStyle labelDarkStyle = new Label.LabelStyle(fontDark, Color.WHITE);
-    skin.add("LabelDarkSkin", labelDarkStyle);
-    Label.LabelStyle labelSmallStyle = new Label.LabelStyle(font2, Color.WHITE);
-    skin.add("LabelSmallSkin", labelSmallStyle);
-    Label.LabelStyle labelSmallDarkStyle = new Label.LabelStyle(font2Dark, Color.WHITE);
-    skin.add("LabelSmallDarkSkin", labelSmallDarkStyle);
+            Texture.TextureFilter minFilter = Texture.TextureFilter.valueOf(
+                json.readValue("minFilter", String.class, "Nearest", jsonData));
+            jsonData.remove("minFilter");
 
-    NinePatchDrawable button = new NinePatchDrawable(
-        new NinePatch(new TextureRegion(ui, 190, 0, 60, 60), 25, 25, 25, 25));
-    ImageButton.ImageButtonStyle iconButton = new ImageButton.ImageButtonStyle(button, button, button, null, null, null);
-    skin.add("ImageButtonSkin", iconButton);
-    TextButton.TextButtonStyle gameButtonStyle = new TextButton.TextButtonStyle(button, button, button, font);
-    skin.add("TextButtonSkin", gameButtonStyle);
+            Texture.TextureFilter magFilter = Texture.TextureFilter.valueOf(
+                json.readValue("magFilter", String.class, "Nearest", jsonData));
+            jsonData.remove("magFilter");
 
-    List.ListStyle listStyle = new List.ListStyle(font2, Color.WHITE, Color.BLACK, block);
-
-    for (BitIcon bi: BitIcon.values()) {
-      TextureRegionDrawable icon = new TextureRegionDrawable(
-          new TextureRegion(ui, bi.ordinal() * 8, 248, 8, 8)
-      );
-      skin.add(bi.name(), icon);
-    }
+            FreeTypeFontGenerator.FreeTypeFontParameter parameter = json.readValue(FreeTypeFontGenerator.FreeTypeFontParameter.class, jsonData);
+            parameter.hinting = hinting;
+            parameter.minFilter = minFilter;
+            parameter.magFilter = magFilter;
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(skinFile.parent().child(path));
+            BitmapFont font = generator.generateFont(parameter);
+            skin.add(jsonData.name, font);
+            if (parameter.incremental) {
+              generator.dispose();
+              return null;
+            } else {
+              return generator;
+            }
+          }
+        });
+        return json;
+      }
+    };
+    atlas = new TextureAtlas(Gdx.files.internal("Images/normal_skin.atlas"));
+    skin.addRegions(atlas);
     Gdx.input.setInputProcessor(stage);
   }
 
@@ -112,6 +105,6 @@ public class GUIRenderer {
   }
 
   public void dispose() {
-    ui.dispose();
+    atlas.dispose();
   }
 }

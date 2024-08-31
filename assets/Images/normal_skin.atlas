@@ -1,0 +1,140 @@
+
+normal_skin.png
+size: 256, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+white-pixel
+  rotate: false
+  xy: 193, 129
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+icon_attack
+  rotate: false
+  xy: 243, 183
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+icon_defense
+  rotate: false
+  xy: 125, 3
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+icon_skill1
+  rotate: false
+  xy: 150, 28
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+icon_skill2
+  rotate: false
+  xy: 175, 53
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+ui_basicFrame
+  rotate: false
+  xy: 1, 1
+  size: 60, 60
+  split: 25, 23, 23, 25
+  pad: 27, 25, 25, 27
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+ui_basicFrame_checked
+  rotate: false
+  xy: 63, 1
+  size: 60, 60
+  split: 25, 23, 23, 25
+  pad: 27, 25, 25, 27
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+ui_basicFrame_hovered
+  rotate: false
+  xy: 193, 193
+  size: 60, 60
+  split: 25, 23, 23, 25
+  pad: 27, 25, 25, 27
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+ui_bigFrame
+  rotate: false
+  xy: 1, 63
+  size: 190, 190
+  split: 58, 58, 58, 58
+  orig: 190, 190
+  offset: 0, 0
+  index: -1
+ui_rectangleRounded
+  rotate: false
+  xy: 218, 157
+  size: 9, 9
+  split: 3, 3, 3, 3
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+ui_rectangleRounded_dark
+  rotate: false
+  xy: 193, 132
+  size: 9, 9
+  split: 3, 3, 3, 3
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+ui_smallFrame
+  rotate: false
+  xy: 150, 38
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+ui_smallFrame_checked
+  rotate: false
+  xy: 218, 168
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+ui_smallFrame_dark
+  rotate: false
+  xy: 125, 13
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+ui_smallFrame_dark_checked
+  rotate: false
+  xy: 193, 168
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+ui_smallFrame_dark_hovered
+  rotate: false
+  xy: 125, 38
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+ui_smallFrame_hovered
+  rotate: false
+  xy: 193, 143
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1

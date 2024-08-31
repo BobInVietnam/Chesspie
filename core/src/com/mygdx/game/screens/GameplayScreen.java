@@ -219,6 +219,8 @@ public class GameplayScreen implements Screen {
           attackPiece(chosenPiece, board, posX, posY);
         } else {
           setSelectState(false, null);
+          gui.setSkillSelectedMessageDisplay(skillChosen);
+          gui.skillButtonCheck(skillChosen);
           gui.hideInfo();
         }
       }

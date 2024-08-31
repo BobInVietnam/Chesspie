@@ -64,9 +64,6 @@ public abstract class GameplayGUI extends SceneGUI {
     hideEnemyInfo();
     hideSkillInfo();
   }
-  private Image loadImage(GUIRenderer.BitIcon icon) {
-    return new Image(skin.get(icon.name(),TextureRegionDrawable.class));
-  }
   private void initializeStats() {
     attack = createLabel(skin, "0", 0.6f, false, false);
     enemyAttack = createLabel(skin, "0", 0.6f, false, false);
@@ -74,7 +71,7 @@ public abstract class GameplayGUI extends SceneGUI {
     enemyDefense = createLabel(skin, "0", 0.6f, false, false);
   }
   private void createSkillButton() {
-    skill1 = new ImageButton(skin.get("ImageButtonSkin", ImageButton.ImageButtonStyle.class));
+    skill1 = new ImageButton(skin);
     skill1.addListener( new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -91,8 +88,8 @@ public abstract class GameplayGUI extends SceneGUI {
       }
     });
     skill1.getImageCell().expand().fill();
-    skill1.getStyle().imageUp = skin.get("SKILL1", TextureRegionDrawable.class);
-    skill1.getStyle().imageChecked = skin.get("SKILL2", TextureRegionDrawable.class);
+    skill1.getStyle().imageUp = new TextureRegionDrawable(skin.getRegion("icon_skill1"));
+    skill1.getStyle().imageChecked = new TextureRegionDrawable(skin.getRegion("icon_skill2"));
   }
   private void createSkillDescriptionPane() {
     skillDescriptionPane = createBlock(skin, true, DEBUG_MODE);
@@ -114,7 +111,7 @@ public abstract class GameplayGUI extends SceneGUI {
   }
   private void initializePlayerBoardComponents() {
     pieceInfoBoard = createBlock(skin, false, DEBUG_MODE);
-    pieceAvatar = loadImage(GUIRenderer.BitIcon.SKILL1);// Will be replaced with actual piece avatar assets
+    pieceAvatar = createIcon(skin, "icon_skill1");// Will be replaced with actual piece avatar assets
     pieceHealth = createLabel(skin, "0", 1f, false, false);
   }
 
@@ -124,16 +121,16 @@ public abstract class GameplayGUI extends SceneGUI {
     Table info = new Table();
     info.add(pieceHealth).center().expand().colspan(4);
     info.row();
-    info.add(loadImage(GUIRenderer.BitIcon.ATK)).size(25).expandX();
+    info.add(createIcon(skin, "icon_attack")).size(25).expandX();
     info.add(attack).expandX();
-    info.add(loadImage(GUIRenderer.BitIcon.DEF)).size(25).expandX();
+    info.add(createIcon(skin, "icon_defense")).size(25).expandX();
     info.add(defense).expandX();
     pieceInfoBoard.add(pieceAvatar).size(60).expandY();
     pieceInfoBoard.add(info).fill().expand();
   }
   private void initializeEnemyBoardComponents() {
     enemyPieceInfoBoard = createBlock(skin, false, DEBUG_MODE);
-    enemyPieceAvatar = loadImage(GUIRenderer.BitIcon.SKILL2);// Will be replaced with actual piece avatar assets
+    enemyPieceAvatar = createIcon(skin, "icon_skill2");// Will be replaced with actual piece avatar assets
     enemyPieceHealth = createLabel(skin, "0", 1f, false, false);
   }
   private void createEnemyBoard() {
@@ -142,9 +139,9 @@ public abstract class GameplayGUI extends SceneGUI {
     Table info2 = new Table();
     info2.add(enemyPieceHealth).center().expand().colspan(4);
     info2.row();
-    info2.add(loadImage(GUIRenderer.BitIcon.ATK)).size(25).expandX();
+    info2.add(createIcon(skin, "icon_attack")).size(25).expandX();
     info2.add(enemyAttack).expandX();
-    info2.add(loadImage(GUIRenderer.BitIcon.DEF)).size(25).expandX();
+    info2.add(createIcon(skin, "icon_defense")).size(25).expandX();
     info2.add(enemyDefense).expandX();
     enemyPieceInfoBoard.add(info2).fill().expand();
     enemyPieceInfoBoard.add(enemyPieceAvatar).size(60).expandY();

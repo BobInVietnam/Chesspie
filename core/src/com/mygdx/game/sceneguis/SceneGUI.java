@@ -1,8 +1,12 @@
 package com.mygdx.game.sceneguis;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.GUIRenderer;
 
 public abstract class SceneGUI{
   protected Array<Table> windows;
@@ -21,16 +25,16 @@ public abstract class SceneGUI{
   }
   public static Table createWindow(Skin skin, boolean debugMode) {
     Table table = new Table();
-    table.setBackground(skin.get("TableSkin", NinePatchDrawable.class));
+    table.setBackground(new NinePatchDrawable(skin.getPatch("ui_bigFrame")));
     table.setDebug(debugMode);
     return table;
   }
   public static Table createBlock(Skin skin, boolean isDarkMode, boolean debugMode) {
     Table table = new Table();
     if (isDarkMode) {
-      table.setBackground(skin.get("BlockDarkSkin", NinePatchDrawable.class));
+      table.setBackground(new NinePatchDrawable(skin.getPatch("ui_smallFrame_dark")));
     } else {
-      table.setBackground(skin.get("BlockSkin", NinePatchDrawable.class));
+      table.setBackground(new NinePatchDrawable(skin.getPatch("ui_smallFrame")));
     }
     table.setDebug(debugMode);
     return table;
@@ -40,15 +44,15 @@ public abstract class SceneGUI{
     Label label;
     if (isSmall) {
       if (isDarkMode) {
-        label = new Label(defaultText, skin, "LabelSmallDarkSkin");
+        label = new Label(defaultText, skin, "default_dark");
       } else {
-        label = new Label(defaultText, skin, "LabelSmallSkin");
+        label = new Label(defaultText, skin, "default");
       }
     } else {
       if (isDarkMode) {
-        label = new Label(defaultText, skin, "LabelDarkSkin");
+        label = new Label(defaultText, skin, "title_dark");
       } else {
-        label = new Label(defaultText, skin, "LabelSkin");
+        label = new Label(defaultText, skin, "title");
       }
     }
     label.setFontScale(fontScale);
@@ -57,9 +61,12 @@ public abstract class SceneGUI{
 
   public static TextButton createTextButton(Skin skin, String defaultText, float fontScale, int w, int h) {
     TextButton button;
-    button = new TextButton(defaultText, skin, "TextButtonSkin");
+    button = new TextButton(defaultText, skin, "title");
     button.setSize(w, h);
     button.getLabel().setScale(fontScale);
     return button;
+  }
+  public static Image createIcon(Skin skin, String iconName) {
+    return new Image(new TextureRegionDrawable(skin.getRegion(iconName)));
   }
 }
