@@ -21,7 +21,7 @@ public class TitleScreen implements Screen {
 
       @Override
       public void handleSettingButton() {
-
+        gui.showSettingWindow();
       }
 
       @Override

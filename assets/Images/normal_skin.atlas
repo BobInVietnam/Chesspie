@@ -6,35 +6,35 @@ filter: Nearest, Nearest
 repeat: none
 white-pixel
   rotate: false
-  xy: 193, 129
+  xy: 254, 128
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 icon_attack
   rotate: false
-  xy: 243, 183
+  xy: 243, 99
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 icon_defense
   rotate: false
-  xy: 125, 3
+  xy: 243, 89
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 icon_skill1
   rotate: false
-  xy: 150, 28
+  xy: 243, 79
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 icon_skill2
   rotate: false
-  xy: 175, 53
+  xy: 243, 69
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -74,9 +74,23 @@ ui_bigFrame
   orig: 190, 190
   offset: 0, 0
   index: -1
+ui_checkbox
+  rotate: false
+  xy: 193, 131
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+ui_checkbox_checked
+  rotate: false
+  xy: 125, 1
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
 ui_rectangleRounded
   rotate: false
-  xy: 218, 157
+  xy: 243, 109
   size: 9, 9
   split: 3, 3, 3, 3
   orig: 9, 9
@@ -84,7 +98,7 @@ ui_rectangleRounded
   index: -1
 ui_rectangleRounded_dark
   rotate: false
-  xy: 193, 132
+  xy: 243, 120
   size: 9, 9
   split: 3, 3, 3, 3
   orig: 9, 9
@@ -92,7 +106,7 @@ ui_rectangleRounded_dark
   index: -1
 ui_smallFrame
   rotate: false
-  xy: 150, 38
+  xy: 218, 56
   size: 23, 23
   split: 6, 6, 6, 6
   orig: 23, 23
@@ -100,7 +114,7 @@ ui_smallFrame
   index: -1
 ui_smallFrame_checked
   rotate: false
-  xy: 218, 168
+  xy: 218, 81
   size: 23, 23
   split: 6, 6, 6, 6
   orig: 23, 23
@@ -108,7 +122,7 @@ ui_smallFrame_checked
   index: -1
 ui_smallFrame_dark
   rotate: false
-  xy: 125, 13
+  xy: 193, 56
   size: 23, 23
   split: 6, 6, 6, 6
   orig: 23, 23
@@ -116,7 +130,7 @@ ui_smallFrame_dark
   index: -1
 ui_smallFrame_dark_checked
   rotate: false
-  xy: 193, 168
+  xy: 193, 106
   size: 23, 23
   split: 6, 6, 6, 6
   orig: 23, 23
@@ -124,7 +138,7 @@ ui_smallFrame_dark_checked
   index: -1
 ui_smallFrame_dark_hovered
   rotate: false
-  xy: 125, 38
+  xy: 193, 81
   size: 23, 23
   split: 6, 6, 6, 6
   orig: 23, 23
@@ -132,7 +146,7 @@ ui_smallFrame_dark_hovered
   index: -1
 ui_smallFrame_hovered
   rotate: false
-  xy: 193, 143
+  xy: 218, 106
   size: 23, 23
   split: 6, 6, 6, 6
   orig: 23, 23
