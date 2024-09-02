@@ -27,7 +27,6 @@ public class TitleScreen implements Screen {
       @Override
       public void handleQuitButton() {
         dispose();
-        game.dispose();
         Gdx.app.exit();
       }
     };

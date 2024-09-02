@@ -5,30 +5,38 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 
 public class SettingWindow {
-  private Array<String> languages;
   private Skin skin;
-  private static SettingWindow settingWindow;
+
   private Preferences settings;
-  private final Table settingBoard;
-  private final TextButton exitButton;
-  private final Label languageSelectBoxLabel;
+  private Table settingBoard;
+  private TextButton exitButton;
+  private Label languageSelectBoxLabel;
   private SelectBox<String> languageSelectBox;
-  private SettingWindow(Skin skin) {
+  private Array<String> languages;
+  public SettingWindow(Skin skin) {
     this.skin = skin;
     languages = new Array<>(new String[]{"English", "Vietnamese"});
     settings = Gdx.app.getPreferences("ChesspieSettings");
+    createSettingWindow(skin);
+    createLanguageSetting(skin);
+    loadComponents();
+  }
+
+  private void createSettingWindow(Skin skin) {
     settingBoard = SceneGUI.createWindow(skin, false);
     settingBoard.setSize(900, 600);
     settingBoard.setPosition(
         (float) Gdx.graphics.getWidth() / 2 - 450,
         (float) Gdx.graphics.getHeight() / 2 - 300
     );
-    exitButton = new TextButton("Save & Exit", skin);
+    settingBoard.setTouchable(Touchable.enabled);
+    exitButton = SceneGUI.createTextButton(skin, "Save & Exit", false);
     exitButton.addListener(new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -37,6 +45,9 @@ public class SettingWindow {
         return true;
       }
     });
+  }
+
+  private void createLanguageSetting(Skin skin) {
     languageSelectBoxLabel  = SceneGUI.createLabel(skin, "Language", 1f, false, false);
     languageSelectBox = new SelectBox<>(skin);
     languageSelectBox.setItems(languages);
@@ -46,6 +57,9 @@ public class SettingWindow {
         System.out.println(languageSelectBox.getSelected());
       }
     });
+  }
+
+  private void loadComponents() {
     settingBoard.add(languageSelectBoxLabel).expand();
     settingBoard.add(languageSelectBox).expand();
     settingBoard.row();
@@ -53,14 +67,8 @@ public class SettingWindow {
     settingBoard.setZIndex(10);
     settingBoard.setVisible(false);
   }
+
   public Table getSettingBoard() {
     return settingBoard;
   }
-  public static SettingWindow getInstance(Skin skin) {
-    if (settingWindow == null) {
-      settingWindow = new SettingWindow(skin);
-    }
-    return settingWindow;
-  }
-
 }

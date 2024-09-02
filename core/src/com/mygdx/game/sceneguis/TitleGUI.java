@@ -20,7 +20,7 @@ public abstract class TitleGUI extends SceneGUI{
 
   public TitleGUI(Skin skin) {
     this.skin = skin;
-    settingsBoard = SettingWindow.getInstance(skin);
+    settingsBoard = new SettingWindow(skin);
     loadTextures();
     createStartButton();
     createSettingButton();
@@ -38,7 +38,7 @@ public abstract class TitleGUI extends SceneGUI{
     title.setScale(1f);
   }
   private void createStartButton() {
-    startButton = createTextButton(skin, "START", 1.2f, 300, 80);
+    startButton = createTextButton(skin, "START", true, 1.2f, 300, 80);
     startButton.addListener(new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -49,7 +49,7 @@ public abstract class TitleGUI extends SceneGUI{
     startButton.setDebug(DEBUG_MODE);
   }
   private void createSettingButton() {
-    settingButton = createTextButton(skin, "SETTINGS", 1.2f, 300, 80);
+    settingButton = createTextButton(skin, "SETTINGS", true, 1.2f, 300, 80);
     settingButton.addListener(new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -61,7 +61,7 @@ public abstract class TitleGUI extends SceneGUI{
     settingButton.setDebug(DEBUG_MODE);
   }
   private void createQuitButton() {
-    quitButton = createTextButton(skin, "QUIT", 1.2f, 300, 80);
+    quitButton = createTextButton(skin, "QUIT", true, 1.2f, 300, 80);
     quitButton.addListener(new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -89,9 +89,6 @@ public abstract class TitleGUI extends SceneGUI{
   public abstract void handleQuitButton();
   public void showSettingWindow() {
     settingsBoard.getSettingBoard().setVisible(true);
-  }
-  public void hideSettingWindow() {
-    settingsBoard.getSettingBoard().setVisible(false);
   }
   public void dispose() {
     bg.dispose();

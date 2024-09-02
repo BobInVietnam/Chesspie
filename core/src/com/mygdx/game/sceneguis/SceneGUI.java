@@ -59,9 +59,17 @@ public abstract class SceneGUI{
     return label;
   }
 
-  public static TextButton createTextButton(Skin skin, String defaultText, float fontScale, int w, int h) {
+  public static TextButton createTextButton(Skin skin, String defaultText, boolean isTitle) {
     TextButton button;
-    button = new TextButton(defaultText, skin, "title");
+    if (isTitle) {
+      button = new TextButton(defaultText, skin, "title");
+    } else {
+      button = new TextButton(defaultText, skin);
+    }
+    return button;
+  }
+  public static TextButton createTextButton(Skin skin, String defaultText, boolean isTitle, float fontScale, int w, int h) {
+    TextButton button = createTextButton(skin, defaultText, isTitle);
     button.setSize(w, h);
     button.getLabel().setScale(fontScale);
     return button;

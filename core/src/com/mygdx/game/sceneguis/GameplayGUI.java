@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -16,6 +17,8 @@ public abstract class GameplayGUI extends SceneGUI {
   private Table pieceInfoBoard;
   private Image pieceAvatar;
   private Label pieceHealth;
+  private PauseWindow pauseWindow;
+  private SettingWindow settingWindow;
 
   private ImageButton skill1;
   private Table skillDescriptionPane;
@@ -45,6 +48,25 @@ public abstract class GameplayGUI extends SceneGUI {
   public GameplayGUI(Skin skin) {
     // Piece info table
     this.skin = skin;
+    pauseWindow = new PauseWindow(skin) {
+      @Override
+      public void handleSettingButton() {
+        settingWindow.getSettingBoard().setVisible(true);
+
+      }
+
+      @Override
+      public void handleResumeButton() {
+        resumeButtonClicked();
+      }
+
+      @Override
+      public void handleQuitButton() {
+        quitButtonClicked();
+      }
+    };
+    settingWindow = new SettingWindow(skin);
+    windows.add(pauseWindow.getPauseBoard(), settingWindow.getSettingBoard());
 
     createSkillButton();
     createSkillDescriptionPane();
@@ -178,6 +200,8 @@ public abstract class GameplayGUI extends SceneGUI {
   public abstract void buttonClicked();
   public abstract void buttonEnter();
   public abstract void buttonExit();
+  public abstract void resumeButtonClicked();
+  public abstract void quitButtonClicked();
   public void skillButtonCheck(boolean checked) {
     skill1.setChecked(checked);
   }
@@ -212,6 +236,16 @@ public abstract class GameplayGUI extends SceneGUI {
     skillDescriptionPane.setVisible(true);
     skillName.setText(piece.getChessSkill().getSkillName());
     skillDescription.setText(piece.getChessSkill().getSkillDescription());
+  }
+  public void showPauseWindow() {
+    pauseWindow.getPauseBoard().setVisible(true);
+    getRoot().setTouchable(Touchable.disabled);
+    timeRunning = false;
+  }
+  public void hidePauseWindow() {
+    pauseWindow.getPauseBoard().setVisible(false);
+    getRoot().setTouchable(Touchable.enabled);
+    timeRunning = true;
   }
   public void setPieceAvatar(Drawable image) {
     pieceAvatar.setDrawable(image);

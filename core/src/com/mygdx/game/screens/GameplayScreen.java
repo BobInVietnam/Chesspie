@@ -25,6 +25,8 @@ public class GameplayScreen implements Screen {
   public static float cornerY;
   private final Vector2 mousePos;
   private Vector3 mousePos3;
+
+  private boolean gamePaused;
   private boolean whiteTurn;
   public boolean pieceChosen;
   public boolean skillChosen;
@@ -64,6 +66,17 @@ public class GameplayScreen implements Screen {
       }
 
       @Override
+      public void resumeButtonClicked() {
+        gamePaused = false;
+        gui.hidePauseWindow();
+      }
+
+      @Override
+      public void quitButtonClicked() {
+        game.setScreen(new TitleScreen(game));
+      }
+
+      @Override
       public void timeup() { // Change this if you don't want the game to close on your face
         System.out.println("Time up!");
         game.dispose();
@@ -100,6 +113,19 @@ public class GameplayScreen implements Screen {
       public boolean mouseMoved(int screenX, int screenY) {
         handleMouseOver();
         return true;
+      }
+
+      @Override
+      public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.ESCAPE) {
+          gamePaused = !gamePaused;
+          if (gamePaused) {
+            gui.showPauseWindow();
+          } else {
+            gui.hidePauseWindow();
+          }
+        }
+        return super.keyDown(keycode);
       }
     };
 
@@ -204,6 +230,9 @@ public class GameplayScreen implements Screen {
     switchSide();
   }
   private void handleMouseInput() {
+    if (gamePaused) {
+      return;
+    }
     if (Gdx.input.justTouched()) {
       //Select piece. Else deselect piece
       if (!pieceChosen) {
@@ -245,6 +274,9 @@ public class GameplayScreen implements Screen {
     gui.hideEnemyInfo();
   }
   private void handleMouseOver() {
+    if (gamePaused) {
+      return;
+    }
     showPieceInfo();
   }
 
