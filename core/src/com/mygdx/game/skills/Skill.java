@@ -1,20 +1,20 @@
 package com.mygdx.game.skills;
 
-import com.badlogic.gdx.utils.XmlReader;
+import com.mygdx.game.LanguageLoader;
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.*;
 
 public abstract class Skill {
   int skillID;
   int skillDmg;
-  protected SkillInfoLoader skillInfoLoader;
+  protected LanguageLoader languageLoader;
   protected String skillName;
   protected String skillDescription;
   protected SkillEffect skillEffect;
   protected SkillActivation skillActivation;
 
   public Skill() {
-    skillInfoLoader = SkillInfoLoader.getInstance();
+    languageLoader = LanguageLoader.getInstance();
   }
 
   public int getSkillID() {return skillID;}
@@ -29,8 +29,8 @@ public abstract class Skill {
     return skillDescription;
   }
   public void setSkillDetails(int skillID) {
-    skillName = skillInfoLoader.getSkillName(skillID);
-    skillDescription = skillInfoLoader.getSkillDescription(skillID);
+    skillName = languageLoader.getSkillName(skillID);
+    skillDescription = languageLoader.getSkillDescription(skillID);
   }
   public void setSkillDmg(int skillDmg) {
       this.skillDmg = skillDmg;

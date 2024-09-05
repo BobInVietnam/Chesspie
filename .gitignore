@@ -112,3 +112,9 @@ Thumbs.db
 /ios/xcode/native/
 /ios/IOSLauncher.app
 /ios/IOSLauncher.app.dSYM
+
+## Misc
+*.kra
+*.scmp
+ui_*
+icon_*

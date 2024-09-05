@@ -7,15 +7,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.GUIRenderer;
+import com.mygdx.game.LanguageLoader;
 
 public abstract class SceneGUI{
   protected Array<Table> windows;
   protected Table root;
   protected Skin skin;
+  protected LanguageLoader language;
 
   public SceneGUI() {
     root = new Table();
     windows = new Array<>();
+    language = LanguageLoader.getInstance();
   }
   public Array<Table> getWindows() {
     return windows;

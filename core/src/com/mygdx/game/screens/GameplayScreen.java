@@ -14,6 +14,16 @@ import com.mygdx.game.skills.SkillActivation;
 
 import java.util.HashMap;
 
+/**
+ * Game loop works as follows:
+ * 1. White goes first. Player select the piece they want to control.
+ * 2. Player can click on a yellow square on the board to move that piece, or a red square under an enemy piece to attack.
+ *    Additionally, one can use that piece's skill. Hover on the skill button to display its range and info board. Click on it to activate skill.
+ * 3. Enemy piece may take damage immediately after being attacked.
+ * 4. Passive skills of white pieces activate their effects.
+ * 5. Status effects on white pieces (if present) take effects,
+ * 6. Game switches to black turn. Repeat this from 1.
+ */
 public class GameplayScreen implements Screen {
   final Chesspie game;
   private final OrthographicCamera camera;
@@ -77,10 +87,8 @@ public class GameplayScreen implements Screen {
       }
 
       @Override
-      public void timeup() { // Change this if you don't want the game to close on your face
+      public void timeup() {
         System.out.println("Time up!");
-        game.dispose();
-        Gdx.app.exit();
       }
     };
     this.game.gui.loadGUI(gui);
@@ -137,11 +145,14 @@ public class GameplayScreen implements Screen {
     pieceHitboxes = updatePieceHitboxes();
     whiteTurn = true;
     gui.setTimer(TIMER);
-    gui.startTimer();
   }
   @Override
   public void show() {
 
+  }
+  private void beginGame() {
+    board.boardState = ChessBoard.State.PLAYING;
+    gui.startTimer();
   }
 
   private HashMap<Piece, Rectangle> updatePieceHitboxes() {
@@ -230,6 +241,9 @@ public class GameplayScreen implements Screen {
     switchSide();
   }
   private void handleMouseInput() {
+    if (board.boardState == ChessBoard.State.START) {
+      beginGame();
+    }
     if (gamePaused) {
       return;
     }
@@ -240,16 +254,21 @@ public class GameplayScreen implements Screen {
       } else {
         int posX = (int) (mousePos.x - cornerX);
         int posY = (int) (mousePos.y - cornerY);
-        if (skillChosen && chosenPiece.inSkillRange(board, posX, posY)) {
-          useTargetedSkill(posX, posY);
+        if (skillChosen) {
+          if (chosenPiece.inSkillRange(board, posX, posY)) {
+            useTargetedSkill(posX, posY);
+          } else {
+            setSelectState(false, null);
+            gui.setSkillSelectedMessageDisplay(skillChosen);
+            gui.skillButtonCheck(skillChosen);
+            gui.hideInfo();
+          }
         } else if (chosenPiece.canMove(board, posX, posY)) {
           movePiece(chosenPiece, board, posX, posY);
         } else if (chosenPiece.inBaseAtkRange(board, posX, posY)) {
           attackPiece(chosenPiece, board, posX, posY);
         } else {
           setSelectState(false, null);
-          gui.setSkillSelectedMessageDisplay(skillChosen);
-          gui.skillButtonCheck(skillChosen);
           gui.hideInfo();
         }
       }

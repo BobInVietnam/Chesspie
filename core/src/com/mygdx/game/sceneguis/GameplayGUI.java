@@ -127,7 +127,7 @@ public abstract class GameplayGUI extends SceneGUI {
   }
   private void createSkillSelectedMessage() {
     skillSelectedMessagePane = createBlock(skin, false, DEBUG_MODE);
-    skillSelectedMessage = createLabel(skin, "Select skill target", 1, false, true);
+    skillSelectedMessage = createLabel(skin, language.getUIGameplay("skillSelect"), 1, false, true);
     skillSelectedMessagePane.add(skillSelectedMessage);
     skillSelectedMessagePane.setVisible(false);
   }
@@ -170,7 +170,8 @@ public abstract class GameplayGUI extends SceneGUI {
   }
   private void createTimer() {
     timerBoard = createBlock(skin, false, DEBUG_MODE);
-    timerDisplay = createLabel(skin, "Timer: 0:00.00", 0.8f, false, false);
+    String timerDisplayString = language.getUIGameplay("timer") + "0:00,00";
+    timerDisplay = createLabel(skin, timerDisplayString, 0.8f, false, false);
     timerBoard.padLeft(15);
     timerBoard.add(timerDisplay).left();
   }
@@ -252,6 +253,10 @@ public abstract class GameplayGUI extends SceneGUI {
   }
   public void setTimer(float s) {
     timer = s;
+    int min = (int) (timer / 60);
+    float sec = timer%60;
+    DecimalFormat df = new DecimalFormat("00.00");
+    timerDisplay.setText(language.getUIGameplay("timer") + min + ':' + df.format(sec));
   }
   public void startTimer() {
     timeRunning = true;
@@ -259,7 +264,8 @@ public abstract class GameplayGUI extends SceneGUI {
   public void countdown() {
     if (!timeRunning) return;
     if (timer < 0) {
-      timerDisplay.setText("Timer: 0:00.00");
+      String timerDisplayString = language.getUIGameplay("timer") + "0:00,00";
+      timerDisplay.setText(timerDisplayString);
       timeup();
       timeRunning = false;
       return;

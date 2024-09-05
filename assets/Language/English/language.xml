@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language>
+    <ui>
+        <titleScreen>
+            <start>START</start>
+            <settings>SETTINGS</settings>
+            <quit>QUIT</quit>
+        </titleScreen>
+        <settingMenu>
+            <language>Language</language>
+        </settingMenu>
+        <tutorial>
+            <title>Welcome to ChessPie!</title>
+            <l1>It's just chess, but each piece (pawn included) is a character with health point, defense point and an unique skill. </l1>
+            <l2>At the start of the game, white goes first. At each turn, you can either:
+            - Move a piece (and attack an enemy piece if possible)
+            - Use a skill via pressing the "Skill" icon on the left after you select a piece.</l2>
+            <l3>There are 3 type of skills: "Target, "Trigger", "Passive".
+                "Passive" skills automatically activate at the end of the turn without the need to press the Skill icon.
+                "Trigger" skills activate after you press the Skill icon.
+                "Target" skills activate after you press the Skill icon and select an appropriate target.
+            </l3>
+            <l4>When attacking an enemy piece, if your piece can eliminate that piece, it will take the latter place. Otherwise, most pieces will either stay in place or move close to the attacked piece.</l4>
+            <l5>A little rule difference compared to normal chess: You cannot castle, cannot do en-passant, pawns cannot be promoted to pieces, and checkmate doesn't exist. You must deplete the enemy king's HP to win.</l5>
+            <l6>Press ESC to pause.</l6>
+        </tutorial>
+        <gameplayScreen>
+            <skillSelect>Select skill target</skillSelect>
+            <timer>Timer: </timer>
+        </gameplayScreen>
+    </ui>
+    <skills>
+        <skill>
+            <id>0</id>
+            <name>Bishop's Skill</name>
+            <description>Deal 10 DMG to a selected target in 2 squares range.</description>
+        </skill>
+        <skill>
+            <id>1</id>
+            <name>King's Order</name>
+            <description>Buff allies' ATK and DEF by 5 in a 1 square range.</description>
+        </skill>
+        <skill>
+            <id>2</id>
+            <name>Knight's Skill</name>
+            <description>Deal 5 DMG to all enemies in a 1 square range.</description>
+        </skill>
+        <skill>
+            <id>3</id>
+            <name>Pawn's Shield</name>
+            <description>Gain 5 DEF. Expire when moving or attacking enemies.</description>
+        </skill>
+        <skill>
+            <id>4</id>
+            <name>Queen's Prowess</name>
+            <description>Deal 8 DMG to all enemies in a line in 3 squares diagonal, vertical or horizontal to the Queen.</description>
+        </skill>
+        <skill>
+            <id>5</id>
+            <name>Rook's Endurance</name>
+            <description>Gain 8 DEF in 3 turn.</description>
+        </skill>
+    </skills>
+</language>
