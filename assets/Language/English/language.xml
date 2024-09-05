@@ -13,16 +13,19 @@
             <title>Welcome to ChessPie!</title>
             <l1>It's just chess, but each piece (pawn included) is a character with health point, defense point and an unique skill. </l1>
             <l2>At the start of the game, white goes first. At each turn, you can either:
-            - Move a piece (and attack an enemy piece if possible)
-            - Use a skill via pressing the "Skill" icon on the left after you select a piece.</l2>
+
+    Move a piece (and attack an enemy piece if possible)
+    Use a skill via pressing the "Skill" icon on the left after you select a piece.</l2>
             <l3>There are 3 type of skills: "Target, "Trigger", "Passive".
-                "Passive" skills automatically activate at the end of the turn without the need to press the Skill icon.
-                "Trigger" skills activate after you press the Skill icon.
-                "Target" skills activate after you press the Skill icon and select an appropriate target.
+    "Passive" skills automatically activate at the end of the turn without the need to press the Skill icon.
+    "Trigger" skills activate after you press the Skill icon.
+    "Target" skills activate after you press the Skill icon and select an appropriate target.
             </l3>
             <l4>When attacking an enemy piece, if your piece can eliminate that piece, it will take the latter place. Otherwise, most pieces will either stay in place or move close to the attacked piece.</l4>
             <l5>A little rule difference compared to normal chess: You cannot castle, cannot do en-passant, pawns cannot be promoted to pieces, and checkmate doesn't exist. You must deplete the enemy king's HP to win.</l5>
-            <l6>Press ESC to pause.</l6>
+            <l6>Press ESC to pause. The timer will pause, and you can either change the setting or quit the match.</l6>
+            <button>Continue</button>
+            <button2>Skip</button2>
         </tutorial>
         <gameplayScreen>
             <skillSelect>Select skill target</skillSelect>
@@ -38,7 +41,7 @@
         <skill>
             <id>1</id>
             <name>King's Order</name>
-            <description>Buff allies' ATK and DEF by 5 in a 1 square range.</description>
+            <description>Passive skill. Buff allies' ATK and DEF by 5 in a 1 square range.</description>
         </skill>
         <skill>
             <id>2</id>

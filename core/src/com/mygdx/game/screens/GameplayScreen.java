@@ -21,7 +21,7 @@ import java.util.HashMap;
  *    Additionally, one can use that piece's skill. Hover on the skill button to display its range and info board. Click on it to activate skill.
  * 3. Enemy piece may take damage immediately after being attacked.
  * 4. Passive skills of white pieces activate their effects.
- * 5. Status effects on white pieces (if present) take effects,
+ * 5. Status effects on white pieces (if present) take effects.
  * 6. Game switches to black turn. Repeat this from 1.
  */
 public class GameplayScreen implements Screen {

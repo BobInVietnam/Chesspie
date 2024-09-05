@@ -43,7 +43,7 @@ public abstract class GameplayGUI extends SceneGUI {
 
   private Table turnIndicator;
   private Label turnIndicatorText;
-  private static final boolean DEBUG_MODE = true;
+  private static final boolean DEBUG_MODE = false;
 
   public GameplayGUI(Skin skin) {
     // Piece info table
@@ -256,7 +256,7 @@ public abstract class GameplayGUI extends SceneGUI {
     int min = (int) (timer / 60);
     float sec = timer%60;
     DecimalFormat df = new DecimalFormat("00.00");
-    timerDisplay.setText(language.getUIGameplay("timer") + min + ':' + df.format(sec));
+    timerDisplay.setText(language.getUIGameplay("timer") + min + ": " + df.format(sec));
   }
   public void startTimer() {
     timeRunning = true;
@@ -264,7 +264,7 @@ public abstract class GameplayGUI extends SceneGUI {
   public void countdown() {
     if (!timeRunning) return;
     if (timer < 0) {
-      String timerDisplayString = language.getUIGameplay("timer") + "0:00,00";
+      String timerDisplayString = language.getUIGameplay("timer") + ": 0:00,00";
       timerDisplay.setText(timerDisplayString);
       timeup();
       timeRunning = false;
@@ -274,7 +274,7 @@ public abstract class GameplayGUI extends SceneGUI {
     int min = (int) (timer / 60);
     float sec = timer%60;
     DecimalFormat df = new DecimalFormat("00.00");
-    timerDisplay.setText("Timer: " + min + ':' + df.format(sec));
+    timerDisplay.setText(language.getUIGameplay("timer") + ": " + min + ':' + df.format(sec));
   }
   public abstract void timeup();
   public void setTurnIndicatorText(boolean whiteTurn) {

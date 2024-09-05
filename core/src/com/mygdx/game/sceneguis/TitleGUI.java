@@ -16,7 +16,7 @@ public abstract class TitleGUI extends SceneGUI{
   private TextButton quitButton;
   private SettingWindow settingsBoard;
 
-  private static final boolean DEBUG_MODE = true;
+  private static final boolean DEBUG_MODE = false;
 
   public TitleGUI(Skin skin) {
     this.skin = skin;
@@ -42,7 +42,7 @@ public abstract class TitleGUI extends SceneGUI{
     startButton.addListener(new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        handleStartButton();
+        startButtonClicked();
         return true;
       }
     });
@@ -53,7 +53,7 @@ public abstract class TitleGUI extends SceneGUI{
     settingButton.addListener(new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        handleSettingButton();
+        settingButtonClicked();
         settingButton.setChecked(true);
         return true;
       }
@@ -84,8 +84,8 @@ public abstract class TitleGUI extends SceneGUI{
     root.setFillParent(true);
     windows.add(settingsBoard.getSettingBoard());
   }
-  public abstract void handleStartButton();
-  public abstract void handleSettingButton();
+  public abstract void startButtonClicked();
+  public abstract void settingButtonClicked();
   public abstract void handleQuitButton();
   public void showSettingWindow() {
     settingsBoard.getSettingBoard().setVisible(true);

@@ -15,12 +15,12 @@ public class TitleScreen implements Screen {
     this.game = game;
     this.gui = new TitleGUI(this.game.gui.getSkin()) {
       @Override
-      public void handleStartButton() {
-        game.setScreen(new GameplayScreen(game));
+      public void startButtonClicked() {
+        game.setScreen(new TutorialScreen(game));
       }
 
       @Override
-      public void handleSettingButton() {
+      public void settingButtonClicked() {
         gui.showSettingWindow();
       }
 
