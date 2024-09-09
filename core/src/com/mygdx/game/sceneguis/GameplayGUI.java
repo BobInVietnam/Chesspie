@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.mygdx.game.GUIRenderer;
 import com.mygdx.game.chesspieces.Piece;
+import com.mygdx.game.settings.Settings;
 
 import java.text.DecimalFormat;
 
@@ -51,8 +51,7 @@ public abstract class GameplayGUI extends SceneGUI {
     pauseWindow = new PauseWindow(skin) {
       @Override
       public void handleSettingButton() {
-        settingWindow.getSettingBoard().setVisible(true);
-
+        settingWindow.getRoot().setVisible(true);
       }
 
       @Override
@@ -66,7 +65,7 @@ public abstract class GameplayGUI extends SceneGUI {
       }
     };
     settingWindow = new SettingWindow(skin);
-    windows.add(pauseWindow.getPauseBoard(), settingWindow.getSettingBoard());
+    windows.add(pauseWindow, settingWindow);
 
     createSkillButton();
     createSkillDescriptionPane();
@@ -239,12 +238,12 @@ public abstract class GameplayGUI extends SceneGUI {
     skillDescription.setText(piece.getChessSkill().getSkillDescription());
   }
   public void showPauseWindow() {
-    pauseWindow.getPauseBoard().setVisible(true);
+    pauseWindow.getRoot().setVisible(true);
     getRoot().setTouchable(Touchable.disabled);
     timeRunning = false;
   }
   public void hidePauseWindow() {
-    pauseWindow.getPauseBoard().setVisible(false);
+    pauseWindow.getRoot().setVisible(false);
     getRoot().setTouchable(Touchable.enabled);
     timeRunning = true;
   }
@@ -256,7 +255,7 @@ public abstract class GameplayGUI extends SceneGUI {
     int min = (int) (timer / 60);
     float sec = timer%60;
     DecimalFormat df = new DecimalFormat("00.00");
-    timerDisplay.setText(language.getUIGameplay("timer") + min + ": " + df.format(sec));
+    timerDisplay.setText(language.getUIGameplay("timer") + min + ":" + df.format(sec));
   }
   public void startTimer() {
     timeRunning = true;
@@ -264,17 +263,14 @@ public abstract class GameplayGUI extends SceneGUI {
   public void countdown() {
     if (!timeRunning) return;
     if (timer < 0) {
-      String timerDisplayString = language.getUIGameplay("timer") + ": 0:00,00";
+      String timerDisplayString = language.getUIGameplay("timer") + "0:00.00";
       timerDisplay.setText(timerDisplayString);
       timeup();
       timeRunning = false;
       return;
     }
     timer -= Gdx.graphics.getDeltaTime();
-    int min = (int) (timer / 60);
-    float sec = timer%60;
-    DecimalFormat df = new DecimalFormat("00.00");
-    timerDisplay.setText(language.getUIGameplay("timer") + ": " + min + ':' + df.format(sec));
+    setTimer(timer);
   }
   public abstract void timeup();
   public void setTurnIndicatorText(boolean whiteTurn) {
@@ -283,5 +279,17 @@ public abstract class GameplayGUI extends SceneGUI {
     } else {
       turnIndicatorText.setText("B");
     }
+  }
+
+  @Override
+  public void update(Settings settings) {
+    System.out.println("Gameplay updated");
+    setTimer(timer);
+  }
+  public void dispose() {
+    Settings settings = Settings.getInstance();
+    pauseWindow.dispose();
+    settingWindow.dispose();
+    settings.removeObserver(this);
   }
 }

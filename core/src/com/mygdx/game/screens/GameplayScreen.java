@@ -330,6 +330,7 @@ public class GameplayScreen implements Screen {
   @Override
   public void dispose() {
     gameRenderer.dispose();
+    gui.dispose();
   }
 
 }

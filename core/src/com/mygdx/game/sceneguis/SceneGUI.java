@@ -8,9 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.GUIRenderer;
 import com.mygdx.game.LanguageLoader;
+import com.mygdx.game.settings.SettingsObserver;
 
-public abstract class SceneGUI{
-  protected Array<Table> windows;
+public abstract class SceneGUI implements SettingsObserver {
+  protected Array<SceneWindow> windows;
   protected Table root;
   protected Skin skin;
   protected LanguageLoader language;
@@ -20,7 +21,7 @@ public abstract class SceneGUI{
     windows = new Array<>();
     language = LanguageLoader.getInstance();
   }
-  public Array<Table> getWindows() {
+  public Array<SceneWindow> getWindows() {
     return windows;
   }
   public Table getRoot() {
@@ -80,4 +81,5 @@ public abstract class SceneGUI{
   public static Image createIcon(Skin skin, String iconName) {
     return new Image(new TextureRegionDrawable(skin.getRegion(iconName)));
   }
+  public abstract void dispose();
 }

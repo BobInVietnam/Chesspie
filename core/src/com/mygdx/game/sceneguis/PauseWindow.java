@@ -7,13 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import sun.tools.jconsole.Tab;
+import com.mygdx.game.settings.Settings;
 
-public abstract class PauseWindow {
-  private Skin skin;
-  private static PauseWindow pauseWindow;
-
-  private Table pauseBoard;
+public abstract class PauseWindow extends SceneWindow {
   private Label pauseLabel;
   private Label randomTips;
   private TextButton resumeButton;
@@ -23,9 +19,9 @@ public abstract class PauseWindow {
 
   public PauseWindow(Skin skin) {
     this.skin = skin;
-    pauseBoard = SceneGUI.createWindow(skin, false);
-    pauseBoard.setSize(700, 400);
-    pauseBoard.setPosition(
+    root = SceneGUI.createWindow(skin, false);
+    root.setSize(700, 400);
+    root.setPosition(
         (float) Gdx.graphics.getWidth() / 2 - 400,
         (float) Gdx.graphics.getHeight() / 2 - 200
     );
@@ -56,19 +52,30 @@ public abstract class PauseWindow {
         return true;
       }
     });
-    pauseBoard.add(pauseLabel).colspan(3).expand();
-    pauseBoard.row();
-    pauseBoard.add(resumeButton).expandX();
-    pauseBoard.add(settingButton).expandX();
-    pauseBoard.add(quitButton).expandX();
-    pauseBoard.setZIndex(9);
-    pauseBoard.setVisible(false);
-  }
-  public Table getPauseBoard(){
-    return pauseBoard;
+    root.add(pauseLabel).colspan(3).expand();
+    root.row();
+    root.add(resumeButton).expandX();
+    root.add(settingButton).expandX();
+    root.add(quitButton).expandX();
+    root.setZIndex(9);
+    root.setVisible(false);
   }
 
   public abstract void handleSettingButton();
   public abstract void handleResumeButton();
   public abstract void handleQuitButton();
+
+  @Override
+  public void update(Settings settings) {
+    System.out.println("Pause window updated");
+    pauseLabel.setText(language.getPauseWindow("title"));
+    resumeButton.setText(language.getPauseWindow("b1"));
+    settingButton.setText(language.getPauseWindow("b2"));
+    quitButton.setText(language.getPauseWindow("b3"));
+  }
+  @Override
+  public void dispose() {
+    Settings settings = Settings.getInstance();
+    settings.removeObserver(this);
+  }
 }

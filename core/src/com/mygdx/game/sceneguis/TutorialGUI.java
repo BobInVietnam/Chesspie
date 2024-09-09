@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.mygdx.game.settings.Settings;
+import com.mygdx.game.settings.SettingsObserver;
 
 public abstract class TutorialGUI extends SceneGUI{
   private Label title;
@@ -125,8 +127,13 @@ public abstract class TutorialGUI extends SceneGUI{
         switchScene();
     }
   };
+  @Override
+  public void update(Settings settings) {
+  }
   public void dispose() {
     tutorialImageTexture.dispose();
     tutorialImageTexture2.dispose();
+    Settings settings = Settings.getInstance();
+    settings.removeObserver(this);
   }
 }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language>
+    <ui>
+        <titleScreen>
+            <start>BẮT ĐẦU</start>
+            <settings>TÙY CHỈNH</settings>
+            <quit>THOÁT</quit>
+        </titleScreen>
+        <settingMenu>
+            <language>Ngôn ngữ</language>
+        </settingMenu>
+        <tutorial>
+            <title>Chào mừng đến với ChessPie!</title>
+            <l1>Đây là trò cờ vua, nhưng mỗi quân sẽ có số máu, sát thương và một kỹ năng nhất định. </l1>
+            <l2>Trắng sẽ đi trước. Trong một lượt, người chơi có thể:
+
+    - Di chuyển quân (và tấn công địch nếu có thể)
+    - Sử dụng kỹ năng bằng cách ấn vào biểu tượng kỹ năng sau khi chọn quân</l2>
+            <l3>Có 3 loại kĩ năng: "Thụ động", "Kích hoạt ngay" và "Chọn mục tiêu"
+    "Thụ động" là kỹ năng tự động kích hoạt sau mỗi lượt của người chơi.
+    "Kích hoạt ngay" là kỹ năng hoạt động ngay sau khi ấn biểu tượng kỹ năng.
+    "Chọn mục tiêu" là kỹ năng được kích hoạt trên một mục tiêu được chọn trên bàn cở.
+
+            </l3>
+            <l4>Khi tấn công quân địch, nếu có thể tiêu diệt được quân đó, quân của bạn sẽ thế chỗ nó. Nếu không thể, quân của bạn sẽ đứng im hoặc tiến đến gần mục tiêu bị tấn công.</l4>
+            <l5>Một số luật chơi không giống với cờ vua bình thường: Bạn không thể nhập thành, không thể en-passant, quân tốt không thể được phong cấp, và không có chiếu. Bạn phải tiêu diệt quân vua địch để thắng.</l5>
+            <l6>Nhấn phím ESC để dừng game. Thời gian sẽ ngừng chạy, và bạn có thể vào mục tùy chỉnh hoặc thoát trận.</l6>
+            <button>Tiếp tục</button>
+            <button2>Bỏ qua</button2>
+        </tutorial>
+        <pauseWindow>
+            <title>PAUSED</title>
+            <b1>Resume Game</b1>
+            <b2>Settings</b2>
+            <b3>Quit Game</b3>
+        </pauseWindow>
+        <settingWindow>
+            <language>Ngôn ngữ</language>
+            <exit>Lưu &amp; Thoát</exit>
+        </settingWindow>
+        <gameplayScreen>
+            <skillSelect>Chọn mục tiêu</skillSelect>
+            <timer>Thời gian: </timer>
+        </gameplayScreen>
+    </ui>
+    <skills>
+        <skill>
+            <id>0</id>
+            <name>Bishop's Skill</name>
+            <description>Deal 10 DMG to a selected target in 2 squares range.</description>
+        </skill>
+        <skill>
+            <id>1</id>
+            <name>King's Order</name>
+            <description>Passive skill. Buff allies' ATK and DEF by 5 in a 1 square range.</description>
+        </skill>
+        <skill>
+            <id>2</id>
+            <name>Knight's Skill</name>
+            <description>Deal 5 DMG to all enemies in a 1 square range.</description>
+        </skill>
+        <skill>
+            <id>3</id>
+            <name>Pawn's Shield</name>
+            <description>Gain 5 DEF. Expire when moving or attacking enemies.</description>
+        </skill>
+        <skill>
+            <id>4</id>
+            <name>Queen's Prowess</name>
+            <description>Deal 8 DMG to all enemies in a line in 3 squares diagonal, vertical or horizontal to the Queen.</description>
+        </skill>
+        <skill>
+            <id>5</id>
+            <name>Rook's Endurance</name>
+            <description>Gain 8 DEF in 3 turn.</description>
+        </skill>
+    </skills>
+</language>

@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.game.settings.Settings;
 
 public abstract class TitleGUI extends SceneGUI{
   private Image title;
@@ -82,16 +83,24 @@ public abstract class TitleGUI extends SceneGUI{
     root.center().add(quitButton).size(300, 80);
     root.setDebug(DEBUG_MODE);
     root.setFillParent(true);
-    windows.add(settingsBoard.getSettingBoard());
+    windows.add(settingsBoard);
   }
   public abstract void startButtonClicked();
   public abstract void settingButtonClicked();
   public abstract void handleQuitButton();
   public void showSettingWindow() {
-    settingsBoard.getSettingBoard().setVisible(true);
+    settingsBoard.getRoot().setVisible(true);
+  }
+  @Override
+  public void update(Settings settings) {
+    startButton.setText(language.getUITitle("start"));
+    settingButton.setText(language.getUITitle("settings"));
+    quitButton.setText(language.getUITitle("quit"));
   }
   public void dispose() {
     bg.dispose();
     titleTexture.dispose();
+    Settings settings = Settings.getInstance();
+    settings.removeObserver(this);
   }
 }
