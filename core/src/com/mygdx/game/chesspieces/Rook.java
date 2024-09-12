@@ -2,6 +2,7 @@ package com.mygdx.game.chesspieces;
 
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.skills.RookSkill;
+import com.mygdx.game.statusfxs.StatusEffect;
 
 public class Rook extends Piece {
     public Rook(int x, int y) {
@@ -14,6 +15,16 @@ public class Rook extends Piece {
     public Rook(int x, int y, String color, int maxHp, int baseAttack) {
         super(x, y, color, maxHp, baseAttack);
         chessSkill = new RookSkill(8);
+    }
+    public Piece clone() {
+        Rook p = new Rook(posX, posY, color, maxHp, baseAttack);
+        p.hp = hp;
+        p.attack = attack;
+        p.defense = defense;
+        for (StatusEffect s: status) {
+            p.status.add(s.clone());
+        }
+        return p;
     }
 
     public Character getSymbol() {
@@ -101,7 +112,7 @@ public class Rook extends Piece {
     @Override
     public void attack(ChessBoard board, Piece piece) {
         super.attack(board, piece);
-        if (canKillwithBaseAtk(board, piece)) killPiece(board, piece);
+        if (canKillwithBaseAtk(piece)) killPiece(piece);
         else {
             piece.getAttacked(this);
             moveAfterAttack(board, piece);

@@ -11,7 +11,6 @@ public class QueenSkill extends Skill{
         skillID = 4;
         skillActivation = SkillActivation.TARGET;
         skillDmg = dmg;
-        setSkillDetails(skillID);
     }
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {

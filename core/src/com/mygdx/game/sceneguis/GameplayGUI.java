@@ -8,7 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.XmlReader;
 import com.mygdx.game.chesspieces.Piece;
+import com.mygdx.game.moves.History;
 import com.mygdx.game.settings.Settings;
 
 import java.text.DecimalFormat;
@@ -41,9 +43,13 @@ public abstract class GameplayGUI extends SceneGUI {
   private Table timerBoard;
   private boolean timeRunning;
 
+  private ScrollPane historyBoard;
+  private VerticalGroup blackHistory;
+  private VerticalGroup whiteHistory;
+
   private Table turnIndicator;
   private Label turnIndicatorText;
-  private static final boolean DEBUG_MODE = false;
+  private static final boolean DEBUG_MODE = true;
 
   public GameplayGUI(Skin skin) {
     // Piece info table
@@ -78,6 +84,7 @@ public abstract class GameplayGUI extends SceneGUI {
     createEnemyBoard();
     createTimer();
     createTurnIndicator();
+    createHistoryPane();
     // Adding components to root table
     loadComponents();
 
@@ -85,6 +92,7 @@ public abstract class GameplayGUI extends SceneGUI {
     hideEnemyInfo();
     hideSkillInfo();
   }
+
   private void initializeStats() {
     attack = createLabel(skin, "0", 0.6f, false, false);
     enemyAttack = createLabel(skin, "0", 0.6f, false, false);
@@ -176,9 +184,21 @@ public abstract class GameplayGUI extends SceneGUI {
   }
   private void createTurnIndicator() {
     turnIndicator = createBlock(skin, false, DEBUG_MODE);
-    turnIndicatorText = createLabel(skin, "W", 1.2f, false, false);
+    turnIndicatorText = createLabel(skin, "1.W", 0.8f, false, false);
     turnIndicator.add(turnIndicatorText);
   }
+  private void createHistoryPane() {
+    Table main = SceneGUI.createBlock(skin, false, DEBUG_MODE);
+    blackHistory = new VerticalGroup();
+    whiteHistory = new VerticalGroup();
+    main.add(SceneGUI.createLabel(skin, "White", 0.6f, false, false)).expandX();
+    main.add(SceneGUI.createLabel(skin, "Black", 0.6f, false, false)).expandX();
+    main.row();
+    main.add(whiteHistory).fill().expand();
+    main.add(blackHistory).fill().expand();
+    historyBoard = new ScrollPane(main, skin);
+  }
+
   private void loadComponents() {
     root.setDebug(DEBUG_MODE);
     root.left().top().add(pieceInfoBoard).size(300f, 80f).expandX().left();
@@ -190,6 +210,7 @@ public abstract class GameplayGUI extends SceneGUI {
     t.left().add(skill1).size(100).expand();
     t.add(skillDescriptionPane).prefWidth(300);
     root.add(t).expand();
+    root.add(historyBoard).right().size(250, 400).colspan(2);
     root.row().left();
     root.add(timerBoard).size(320, 80).left();
     root.add(skillSelectedMessagePane).size(200, 50);
@@ -234,8 +255,9 @@ public abstract class GameplayGUI extends SceneGUI {
   }
   public void showSkillInfo(Piece piece) {
     skillDescriptionPane.setVisible(true);
-    skillName.setText(piece.getChessSkill().getSkillName());
-    skillDescription.setText(piece.getChessSkill().getSkillDescription());
+    int skillId = piece.getChessSkill().getSkillID();
+    skillName.setText(language.getSkillName(skillId));
+    skillDescription.setText(language.getSkillDescription(skillId));
   }
   public void showPauseWindow() {
     pauseWindow.getRoot().setVisible(true);
@@ -273,12 +295,23 @@ public abstract class GameplayGUI extends SceneGUI {
     setTimer(timer);
   }
   public abstract void timeup();
-  public void setTurnIndicatorText(boolean whiteTurn) {
+  public void setTurnIndicatorText(boolean whiteTurn, int number) {
     if (whiteTurn) {
-      turnIndicatorText.setText("W");
+      turnIndicatorText.setText(number + ".W");
     } else {
-      turnIndicatorText.setText("B");
+      turnIndicatorText.setText(number + ".B");
     }
+  }
+  public void addHistory(Label move, boolean whiteTurn) {
+    if (whiteTurn) {
+      whiteHistory.addActor(move);
+    } else {
+      blackHistory.addActor(move);
+    }
+  }
+  public void clearHistory() {
+    whiteHistory.clear();
+    blackHistory.clear();
   }
 
   @Override

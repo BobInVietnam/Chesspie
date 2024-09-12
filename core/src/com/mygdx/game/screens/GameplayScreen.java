@@ -5,11 +5,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.game.Chesspie;
 import com.mygdx.game.GameRenderer;
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.*;
+import com.mygdx.game.moves.History;
+import com.mygdx.game.moves.Move;
 import com.mygdx.game.sceneguis.GameplayGUI;
+import com.mygdx.game.sceneguis.SceneGUI;
 import com.mygdx.game.skills.SkillActivation;
 
 import java.util.HashMap;
@@ -29,8 +35,12 @@ public class GameplayScreen implements Screen {
   private final OrthographicCamera camera;
   private final GameRenderer gameRenderer;
   private final InputAdapter inputHandler;
-  private final ChessBoard board;
+  private ChessBoard board;
   private HashMap<Piece, Rectangle> pieceHitboxes;
+  private History history;
+  private int lastPieceStartX;
+  private int lastPieceStartY;
+
   public static float cornerX;
   public static float cornerY;
   private final Vector2 mousePos;
@@ -42,7 +52,8 @@ public class GameplayScreen implements Screen {
   public boolean skillChosen;
   public Piece chosenPiece;
 
-  private final int TIMER = 1800; // Timer before the game automatically closes
+  private int moveNumber;
+  private static final int TIMER = 1800;
 
   private final GameplayGUI gui;
 
@@ -93,7 +104,9 @@ public class GameplayScreen implements Screen {
     };
     this.game.gui.loadGUI(gui);
 
-    board = new ChessBoard();
+    moveNumber = 1;
+    board = new ChessBoard(moveNumber);
+    history = new History();
     camera = new OrthographicCamera();
     float ratio = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
     camera.setToOrtho(false, 12 / ratio, 12);
@@ -189,16 +202,43 @@ public class GameplayScreen implements Screen {
         p.activateSkill(board);
     }
   }
+
   private void switchSide() {
     activatePassiveSkills(whiteTurn);
     board.refresh(whiteTurn);
+    saveMoveToHistory();
     pieceHitboxes = updatePieceHitboxes();
-    setSelectState(false, null);
-    gui.setSkillSelectedMessageDisplay(skillChosen);
-    gui.skillButtonCheck(skillChosen);
+    deselectPiece();
     if (isWinState()) return;
     whiteTurn = !whiteTurn;
-    gui.setTurnIndicatorText(whiteTurn);
+    moveNumber++;
+    gui.setTurnIndicatorText(whiteTurn, moveNumber);
+  }
+
+  private void saveMoveToHistory() {
+    history.addMove(
+        new Move(lastPieceStartX, lastPieceStartY, chosenPiece.getPosX(), chosenPiece.getPosY(),
+            board, chosenPiece, whiteTurn));
+    Label move = SceneGUI.createLabel(game.gui.getSkin(), history.getMoveAt(moveNumber - 1).getMoveLine(),
+        0.8f, false, false);
+    final int temp = moveNumber;
+    move.addListener(new InputListener() {
+      @Override
+      public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        final int t = temp;
+        Move m = history.getMoveAt(t - 1);
+        board = m.getBoard().clone();
+        pieceHitboxes = updatePieceHitboxes();
+        whiteTurn = !m.isWhiteTurn();
+        moveNumber = t + 1;
+        gui.setTurnIndicatorText(whiteTurn, moveNumber);
+        gameRenderer.setBoard(m.getBoard());
+        return true;
+      }
+    });
+    gui.addHistory(move, whiteTurn);
+    board = board.clone();
+    gameRenderer.setBoard(board);
   }
 
   private boolean isWinState() {
@@ -213,7 +253,6 @@ public class GameplayScreen implements Screen {
     }
     return false;
   }
-
   private void selectPiece() {
     for (Piece piece: pieceHitboxes.keySet()) {
       if (pieceHitboxes.get(piece).contains(mousePos) && ((piece.getColor().equals("white")) == whiteTurn)) {
@@ -223,20 +262,35 @@ public class GameplayScreen implements Screen {
       }
     }
   }
-  private void movePiece(Piece piece, ChessBoard board, int posX, int posY) {
-    piece.move(posX, posY);
+  private void deselectPiece() {
+    setSelectState(false, null);
+    gui.setSkillSelectedMessageDisplay(skillChosen);
+    gui.skillButtonCheck(skillChosen);
+    gui.hideInfo();
+  }
+
+  private void movePiece(ChessBoard board, int posX, int posY) {
+    lastPieceStartX = chosenPiece.getPosX();
+    lastPieceStartY = chosenPiece.getPosY();
+    chosenPiece.move(posX, posY);
     switchSide();
   }
-  private void attackPiece(Piece piece, ChessBoard board, int posX, int posY) {
-    piece.attack(board, board.getAt(posX, posY));
+  private void attackPiece(ChessBoard board, int posX, int posY) {
+    lastPieceStartX = chosenPiece.getPosX();
+    lastPieceStartY = chosenPiece.getPosY();
+    chosenPiece.attack(board, board.getAt(posX, posY));
     switchSide();
   }
   private void useSkill(){
+    lastPieceStartX = chosenPiece.getPosX();
+    lastPieceStartY = chosenPiece.getPosY();
     chosenPiece.activateSkill(board);
     switchSide();
   }
 
   private void useTargetedSkill(int posX, int posY) {
+    lastPieceStartX = chosenPiece.getPosX();
+    lastPieceStartY = chosenPiece.getPosY();
     chosenPiece.activateTargetedSkill(board, posX, posY);
     switchSide();
   }
@@ -258,18 +312,14 @@ public class GameplayScreen implements Screen {
           if (chosenPiece.inSkillRange(board, posX, posY)) {
             useTargetedSkill(posX, posY);
           } else {
-            setSelectState(false, null);
-            gui.setSkillSelectedMessageDisplay(skillChosen);
-            gui.skillButtonCheck(skillChosen);
-            gui.hideInfo();
+            deselectPiece();
           }
         } else if (chosenPiece.canMove(board, posX, posY)) {
-          movePiece(chosenPiece, board, posX, posY);
+          movePiece(board, posX, posY);
         } else if (chosenPiece.inBaseAtkRange(board, posX, posY)) {
-          attackPiece(chosenPiece, board, posX, posY);
+          attackPiece(board, posX, posY);
         } else {
-          setSelectState(false, null);
-          gui.hideInfo();
+          deselectPiece();
         }
       }
     }

@@ -11,7 +11,6 @@ public class PawnSkill extends Skill{
         skillID = 3;
         skillActivation = SkillActivation.TRIGGER;
         skillDmg = shield;
-        setSkillDetails(skillID);
     }
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {

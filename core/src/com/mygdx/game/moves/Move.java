@@ -18,18 +18,19 @@
  */
 package com.mygdx.game.moves;
 
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.chesspieces.Piece;
 
-public class Move {
+public class  Move {
     private int startX;
     private int endX;
     private int startY;
     private int endY;
-    private PieceHistory movedPieceHistory;
-    private Array<PieceHistory> affectedPieceHistory;
     private ChessBoard board;
+    private Piece actedPiece;
+    private boolean whiteTurn;
+//    private PieceHistory movedPieceHistory;
+//    private Array<PieceHistory> affectedPieceHistory;
 
     /**
      * A "move" contains details of the action taken this turn and the board state after it takes place.
@@ -38,26 +39,43 @@ public class Move {
      * @param endX
      * @param startY
      * @param endY
-     * @param movedPieceHistory The piece the player interacted with this turn
-     * @param affectedPieceHistory Any piece that was affected this turn
+//     * @param movedPieceHistory The piece the player interacted with this turn
+//     * @param affectedPieceHistory Any piece that was affected this turn
      * @param board
+     * @param whiteTurn
      */
-    public Move(int startX, int endX, int startY, int endY,
-                PieceHistory movedPieceHistory, Array<PieceHistory> affectedPieceHistory, ChessBoard board) {
+//    public Move(int startX, int endX, int startY, int endY,
+//                PieceHistory movedPieceHistory, Array<PieceHistory> affectedPieceHistory, ChessBoard board) {
+//        this.startX = startX;
+//        this.endX = endX;
+//        this.startY = startY;
+//        this.endY = endY;
+//        this.movedPieceHistory = movedPieceHistory;
+//        this.affectedPieceHistory = affectedPieceHistory;
+//        this.board = board;
+//    }
+    public Move(int startX, int startY, int endX, int endY, ChessBoard board, Piece actedPiece, boolean whiteTurn) {
         this.startX = startX;
         this.endX = endX;
         this.startY = startY;
         this.endY = endY;
-        this.movedPieceHistory = movedPieceHistory;
-        this.affectedPieceHistory = affectedPieceHistory;
         this.board = board;
+        this.actedPiece = actedPiece;
+        this.whiteTurn = whiteTurn;
     }
 
+    public ChessBoard getBoard() {
+        return board;
+    }
+    public boolean isWhiteTurn() {
+        return whiteTurn;
+    }
     /**
      * Generate a string for display on the history board.
      * @return String to put on labels.
      */
     public String getMoveLine() {
-        return "placeholder";
+        String move = board.getBoardID() + (whiteTurn?".W":".B");
+        return move;
     }
 }

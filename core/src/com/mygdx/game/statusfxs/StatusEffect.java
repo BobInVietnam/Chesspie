@@ -10,6 +10,7 @@ public abstract class StatusEffect {
     KINGS_ORDER,
     PAWN_SHIELD
   }
+  public abstract StatusEffect clone();
   public StatusEffect(int duration, int strength) {
     this.duration = duration;
     this.strength = strength;
@@ -40,7 +41,7 @@ public abstract class StatusEffect {
         piece.applyStatus(new KingsOrder(duration, strength));
         break;
       case PAWN_SHIELD:
-        piece.applyStatus(new PawnShield(strength, piece));
+        piece.applyStatus(new PawnShield(strength, piece.isEvenMove()));
     }
   }
   public void activate(Piece piece) {

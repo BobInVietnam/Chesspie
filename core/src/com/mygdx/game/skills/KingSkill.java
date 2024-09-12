@@ -9,7 +9,6 @@ public class KingSkill extends Skill{
         skillID = 1;
         skillActivation = SkillActivation.PASSIVE;
         skillDmg = buff;
-        setSkillDetails(skillID);
     }
 
     @Override

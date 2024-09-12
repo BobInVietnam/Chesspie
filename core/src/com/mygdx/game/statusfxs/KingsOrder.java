@@ -4,6 +4,11 @@ import com.mygdx.game.chesspieces.Piece;
 
 public class KingsOrder extends StatusEffect{
 
+  @Override
+  public StatusEffect clone() {
+    return new KingsOrder(duration, strength);
+  }
+
   public KingsOrder(int duration, int strength) {
     super(duration, strength);
   }

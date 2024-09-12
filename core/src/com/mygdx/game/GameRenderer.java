@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class GameRenderer {
   private final SpriteBatch batch;
-  private final ChessBoard board;
+  private ChessBoard board;
   private final HashMap<Character, Integer> pieceToValue;
   private final OrthographicCamera camera;
 
@@ -62,7 +62,9 @@ public class GameRenderer {
     chosenPiece = null;
     pieceChosen = false;
   }
-
+  public void setBoard(ChessBoard board) {
+    this.board = board;
+  }
   private void drawMoveSquare(float posX, float posY) {
     batch.draw(colorRectangle, posX, posY, 1, 1);
   }

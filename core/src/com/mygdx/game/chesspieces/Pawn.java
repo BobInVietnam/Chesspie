@@ -2,6 +2,7 @@ package com.mygdx.game.chesspieces;
 
 import com.mygdx.game.chessboard.ChessBoard;
 import com.mygdx.game.skills.PawnSkill;
+import com.mygdx.game.statusfxs.StatusEffect;
 
 public class Pawn extends Piece{
     private boolean firstMove;
@@ -18,6 +19,18 @@ public class Pawn extends Piece{
         super(x, y, color, maxHp, baseAttack);
         chessSkill = new PawnSkill(5);
         firstMove = true;
+    }
+
+    public Piece clone() {
+        Pawn p = new Pawn(posX, posY, color, maxHp, baseAttack);
+        p.firstMove = firstMove;
+        p.hp = hp;
+        p.attack = attack;
+        p.defense = defense;
+        for (StatusEffect s: status) {
+            p.status.add(s.clone());
+        }
+        return p;
     }
 
     public Character getSymbol() {
@@ -80,7 +93,7 @@ public class Pawn extends Piece{
         if (firstMove) {
             firstMove = false;
         }
-        if (canKillwithBaseAtk(board, piece)) killPiece(board, piece);
+        if (canKillwithBaseAtk(piece)) killPiece(piece);
         else {
             piece.getAttacked(this);
         }

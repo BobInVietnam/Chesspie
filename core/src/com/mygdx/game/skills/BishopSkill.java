@@ -10,7 +10,6 @@ public class BishopSkill extends Skill{
         skillID = 0;
         skillActivation = SkillActivation.TARGET;
         skillDmg = dmg;
-        setSkillDetails(skillID);
     }
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {

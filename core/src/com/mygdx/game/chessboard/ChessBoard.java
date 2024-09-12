@@ -14,21 +14,28 @@ public class ChessBoard {
     }
     public static final int WIDTH = 8;
     public static final int HEIGHT = 8;
-    public Array<Piece> pieces = new Array<>();
+    public Array<Piece> pieces;
     public State boardState;
-
     private int boardID;
 
-    public ChessBoard(){
+    public ChessBoard(int id){
         boardState = State.START;
+        boardID = id;
+        pieces = new Array<>();
+    }
+
+    public ChessBoard clone() {
+        ChessBoard c = new ChessBoard(boardID);
+        for (Piece p: pieces) {
+            c.pieces.add(p.clone());
+        }
+        c.boardState = boardState;
+        c.boardID = boardID + 1;
+        return c;
     }
 
     public int getBoardID() {
         return boardID;
-    }
-
-    public void setBoardID(int boardID) {
-        this.boardID = boardID;
     }
 
     public boolean validate(int x, int y) {
@@ -47,14 +54,6 @@ public class ChessBoard {
         return rand;
     }
 
-    public void removeAt(int x, int y) {
-        for (int i = 0; i < pieces.size; i++) {
-            if (pieces.get(i).getPosX() == x && pieces.get(i).getPosY() == y) {
-                pieces.removeIndex(i);
-                i--;
-            }
-        }
-    }
     public void refresh(boolean whiteTurn) {
         for (Piece p: pieces) {
             checkDead(p);

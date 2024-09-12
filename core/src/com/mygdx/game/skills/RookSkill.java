@@ -12,7 +12,6 @@ public class RookSkill extends Skill{
         skillID = 5;
         skillActivation = SkillActivation.TRIGGER;
         skillDmg = shield;
-        setSkillDetails(skillID);
     }
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {

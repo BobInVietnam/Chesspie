@@ -7,19 +7,48 @@ import com.mygdx.game.skills.*;
 import com.mygdx.game.statusfxs.StatusEffect;
 
 public abstract class Piece {
-    private int posX;
-    private int posY;
-    private String color;
-    private int hp;
-    private int maxHp;
-    private int baseAttack;
-    private int attack;
-    private int baseDefense = 0;
-    private int defense;
-    private boolean isAlive; // true means alive, false means dead
-    private Array<StatusEffect> status;
-    private boolean evenMove;
-    Skill chessSkill;
+    protected int posX;
+    protected int posY;
+    protected String color;
+    protected int hp;
+    protected int maxHp;
+    protected int baseAttack;
+    protected int attack;
+    protected int baseDefense = 0;
+    protected int defense;
+//    protected boolean isAlive; // true means alive, false means dead
+    protected Array<StatusEffect> status;
+    protected boolean evenMove;
+    protected Skill chessSkill;
+
+    public Piece() {}
+
+    public Piece(int x, int y) {
+        this.posX = x;
+        this.posY = y;
+    }
+
+    public Piece(int x, int y, String color) {
+        this(x, y);
+        if (color.equals("white") || color.equals("black")) {
+            this.color = color;
+        }
+    }
+
+    public Piece(int x, int y, String color, int maxHp, int baseAttack) {
+        this(x, y, color);
+        this.maxHp = maxHp;
+        this.hp = maxHp;
+        this.baseAttack = baseAttack;
+        this.attack = baseAttack;
+        this.baseDefense = 0;
+        this.defense = 0;
+        this.status = new Array<>();
+        evenMove = true;
+//        isAlive = true;
+    }
+
+    public abstract Piece clone();
 
     public int getPosX() {
         return posX;
@@ -51,9 +80,9 @@ public abstract class Piece {
         return status;
     }
 
-    public boolean isAlive() {
-        return isAlive;
-    }
+//    public boolean isAlive() {
+//        return isAlive;
+//    }
 
     public Skill getChessSkill() {
         return chessSkill;
@@ -85,9 +114,9 @@ public abstract class Piece {
         this.defense = defense;
     }
 
-    public void setAlive(boolean alive) {
-        this.isAlive = alive;
-    }
+//    public void setAlive(boolean alive) {
+//        this.isAlive = alive;
+//    }
     public void applyStatus(StatusEffect s) {
         for (StatusEffect s0: status) {
             if (s0.getClass().equals(s.getClass())) {
@@ -101,31 +130,6 @@ public abstract class Piece {
             }
         }
         status.add(s);
-    }
-    public Piece() {}
-
-    public Piece(int x, int y) {
-        this.posX = x;
-        this.posY = y;
-    }
-
-    public Piece(int x, int y, String color) {
-        this(x, y);
-        if (color.equals("white") || color.equals("black")) {
-            this.color = color;
-        }
-    }
-
-    public Piece(int x, int y, String color, int maxHp, int baseAttack) {
-        this(x, y, color);
-        this.maxHp = maxHp;
-        this.hp = maxHp;
-        this.baseAttack = baseAttack;
-        this.attack = baseAttack;
-        this.baseDefense = 0;
-        this.defense = 0;
-        this.status = new Array<>();
-        evenMove = true;
     }
 
     public abstract Character getSymbol();
@@ -142,7 +146,7 @@ public abstract class Piece {
     public boolean inSkillRange(ChessBoard board, int x, int y) {
         return chessSkill.inSkillRange(board, x, y, this);
     }
-    public boolean canKillwithBaseAtk(ChessBoard board, Piece piece) {
+    public boolean canKillwithBaseAtk(Piece piece) {
         return (this.attack - piece.defense >= piece.hp);
     }
     public void attack(ChessBoard board, Piece piece) {
@@ -164,7 +168,7 @@ public abstract class Piece {
         int damage = piece.getChessSkill().getSkillDmg() - this.defense;
         this.setHp(this.hp - (Math.max(damage, 0)));
     }
-    public void killPiece(ChessBoard board, Piece piece) {
+    public void killPiece(Piece piece) {
         piece.getAttacked(this);
         this.move(piece.posX, piece.posY);
     }

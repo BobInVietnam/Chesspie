@@ -11,7 +11,6 @@ public class KnightSkill extends Skill{
         skillID = 2;
         skillActivation = SkillActivation.TRIGGER;
         skillDmg = dmg;
-        setSkillDetails(skillID);
     }
     @Override
     public boolean canUseSkillOn(ChessBoard board, int x, int y, Piece piece) {

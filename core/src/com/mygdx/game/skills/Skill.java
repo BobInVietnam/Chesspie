@@ -8,8 +8,6 @@ public abstract class Skill {
   int skillID;
   int skillDmg;
   protected LanguageLoader languageLoader;
-  protected String skillName;
-  protected String skillDescription;
   protected SkillEffect skillEffect;
   protected SkillActivation skillActivation;
 
@@ -22,16 +20,6 @@ public abstract class Skill {
       return skillDmg;
   }
   public SkillActivation getSkillActivation() { return skillActivation; }
-  public String getSkillName() {
-    return skillName;
-  }
-  public String getSkillDescription() {
-    return skillDescription;
-  }
-  public void setSkillDetails(int skillID) {
-    skillName = languageLoader.getSkillName(skillID);
-    skillDescription = languageLoader.getSkillDescription(skillID);
-  }
   public void setSkillDmg(int skillDmg) {
       this.skillDmg = skillDmg;
   }
