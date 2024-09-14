@@ -1,69 +1,95 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.sceneguis.SceneGUI;
+import com.mygdx.game.sceneguis.SceneWindow;
+import com.mygdx.game.settings.Settings;
+import com.mygdx.game.settings.SettingsObserver;
 
-public class GUIRenderer {
-  private Stage stage;
-  private SceneGUI rootTable;
-  private final Skin skin;
-  private final Texture ui;
+public class GUIRenderer implements SettingsObserver {
+  private static GUIRenderer guiRenderer;
+  private final Stage stage;
+  private SceneGUI sceneGUI;
+  private Skin skin;
+  private TextureAtlas atlas;
 
-  public GUIRenderer() {
+  private GUIRenderer() {
     float ratio = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
     stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-    rootTable = null;
-    skin = new Skin();
+    sceneGUI = null;
+    skin = new Skin(Gdx.files.internal("Images/normal_skin.json")) {
+      //Override json loader to process FreeType fonts from skin JSON
+      @Override
+      protected Json getJsonLoader(final FileHandle skinFile) {
+        Json json = super.getJsonLoader(skinFile);
+        final Skin skin = this;
 
-    // Load skin data
-    ui = new Texture("Images/ui.png");
-    NinePatchDrawable window = new NinePatchDrawable(
-        new NinePatch(new TextureRegion(ui, 0, 0, 190, 190), 90, 90, 90, 90));
-    skin.add("TableSkin", window);
-    NinePatchDrawable block = new NinePatchDrawable(
-        new NinePatch(new TextureRegion(ui, 190, 60, 23, 23), 10, 10, 10, 10));
-    skin.add("BlockSkin", block);
+        json.setSerializer(FreeTypeFontGenerator.class, new Json.ReadOnlySerializer<FreeTypeFontGenerator>() {
+          @Override
+          public FreeTypeFontGenerator read(Json json,
+                                            JsonValue jsonData, Class type) {
+            String path = json.readValue("font", String.class, jsonData);
+            jsonData.remove("font");
 
-    FreeTypeFontGenerator fontGen = new FreeTypeFontGenerator(Gdx.files.internal("Font/pc-senior.regular.ttf"));
-    FreeTypeFontGenerator.FreeTypeFontParameter fontParam = new FreeTypeFontGenerator.FreeTypeFontParameter();
-    fontParam.size = 28;
-    fontParam.color = Color.DARK_GRAY;
-    BitmapFont font = fontGen.generateFont(fontParam);
+            FreeTypeFontGenerator.Hinting hinting = FreeTypeFontGenerator.Hinting.valueOf(json.readValue("hinting",
+                String.class, "AutoMedium", jsonData));
+            jsonData.remove("hinting");
 
-    NinePatchDrawable button = new NinePatchDrawable(
-        new NinePatch(new TextureRegion(ui, 190, 0, 60, 60), 25, 25, 25, 25));
-    ImageButton.ImageButtonStyle iconButton = new ImageButton.ImageButtonStyle(button, button, button, null, null, null);
-    skin.add("ImageButtonSkin", iconButton);
-    TextButton.TextButtonStyle gameButtonStyle = new TextButton.TextButtonStyle(button, button, button, font);
-    skin.add("TextButtonSkin", gameButtonStyle);
+            Texture.TextureFilter minFilter = Texture.TextureFilter.valueOf(
+                json.readValue("minFilter", String.class, "Nearest", jsonData));
+            jsonData.remove("minFilter");
 
-    Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.DARK_GRAY);
-    skin.add("LabelSkin", labelStyle);
+            Texture.TextureFilter magFilter = Texture.TextureFilter.valueOf(
+                json.readValue("magFilter", String.class, "Nearest", jsonData));
+            jsonData.remove("magFilter");
 
-    TextureRegionDrawable skill1Skin = new TextureRegionDrawable(
-        new TextureRegion(ui, 0, 248, 8, 8)
-    );
-    skin.add("SkillSkin", skill1Skin);
-    TextureRegionDrawable skill2Skin = new TextureRegionDrawable(
-        new TextureRegion(ui, 8, 248, 8, 8)
-    );
-    skin.add("Skill2Skin", skill2Skin);
-
+            FreeTypeFontGenerator.FreeTypeFontParameter parameter = json.readValue(FreeTypeFontGenerator.FreeTypeFontParameter.class, jsonData);
+            parameter.hinting = hinting;
+            parameter.minFilter = minFilter;
+            parameter.magFilter = magFilter;
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(skinFile.parent().child(path));
+            BitmapFont font = generator.generateFont(parameter);
+            skin.add(jsonData.name, font);
+            if (parameter.incremental) {
+              generator.dispose();
+              return null;
+            } else {
+              return generator;
+            }
+          }
+        });
+        return json;
+      }
+    };
+    atlas = new TextureAtlas(Gdx.files.internal("Images/normal_skin.atlas"));
+    skin.addRegions(atlas);
     Gdx.input.setInputProcessor(stage);
   }
 
-    public Skin getSkin() {
+  public static GUIRenderer getInstance() {
+    if (guiRenderer == null) {
+      guiRenderer = new GUIRenderer();
+    }
+    return guiRenderer;
+  }
+  public Skin getSkin() {
     return skin;
   }
 
@@ -72,9 +98,15 @@ public class GUIRenderer {
   }
 
   public void loadGUI(SceneGUI gui) {
-    this.rootTable = gui;
-    gui.setDebug(true);
-    stage.addActor(rootTable);
+    Settings settings = Settings.getInstance();
+    stage.clear();
+    this.sceneGUI = gui;
+    settings.addObserver(gui);
+    stage.addActor(sceneGUI.getRoot());
+    for (SceneWindow t: sceneGUI.getWindows()) {
+      stage.addActor(t.getRoot());
+      settings.addObserver(t);
+    }
   }
 
   public void render(float delta) {
@@ -87,6 +119,11 @@ public class GUIRenderer {
   }
 
   public void dispose() {
-    ui.dispose();
+    atlas.dispose();
+  }
+
+  @Override
+  public void update(Settings settings) {
+
   }
 }

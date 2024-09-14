@@ -1,8 +1,8 @@
 package com.mygdx.game.chesspieces;
 
 import com.mygdx.game.chessboard.ChessBoard;
-
-import java.util.ArrayList;
+import com.mygdx.game.skills.PawnSkill;
+import com.mygdx.game.statusfxs.StatusEffect;
 
 public class Pawn extends Piece{
     private boolean firstMove;
@@ -17,7 +17,20 @@ public class Pawn extends Piece{
 
     public Pawn(int x, int y, String color, int maxHp, int baseAttack) {
         super(x, y, color, maxHp, baseAttack);
+        chessSkill = new PawnSkill(5);
         firstMove = true;
+    }
+
+    public Piece clone() {
+        Pawn p = new Pawn(posX, posY, color, maxHp, baseAttack);
+        p.firstMove = firstMove;
+        p.hp = hp;
+        p.attack = attack;
+        p.defense = defense;
+        for (StatusEffect s: status) {
+            p.status.add(s.clone());
+        }
+        return p;
     }
 
     public Character getSymbol() {
@@ -75,57 +88,15 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public boolean canUseSkillOn(ChessBoard board, int x, int y) {
-        return false;
-    }
-
-    @Override
-    public boolean inSkillRange(ChessBoard board) {
-        return false;
-    }
-
-    @Override
-    public boolean inSkillRange(ChessBoard board, int x, int y) {
-        return false;
-    }
-
-    @Override
-    public boolean canKillwithBaseAtk(ChessBoard board, int x, int y) {
-        return this.inBaseAtkRange(board, x, y) && board.getAt(x, y).getHp() < this.getBaseAttack() + this.getDefendShield();
-    }
-
-    @Override
-    public boolean canKillwithSkill(ChessBoard board, int x, int y) {
-        return this.inSkillRange(board) && board.getAt(x, y).getHp() < this.getChessSkill().getSkillDmg() + this.getDefendShield();
-    }
-
-    @Override
     public void attack(ChessBoard board, Piece piece) {
-        if(this.inBaseAtkRange(board, piece.getPosX(), piece.getPosY())) {
+        super.attack(board, piece);
+        if (firstMove) {
+            firstMove = false;
+        }
+        if (canKillwithBaseAtk(piece)) killPiece(piece);
+        else {
             piece.getAttacked(this);
         }
-    }
-
-    @Override
-    public void activateSKill(ArrayList<Piece> pieces, ChessBoard board) {
-
-    }
-
-    public void getAttacked(Piece piece) {
-        this.setHp(this.getHp() + this.getDefendShield() - piece.getBaseAttack());
-    }
-
-    public void getSkillAttacked(Piece piece) {
-        this.setHp(this.getHp() - piece.getChessSkill().getSkillDmg());
-    }
-
-    public void killOtherPiecebyBaseAtk(ChessBoard board, int x, int y) {
-        if(this.canKillwithBaseAtk(board, x, y)) board.removeAt(x, y);
-    }
-
-    @Override
-    public void killOtherPiecebySkill(ChessBoard board, int x, int y) {
-        if(this.canKillwithSkill(board, x, y)) board.removeAt(x, y);
     }
 }
 

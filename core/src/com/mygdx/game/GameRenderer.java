@@ -14,10 +14,10 @@ import com.mygdx.game.screens.GameplayScreen;
 import java.util.HashMap;
 
 public class GameRenderer {
-  private SpriteBatch batch;
+  private final SpriteBatch batch;
   private ChessBoard board;
-  private HashMap<Character, Integer> pieceToValue;
-  private OrthographicCamera camera;
+  private final HashMap<Character, Integer> pieceToValue;
+  private final OrthographicCamera camera;
 
   private final Texture boardTexture;
   private final Texture pieces;
@@ -27,6 +27,7 @@ public class GameRenderer {
   private final Array<TextureRegion> blackPieces;
 
   public boolean pieceChosen;
+  public boolean skillRangeDisplay;
   public boolean skillChosen;
   public Piece chosenPiece;
 
@@ -61,7 +62,9 @@ public class GameRenderer {
     chosenPiece = null;
     pieceChosen = false;
   }
-
+  public void setBoard(ChessBoard board) {
+    this.board = board;
+  }
   private void drawMoveSquare(float posX, float posY) {
     batch.draw(colorRectangle, posX, posY, 1, 1);
   }
@@ -86,14 +89,16 @@ public class GameRenderer {
       for (int j = 1; j <= 8; j++) {
         posX = GameplayScreen.cornerX + i;
         posY = GameplayScreen.cornerY + j;
-        if (!skillChosen) {
+        if (!skillRangeDisplay && !skillChosen) {
           if (chosenPiece.canMove(board, i, j)) {
             drawMoveSquare(posX, posY);
           } else if (chosenPiece.inBaseAtkRange(board, i, j)) {
             drawAttackSquare(posX, posY);
           }
         } else {
-          if (true) { // Replace condition with inSkillRange function
+          if (chosenPiece.inSkillRange(board, i, j)) {
+            drawSkillTargetSquare(posX, posY);
+          } else if (chosenPiece.canUseSkillOn(board, i, j)) {
             drawSkillRangeSquare(posX, posY);
           }
         }

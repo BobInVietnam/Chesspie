@@ -1,0 +1,154 @@
+
+normal_skin.png
+size: 256, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+white-pixel
+  rotate: false
+  xy: 254, 128
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+icon_attack
+  rotate: false
+  xy: 243, 99
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+icon_defense
+  rotate: false
+  xy: 243, 89
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+icon_skill1
+  rotate: false
+  xy: 243, 79
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+icon_skill2
+  rotate: false
+  xy: 243, 69
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+ui_basicFrame
+  rotate: false
+  xy: 1, 1
+  size: 60, 60
+  split: 25, 23, 23, 25
+  pad: 27, 25, 25, 27
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+ui_basicFrame_checked
+  rotate: false
+  xy: 63, 1
+  size: 60, 60
+  split: 25, 23, 23, 25
+  pad: 27, 25, 25, 27
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+ui_basicFrame_hovered
+  rotate: false
+  xy: 193, 193
+  size: 60, 60
+  split: 25, 23, 23, 25
+  pad: 27, 25, 25, 27
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+ui_bigFrame
+  rotate: false
+  xy: 1, 63
+  size: 190, 190
+  split: 58, 58, 58, 58
+  orig: 190, 190
+  offset: 0, 0
+  index: -1
+ui_checkbox
+  rotate: false
+  xy: 193, 131
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+ui_checkbox_checked
+  rotate: false
+  xy: 125, 1
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+ui_rectangleRounded
+  rotate: false
+  xy: 243, 109
+  size: 9, 9
+  split: 3, 3, 3, 3
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+ui_rectangleRounded_dark
+  rotate: false
+  xy: 243, 120
+  size: 9, 9
+  split: 3, 3, 3, 3
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+ui_smallFrame
+  rotate: false
+  xy: 218, 56
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+ui_smallFrame_checked
+  rotate: false
+  xy: 218, 81
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+ui_smallFrame_dark
+  rotate: false
+  xy: 193, 56
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+ui_smallFrame_dark_checked
+  rotate: false
+  xy: 193, 106
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+ui_smallFrame_dark_hovered
+  rotate: false
+  xy: 193, 81
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+ui_smallFrame_hovered
+  rotate: false
+  xy: 218, 106
+  size: 23, 23
+  split: 6, 6, 6, 6
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
