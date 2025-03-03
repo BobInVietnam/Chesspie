@@ -32,7 +32,7 @@ public class Queen extends Piece{
 
     @Override
     public boolean canMove(ChessBoard board, int x, int y) {
-        if (!board.validate(x, y)) {
+        if (board.invalidPosition(x, y)) {
             return false;
         }
         int currentX = this.getPosX();
@@ -109,7 +109,7 @@ public class Queen extends Piece{
 
     @Override
     public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
-        if (!board.validate(x, y)) {
+        if (board.invalidPosition(x, y)) {
             return false;
         }
         int currentX = this.getPosX();

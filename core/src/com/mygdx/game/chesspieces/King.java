@@ -33,7 +33,7 @@ public class King extends Piece{
 
     @Override
     public boolean canMove(ChessBoard board, int x, int y) {
-        if (!board.validate(x, y)) {
+        if (board.invalidPosition(x, y)) {
             return false;
         }
         int x_pos = this.getPosX();
@@ -48,7 +48,7 @@ public class King extends Piece{
 
     @Override
     public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
-        if (!board.validate(x, y)) {
+        if (board.invalidPosition(x, y)) {
             return false;
         }
         int x_pos = this.getPosX();

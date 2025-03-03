@@ -31,7 +31,7 @@ public class Rook extends Piece {
         return 'R';
     }
     public boolean canMove(ChessBoard board, int x, int y) {
-        if (!board.validate(x, y)) {
+        if (board.invalidPosition(x, y)) {
             return false;
         }
         if (x != this.getPosX() && y != this.getPosY()) return false;
@@ -73,7 +73,7 @@ public class Rook extends Piece {
 
     @Override
     public boolean inBaseAtkRange(ChessBoard board, int x, int y) {
-        if (!board.validate(x, y)) {
+        if (board.invalidPosition(x, y)) {
             return false;
         }
         if (x != this.getPosX() && y != this.getPosY()) return false;
