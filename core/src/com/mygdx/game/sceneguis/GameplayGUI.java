@@ -8,9 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.XmlReader;
 import com.mygdx.game.chesspieces.Piece;
-import com.mygdx.game.moves.History;
 import com.mygdx.game.settings.Settings;
 
 import java.text.DecimalFormat;
@@ -43,6 +41,7 @@ public abstract class GameplayGUI extends SceneGUI {
   private Table timerBoard;
   private boolean timeRunning;
 
+  private TextButton toggleHistoryButton;
   private ScrollPane historyBoard;
   private VerticalGroup blackHistory;
   private VerticalGroup whiteHistory;
@@ -51,8 +50,16 @@ public abstract class GameplayGUI extends SceneGUI {
   private Label turnIndicatorText;
   private static final boolean DEBUG_MODE = true;
 
-  public GameplayGUI(Skin skin) {
+  private int screenWidth;
+  private int screenHeight;
+
+  private SceneWindow winBoard;
+  private Label winLabel;
+
+  public GameplayGUI(Skin skin, int x, int y) {
     // Piece info table
+    this.screenHeight = y;
+    this.screenWidth = x;
     this.skin = skin;
     pauseWindow = new PauseWindow(skin) {
       @Override
@@ -85,6 +92,7 @@ public abstract class GameplayGUI extends SceneGUI {
     createTimer();
     createTurnIndicator();
     createHistoryPane();
+    createWinWindow();
     // Adding components to root table
     loadComponents();
 
@@ -199,6 +207,35 @@ public abstract class GameplayGUI extends SceneGUI {
     historyBoard = new ScrollPane(main, skin);
   }
 
+  private void createWinWindow() {
+    winBoard = new SceneWindow() {
+      @Override
+      public void dispose() {
+        Settings settings = Settings.getInstance();
+        settings.removeObserver(this);
+      }
+
+      @Override
+      public void update(Settings settings) {
+      }
+    };
+    winBoard.setRoot(SceneGUI.createWindow(skin, DEBUG_MODE));
+    winLabel = SceneGUI.createLabel(skin, "Somet won! Press this to restart.", 1, false, false);
+    winBoard.getRoot().setWidth(800);
+    winBoard.getRoot().setHeight(200);
+    winBoard.getRoot().add(winLabel);
+    winBoard.getRoot().setVisible(false);
+    winBoard.getRoot().addListener(new InputListener() {
+      @Override
+      public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        winBoard.getRoot().setVisible(false);
+        restartGame();
+        return super.touchDown(event, x, y, pointer, button);
+      }
+    });
+    windows.add(winBoard);
+  }
+
   private void loadComponents() {
     root.setDebug(DEBUG_MODE);
     root.left().top().add(pieceInfoBoard).size(300f, 80f).expandX().left();
@@ -210,6 +247,7 @@ public abstract class GameplayGUI extends SceneGUI {
     t.left().add(skill1).size(100).expand();
     t.add(skillDescriptionPane).prefWidth(300);
     root.add(t).expand();
+    root.add(toggleHistoryButton).right();
     root.add(historyBoard).right().size(250, 400).colspan(2);
     root.row().left();
     root.add(timerBoard).size(320, 80).left();
@@ -282,6 +320,9 @@ public abstract class GameplayGUI extends SceneGUI {
   public void startTimer() {
     timeRunning = true;
   }
+  public void stopTimer() {
+    timeRunning = false;
+  }
   public void countdown() {
     if (!timeRunning) return;
     if (timer < 0) {
@@ -313,7 +354,23 @@ public abstract class GameplayGUI extends SceneGUI {
     whiteHistory.clear();
     blackHistory.clear();
   }
+  public void displayWin(boolean isWhite) {
+    doWinAction();
+    if (isWhite) {
+      winLabel.setText("White won! Press this to restart.");
+    } else {
+      winLabel.setText("Black won! Press this to restart.");
+    }
+    winBoard.getRoot().setVisible(true);
+    winBoard.getRoot().setWidth(winLabel.getWidth() + 80);
+    winBoard.getRoot().setPosition(
+        (float) Gdx.graphics.getWidth() / 2 - winBoard.getRoot().getWidth() / 2,
+        (float) Gdx.graphics.getHeight() / 2 - winBoard.getRoot().getHeight() / 2
+    );
+  }
 
+  public abstract void doWinAction();
+  public abstract void restartGame();
   @Override
   public void update(Settings settings) {
     System.out.println("Gameplay updated");

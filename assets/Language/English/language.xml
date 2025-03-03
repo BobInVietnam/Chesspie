@@ -21,7 +21,8 @@
             </l3>
             <l4>When attacking an enemy piece, if your piece can eliminate that piece, it will take the latter place. Otherwise, pieces will either stay in place or move close to the attacked piece.</l4>
             <l5>A little rule difference compared to normal chess: You cannot castle, cannot do en-passant, pawns cannot be promoted to pieces, and checkmate doesn't exist. You must deplete the enemy king's HP to win.</l5>
-            <l6>Press ESC to pause. The timer will pause, and you can either change the setting or quit the match.</l6>
+            <l6>The history board on the right is to undo and redo moves. Click on a label to go back to that move. However, if you move from that point, all changes after that move will be lost.
+Press ESC to pause. The timer will pause, and you can either change the setting or quit the match.</l6>
             <button>Continue</button>
             <button2>Skip</button2>
         </tutorial>

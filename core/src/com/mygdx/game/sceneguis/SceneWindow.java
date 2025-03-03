@@ -17,5 +17,8 @@ public abstract class SceneWindow implements SettingsObserver {
   public Table getRoot() {
     return root;
   }
+  public void setRoot(Table root) {
+    this.root = root;
+  }
   public abstract void dispose();
 }

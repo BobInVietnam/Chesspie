@@ -1,10 +1,8 @@
 package com.mygdx.game.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.mygdx.game.Chesspie;
-import com.mygdx.game.GUIRenderer;
 import com.mygdx.game.sceneguis.TitleGUI;
 
 public class TitleScreen implements Screen {

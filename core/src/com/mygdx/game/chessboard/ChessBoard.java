@@ -38,8 +38,8 @@ public class ChessBoard {
         return boardID;
     }
 
-    public boolean validate(int x, int y) {
-      return (x >= 1 && x <= 8) && (y >= 1 && y <= 8);
+    public boolean invalidPosition(int x, int y) {
+      return (x < 1 || x > 8) || (y < 1 || y > 8);
     }
 
     public Piece getAt(int x, int y) {

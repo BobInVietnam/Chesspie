@@ -6,9 +6,6 @@
             <settings>TÙY CHỈNH</settings>
             <quit>THOÁT</quit>
         </titleScreen>
-        <settingMenu>
-            <language>Ngôn ngữ</language>
-        </settingMenu>
         <tutorial>
             <title>Chào mừng đến với ChessPie!</title>
             <l1>Đây là trò cờ vua, nhưng mỗi quân sẽ có số máu, sát thương và một kỹ năng nhất định. </l1>

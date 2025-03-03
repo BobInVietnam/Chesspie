@@ -59,7 +59,7 @@ public class GameplayScreen implements Screen {
 
   public GameplayScreen(Chesspie game) {
     this.game = game;
-    gui = new GameplayGUI(this.game.gui.getSkin()) {
+    gui = new GameplayGUI(this.game.gui.getSkin(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) {
       @Override
       public void buttonClicked() {
         System.out.println("Skill button");
@@ -100,6 +100,28 @@ public class GameplayScreen implements Screen {
       @Override
       public void timeup() {
         System.out.println("Time up!");
+      }
+
+      @Override
+      public void doWinAction() {
+        System.out.println("Yay");
+      }
+
+      @Override
+      public void restartGame() {
+        moveNumber = 1;
+        board = new ChessBoard(moveNumber);
+        history = new History();
+        chosenPiece = null;
+        pieceChosen = false;
+
+        // TESTING: Add pieces to board
+        board.pieces = PieceListGenerator.generatePieces();
+        pieceHitboxes = updatePieceHitboxes();
+        whiteTurn = true;
+        gui.setTimer(TIMER);
+        gameRenderer.setBoard(board);
+        gui.clearHistory();
       }
     };
     this.game.gui.loadGUI(gui);
@@ -158,6 +180,7 @@ public class GameplayScreen implements Screen {
     pieceHitboxes = updatePieceHitboxes();
     whiteTurn = true;
     gui.setTimer(TIMER);
+    gui.stopTimer();
   }
   @Override
   public void show() {
@@ -209,7 +232,10 @@ public class GameplayScreen implements Screen {
     saveMoveToHistory();
     pieceHitboxes = updatePieceHitboxes();
     deselectPiece();
-    if (isWinState()) return;
+    if (isWinState()) {
+      gui.displayWin(whiteTurn);
+      return;
+    }
     whiteTurn = !whiteTurn;
     moveNumber++;
     gui.setTurnIndicatorText(whiteTurn, moveNumber);
@@ -225,6 +251,7 @@ public class GameplayScreen implements Screen {
     move.addListener(new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        deselectPiece();
         final int t = temp;
         Move m = history.getMoveAt(t - 1);
         board = m.getBoard().clone();

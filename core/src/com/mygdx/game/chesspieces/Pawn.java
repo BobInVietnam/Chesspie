@@ -39,7 +39,7 @@ public class Pawn extends Piece{
 
     @Override
     public boolean canMove(ChessBoard board, int x, int y) {
-        if (!board.validate(x, y)) {
+        if (board.invalidPosition(x, y)) {
             return false;
         }
 

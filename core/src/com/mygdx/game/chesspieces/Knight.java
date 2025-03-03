@@ -31,7 +31,7 @@ public class Knight extends Piece {
     }
 
     public boolean canMove(ChessBoard board, int x, int y) {
-        if (!board.validate(x, y)) {
+        if (board.invalidPosition(x, y)) {
             return false;
         }
 
@@ -55,7 +55,7 @@ public class Knight extends Piece {
         Piece enemy = board.getAt(x, y);
         if(enemy == null)  return false;
 
-        if (!board.validate(x, y)) {
+        if (board.invalidPosition(x, y)) {
             return false;
         }
 
