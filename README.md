@@ -10,4 +10,8 @@ Eliminate the King for a victory.
 
 ## Screenshots
 
-!["screenshot 1"]()
+!["screenshot 1"](https://raw.githubusercontent.com/BobInVietnam/Chesspie/refs/heads/gui_features/screenshots/title.png "Game title screen")
+
+!["screenshot 1"](https://raw.githubusercontent.com/BobInVietnam/Chesspie/refs/heads/gui_features/screenshots/opening.png "Beginning position")
+
+!["screenshot 1"](https://raw.githubusercontent.com/BobInVietnam/Chesspie/refs/heads/gui_features/screenshots/skill.png "Using skill")
